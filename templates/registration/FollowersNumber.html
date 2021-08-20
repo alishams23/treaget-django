@@ -1,0 +1,118 @@
+{% load define_action %}
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>نوتیفیکیشن</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+{% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto">
+                {%  include "include/downNavbar.html" %}
+                <div class="my-6 grid   gap-2  uk-link-reset rtl">
+                    {% for result in results %}
+                    {% define result request.user as action %}
+                    <form class="p-3 m-1 rounded-lg bg-white d-flex justify-content-between"
+                        action="{% url 'account:follow' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="{% if action == True %}unfollow{% else %}follow{% endif %}"
+                            value="{{ result.username }}" />
+                        <a href="{% url "main:profile" result.username %}" class="d-flex">
+                            <div class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img
+                                    src="{% if result.image %}{{ result.image.url }}{% else %}{% static "inside/avatar.jpg" %}{% endif %}"
+                                    alt="" class=" rounded-2xl">
+                            </div>
+                            <div class="p-2">
+                                <p class="irsa"> <strong>{{ result.username }}</strong>
+                                </p>
+                            </div>
+                        </a>
+                        <button href="#" type="submit"
+                            class=" irsa shadow-sm p-2 px-6 rounded-md {% if action == True %} bg-gray-300 {% else %} bg-primary text-white{% endif %} ccdark:bg-gray-700">{% if action == True %}لغو
+                            دنبال کردن {% else %}دنبال کردن{% endif %}</button>
+                    </form>
+
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+
+</html>

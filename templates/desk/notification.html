@@ -1,0 +1,119 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>نوتیفیکیشن</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+{% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+                <div class="main_content">
+
+                    {% include "include/mainHeader.html" %}
+
+                    <div class="container m-auto">
+                    {%  include "include/downNavbar.html" %}
+
+                        {% include "include/dashboardHeader.html" %}
+                     <div class="my-6 grid   gap-2  uk-link-reset rtl" uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 100;">
+                         {% for notification in notifications %}
+                        <div class ="uk-card p-3 m-1 rounded-lg bg-white row">
+                            <a href="{{ notification.url }}" class="d-flex">
+                                {% if notification.user.image %}
+                                <div class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{{ notification.user.image.url }}" alt="" class=" rounded-2xl">
+                                </div>
+                                {% else %}
+                                <div class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{% static 'inside/avatar.jpg' %}" alt="" class=" rounded-2xl">
+                                </div>
+                                {% endif %}
+                                <div class="p-1">
+                                    <p class="irsa"> <strong>{{ notification.user.username }}</strong>
+                                        {% if notification.title %}{{ notification.title }}{% endif %}
+                                    </p>
+                                    <p class='irsa text-xs'>
+                                        {% if notification.body %}{{ notification.body }}{% endif %}
+                                    </p>
+                                    <span class="text-xs irsa"> {{ notification.createdAdd }} </span>
+                                </div>
+                            </a>
+                        </div>
+                        {% empty %}
+                                {% include "include/empty.html" %}
+                        {% endfor %}
+                     </div>
+
+                </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+</html>

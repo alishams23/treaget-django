@@ -1,0 +1,164 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>سفارشات</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+{% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+                <div class="main_content">
+
+                    {% include "include/mainHeader.html" %}
+
+                    <div class="container m-auto">
+                    {%  include "include/downNavbar.html" %}
+
+                        {% include "include/dashboardHeader.html" %}
+                     <div class="my-6 grid   gap-2  uk-link-reset rtl">
+                         {% for result in orders %}
+                        <div class ="p-3 m-1 rounded-lg bg-white row">
+                            <div  class="d-flex">
+                            {% if request.user == result.author %}
+                                {% if result.designer.image %}
+                                <div  class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{{ result.designer.image.url }}" alt="" class=" rounded-2xl">
+                                </div>
+                                {% endif %}
+                                <div class="p-1">
+                                    <p class="irsa"> <a href="{% url "main:profile" result.designer.username %}">{{ result.designer.username }}</a>
+                            {% else %}
+                                {% if result.author.image %}
+                                <div  class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{{ result.author.image.url }}" alt="" class=" rounded-2xl">
+                                </div>
+                                {% endif %}
+                                <div class="p-1">
+                                    <p class="irsa"> <a href="{% url "main:profile" result.author.username %}">{{ result.author.username }}</a>
+                            {% endif %}
+                                        {% if result.service.specialName %}{{ result.service.specialName }}
+                                            {% elif result.service.nameProduct %}{{ result.service.nameProduct }}
+                                            {% else %}{{ result.title }}
+                                        {% endif %}
+                                    </p>
+                                <br>
+                                    <p class='irsa'>
+                                        {{ result.body }}
+                                        <br>
+                                        <span class="irsa text-danger">قیمت:{{ result.price }}</span>
+                                    </p>
+                                    <span class="text-xs irsa"> {{ result.createdAdd }} </span>
+
+
+                                </div>
+                            </div>
+                                 <div class="d-flex flex-wrap mt-3">
+                                        <br>
+                                        {% if result.accept == False %}
+                                         {% elif result.accept == True   %}
+                                                {% if result.safePayment %}
+                                                    <a href="{% url "account:projectManagement" result.safePayment.pk %}" class="bg-blue-400 flex-fill uk-text-center m-1 p-2 rounded-2xl irsa " ><span class="text-white">مدیریت پروژه</span></a>
+                                                {% elif request.user != result.designer %}
+                                                    <a href="{% url 'account:addSafePaymentOrder' result.pk %}" class="bg-green-400 flex-fill uk-text-center m-1 p-2 rounded-2xl irsa " ><span class="text-white">پرداخت امن</span></a>
+                                                {% endif %}
+                                        {% else %}
+                                            {% if request.user != result.author %}
+                                            <a href="{% url "account:ordersTrue" result.pk %}" class="bg-green-400 flex-fill uk-text-center m-1 p-2 rounded-2xl irsa " ><span class="text-white">تایید سفارش</span></a>
+                                            {% endif %}
+                                        <a href="{% url "account:ordersFalse" result.pk %}" class="bg-red-400 flex-fill uk-text-center  m-1 p-2 rounded-2xl irsa "><span class="text-white">لغو سفارش</span></a>
+                                     {% endif %}
+                                        <a href="{% url "main:profile" result.author.username %}" class="bg-gray-200 flex-fill uk-text-center m-1 p-2 rounded-2xl irsa ">دیدن پروفایل</a>
+                                        <a href="{% url "account:messageUser" result.author.username %}" class="bg-gray-200 flex-fill uk-text-center m-1 p-2 rounded-2xl irsa ">چت</a>
+                                    </div>
+                            {% if result.accept == True and result.safePayment == None and request.user != result.author %}
+                            <div class="irsa mt-3 p-3 rounded-2xl bg-gray-100">
+                                <span class="text-lg">تاییدیه شما برای کارفرما ارسال شد</span> <br>
+
+                           مدیریت پروژه بعد از فعال سازی پرداخت امن قابل استفاده است
+                            </div>
+                            {% endif %}
+                            {% if result.accept == True and result.safePayment == None and request.user != result.designer and result.price > request.user.cash %}
+                            <div class="col-span-2 irsa alert alert-warning" role="alert">
+                              در صورتی که مبلغ پروژه ی شما بیشتر از اعتبار شما در کیف پولتان باشد به درگاه پرداخت منتقل میشوید تا کیف پول شما شارژ شود و پس از آن باید <b>دوباره</b>  پرداخت امن را کلیک کنید
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                                {% include "include/empty.html" %}
+                        {% endfor %}
+                     </div>
+
+                </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,165 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>پرداخت امن</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+{% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+                <div class="main_content">
+
+                    {% include "include/mainHeader.html" %}
+
+                    <div class="container m-auto">
+                    {%  include "include/downNavbar.html" %}
+
+                        {% include "include/dashboardHeader.html" %}
+                     <div class="my-6 grid   gap-2  uk-link-reset rtl">
+                         {% for result in SafePayment %}
+                        <div class ="p-3 m-1 rounded-lg bg-white row">
+                            <div  class="d-flex">
+                            {% if request.user == result.receiver %}
+                                {% if result.sender.image %}
+                                <div  class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{{ result.sender.image.url }}" alt="" class=" rounded-2xl">
+                                </div>
+                                {% endif %}
+                            {% else %}
+                                {% if result.receiver.image %}
+                                <div  class="w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{{ result.receiver.image.url }}" alt="" class=" rounded-2xl">
+                                </div>
+                                {% endif %}
+                            {% endif %}
+                                <div class="p-1">
+                                    <p class="irsa"> {% if request.user == result.receiver %}<a href="{% url "main:profile" result.sender.username %}">{{ result.sender.username }}</a>
+                                        {% else %}
+                                        <a href="{% url "main:profile" result.receiver.username %}">{{ result.receiver.username }}</a>
+                                        {% endif %}
+                                    </p>
+                                <br>
+                                    <p class='irsa ]'>
+                                       <span class="text-muted">توضیحات:</span> {{ result.description }}
+                                    </p>
+                                    <p class='irsa '>
+                                       <span class="text-muted">قیمت:</span> {{ result.price }}
+                                    </p>
+                                    <span class="text-xs irsa"> {{ result.createdAdd }} </span>
+                                </div>
+                            </div>
+                                 <div class="d-flex flex-wrap  mt-3">
+                                        <br>
+
+                                     <a href="{% url "account:projectManagement" result.pk %}" class="bg-blue-600 flex-fill uk-text-center m-1 p-2 rounded-2xl irsa "><span class="text-white">مدیریت پروژه</span></a>
+                                     {% if result.paymentBoolean == True and request.user == result.receiver or result.senderBoolean == True and request.user == result.sender  %}
+                                         {% else %}
+                                        <a href="{% url "account:SafePaymentAccept" result.pk %}" class="bg-green-500  flex-fill m-1 p-2 uk-text-center rounded-2xl irsa "><span class="text-white">اعلام اتمام کار</span></a>
+                                         {% endif %}
+
+                                        {% if result.sender != request.user  and result.paymentBoolean != None %}
+                                        {% if result.senderBoolean != True  and result.paymentBoolean != True and result.sender != request.user %}<a href="{% url "account:SafePaymentRefuse" result.pk %}" class="bg-red-400  flex-fill m-1 p-2 uk-text-center rounded-2xl irsa "><span class="text-white">لغو سفارش</span></a>{% endif %}
+                                     {% endif %}
+                                        <a href="{% if request.user == result.receiver %}{% url "main:profile" result.sender.username %}{% else %}{% url "main:profile" result.receiver.username %}{% endif %}" class="bg-gray-200 flex-fill m-1 p-2 uk-text-center rounded-2xl irsa ">دیدن پروفایل</a>
+                                        <a href="{% if request.user == result.receiver %}{% url "account:messageUser" result.sender.username %}{% else %}{% url "account:messageUser" result.receiver.username %}{% endif %}" class="bg-gray-200 flex-fill m-1 p-2 uk-text-center rounded-2xl irsa ">چت</a>
+                                        <a href="{% url "account:addDispute" result.pk %}" class="bg-gray-200 flex-fill m-1 p-2 uk-text-center rounded-2xl irsa ">اعلام اختلاف</a>
+                                    </div>
+                            {% if result.sender == request.user  and result.paymentBoolean == True and result.senderBoolean == False %}
+                            <div class="irsa mt-3 p-3 rounded-2xl bg-gray-100">
+                                <span class="text-lg">خدمات دهنده اتمام کار را فعال کرده</span> <br>
+                            در صورتی که خدمات دهنده کار را به اتمام رسانده شما نیز باید اتمام کار را فعال کنید تا روند تکمیل شود ، در غیر این صورت باید در قسمت اعلام اختلاف مشکل مربوطه را مطرح کنید
+                            </div>
+                            {% endif %}
+                            {% if result.sender == request.user  and result.paymentBoolean == None %}
+                            <div class="irsa mt-3 p-3 rounded-2xl bg-gray-100">
+                                <span class="text-lg">خدمات دهنده لغو سفارش را انتخاب کرده است است</span> <br>
+                            هزینه ای که از کیف پول شما کسر شده است به کف پول شما بازگشته است و میتوانید خرید دیگری انجام دهید
+                            </div>
+                            {% endif %}
+                            {% if result.sender != request.user  and result.senderBoolean == True and result.paymentBoolean == False %}
+                            <div class="irsa mt-3 p-3 rounded-2xl bg-gray-100">
+                                <span class="text-lg">کارفرما اتمام کار را فعال کرده است است</span> <br>
+                            شما نیز باید اتمام کار را بزنید تا روند تکمیل شود
+                            </div>
+                            {% endif %}
+
+                        </div>
+                        {% empty %}
+                                {% include "include/empty.html" %}
+                        {% endfor %}
+                     </div>
+
+                </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+
+</body>
+
+
+
+</html>

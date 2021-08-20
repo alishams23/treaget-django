@@ -1,0 +1,146 @@
+            {% load widget_tweaks %}
+            {% load static %}
+            <header class="bg-glass">
+                <div class="header_inner">
+                    <div class="left-side">
+                        <!-- Logo -->
+
+                        <div class="triger" uk-toggle="target: #wrapper ; cls: sidebar-active">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+                            </svg>
+                        </div>
+                                          
+
+                    
+                     {% if request.resolver_match.url_name == "explore" %}
+                        <form class="header_search" action="{% url "main:search" %}" method="post" >
+                        {% csrf_token %}
+                            <input type="text" placeholder="Search.."  name="name">
+                            <div class="icon-search">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </form>
+                    {% endif %}
+
+                    </div>
+                    <div class="right-side lg:pr-4">
+                        <!-- upload -->
+                        <a href="#" id="addPost" class="irsa  inline-block  mr-4  ">
+                            <div class=" rounded-2xl downNavbarPlus d-none d-sm-block">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                </svg>
+                            </div>
+                        </a>
+                        <!-- upload dropdown box -->
+                        <div uk-dropdown="pos: top-right;mode:click ; animation: uk-animation-slide-bottom-small" class="header_dropdown shadow-lg">
+
+                            <!-- notification contents -->
+                            <div class="flex justify-center flex-center text-center ">
+
+                                <div  >
+
+                                       <div class=" my-3 mx-1  rounded-20 text-center">
+                                          <div class ="row  ">
+                                              {% if request.user.ServiceProvider == True %}
+                                            <a class ="col-4 d-flex align-items-center flex-column " href="{% url "account:addPicture" %}">
+                                            <div class ="bg-gray-100 rounded-2xl p-2 shadow-md">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="transform: scale(0.8);"  fill="currentColor" class=" bi bi-images" viewBox="0 0 16 16">
+                                                <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                                                <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"/>
+                                              </svg>
+                                            </div>
+                                                <div class="text-xs text-dark irsa pt-2">افزودن نمونه کار</div>
+                                            </a>
+                                            <a class ="col-4  d-flex align-items-center flex-column  text-center" href="{% url "account:addService" %}">
+                                            <div class ="bg-gray-100 rounded-2xl p-2 shadow-md">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="transform: scale(0.8);"  fill="currentColor" class="bi bi-shop-window" viewBox="0 0 16 16">
+                                                  <path d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h12V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zm2 .5a.5.5 0 0 1 .5.5V13h8V9.5a.5.5 0 0 1 1 0V13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5a.5.5 0 0 1 .5-.5z"/>
+                                                </svg>
+                                                </div>
+                                                <div class="text-xs text-dark irsa pt-2">افزودن خدمات</div>
+                                            </a>
+                                            <a class ="col-4 d-flex text-center align-items-center flex-column" href="{% url "account:addCv" %}">
+                                            <div class ="bg-gray-100 rounded-2xl p-2 shadow-md">
+                                              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="transform: scale(0.8);"  fill="currentColor" class="bi bi-file-person" viewBox="0 0 16 16">
+                                                  <path d="M12 1a1 1 0 0 1 1 1v10.755S12 11 8 11s-5 1.755-5 1.755V2a1 1 0 0 1 1-1h8zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+                                                  <path d="M8 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                                </svg>
+                                                </div>
+                                                <div class="text-xs text-dark irsa pt-2">افزودن رزومه</div>
+                                            </a>
+                                                  {% else %}
+                                                  <a class ="col-12 d-flex text-center align-items-center flex-column" href="{% url "account:addRequest" %}">
+                                                  <div class ="bg-gray-100 rounded-2xl p-2 shadow-md">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="transform: scale(0.8);"  fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+                                                      <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+                                                    </svg>
+                                                    </div>
+                                                <div class=" text-dark irsa p-2">افزودن درخواست</div>
+                                            </a>
+                                              {% endif %}
+
+                                          </div>
+                                        </div>
+
+
+                             
+                                </div>
+
+                             
+
+                            </div>
+                 
+                        </div>
+
+
+
+
+                        <a href="{% url 'wallet:wallet' %}" class="header-links-item d-flex flex-row border rounded-2xl">
+                            <p class="">{{request.user.cash}}</p>
+
+                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" fill="currentColor"  class="mx-2" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                    viewBox="0 0 502.4 502.4" style="enable-background:new 0 0 502.4 502.4;" xml:space="preserve">
+                                <g>
+                                    <g>
+                                        <path d="M481.067,131.781H393.6l2.133-5.333c5.333-10.667,1.067-22.4-9.6-27.733l-199.467-96c-5.333-2.133-10.667-3.2-16-1.067
+                                            c-5.333,2.133-9.6,5.333-11.733,10.667l-55.467,119.467H21.333C9.6,131.781,0,141.381,0,153.115v327.467
+                                            c0,11.733,9.6,21.333,21.333,21.333H480c11.733,0,21.333-9.6,22.4-20.267V153.115C502.4,141.382,492.8,131.781,481.067,131.781z
+                                            M187.734,49.648l163.2,76.8l-3.2,5.333H148.267L187.734,49.648z M459.734,365.382H336c-3.2,0-5.333-3.2-5.333-5.333v-85.333
+                                            c0-3.2,3.2-5.333,5.333-5.333v1.067h123.733V365.382z M459.734,226.715H336c-25.6,0-46.933,21.333-46.933,46.933v85.333
+                                            c0,25.6,21.333,46.933,46.933,46.933h123.733v54.4H41.6V173.382h418.133V226.715z"/>
+                                    </g>
+                                </g>
+                                <g>
+                                    <g>
+                                        <path d="M374.4,285.382c-11.733,0-21.333,9.6-21.333,21.333v19.2c0,11.733,9.6,21.333,21.333,21.333s20.267-9.6,21.333-21.333
+                                            v-19.2C395.734,294.982,386.134,285.382,374.4,285.382z"/>
+                                    </g>
+                                </g>
+
+                                </svg>
+                            
+                        </a>
+                        <!-- profile -->
+
+
+                        {% comment %} <a href="#" class=" w-10 h-10 rounded-2xl   overflow-hidden mx-3 d-none d-sm-none d-md-block" >
+                            <img src="{% if request.user.image %}{{ request.user.image.url }}{% else %}{% static "inside/avatar.jpg" %}{% endif %}" class=" rounded-2xl  "   alt="">
+                        </a>
+                        <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t ">
+
+                            <ul >
+                                <li class="d-flex flex-row-reverse"><a class="irsa" href="{% url "account:setting" %}"> تنظیمات </a> </li>
+{#                                <li><a class="irsa" href="#"> پرداخت </a> </li>#}
+{#                                <li><a class="irsa" href="#"> ارتباط با ما </a> </li>#}
+                                <li class="d-flex flex-row-reverse"><a class="irsa" href="{% url "account:logout" %}"> خروج</a></li>
+                            </ul>
+                        </div> {% endcomment %}
+
+                    </div>
+                </div>
+            </header>

@@ -1,0 +1,445 @@
+from main.views import deleteDuplicate
+from django.http import request
+from rest_framework.authtoken.models import Token
+from wallet.views import wallet
+from api import filterset_class
+from api.filterset_class import RequestFilter, ServiceFilter
+from extensions.notification import notificationAdd
+from account.models import Message, Notification
+from itertools import chain
+import json
+from django.utils.html import json_script
+from rest_framework import status
+from operator import attrgetter
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db.models.query_utils import Q
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework import generics
+from main.models import *
+from .serializers import *
+from rest_framework import viewsets
+from django_filters import rest_framework as filterSpecial  
+from rest_framework import filters
+from api.pagination import MyPagination
+from wallet.models import *
+# Create your views here.
+
+
+    
+class AddLikeView(APIView):
+    def get(self, request):
+        # get data with ?Picture=pk in url
+        picturePk = self.request.GET['Picture']
+        pictureInstance = Picture.objects.get(pk=picturePk)
+        if request.user not in pictureInstance.like.all():
+            request.user.like.add(pictureInstance)
+            pictureInstance.like.add(request.user)   #add like
+            # TODO : check this result
+            notificationAdd(receiver=pictureInstance.author, title="پست شما را لایک کرد", url=f"/account/post/{pictureInstance.pk}/"
+                , user=request.user)
+            return Response(status=status.HTTP_200_OK)
+        else:   
+            request.user.like.remove(pictureInstance)
+            pictureInstance.like.remove(request.user)   #remove like
+            return Response(status=status.HTTP_200_OK)
+   
+
+
+class HomeApiView(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    def list(self, request):
+        firstData = Picture.objects.filter(
+        Q(author__id__in=request.user.following.all()) | Q(author=request.user))
+        secondData = Request.objects.filter(Q(author__id__in=request.user.following.all()) | Q(author=request.user))
+        result_list = sorted(
+            chain(firstData, secondData),
+            key=attrgetter('createdAdd'), reverse=True)
+        results = list()
+        results_per_page = 5
+        postnumber = self.request.GET['page']
+        paginator = Paginator(result_list, results_per_page)
+        try:
+            result_list = paginator.page(int(postnumber))
+        except PageNotAnInteger:
+            result_list = paginator.page(1)
+        except EmptyPage:
+            result_list = []
+        for entry in result_list:
+            item_type = entry.__class__.__name__.lower()
+            if isinstance(entry, Picture):
+                serializer = PictureSerializer(entry,context={'request': request})
+            if isinstance(entry, Request):
+                serializer = RequestSerializer(entry)
+            data_dict = {'item': item_type, 'data': serializer.data}
+            results.append(data_dict)
+        return Response(results)
+
+
+class PicturePostDestroyRetrive(generics.RetrieveDestroyAPIView):
+    queryset = Picture.objects.all()
+    serializer_class= PictureSerializer
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.author == request.user:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_200_OK)
+
+
+
+class RequestPostDestroyRetrive(generics.RetrieveDestroyAPIView):
+    queryset = Request.objects.all()
+    serializer_class= RequestSerializer
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.author == request.user:
+            self.perform_destroy(instance)
+            return Response(status=status.HTTP_200_OK)
+    
+    
+
+class ExploreApiView (generics.ListAPIView):
+    queryset = Picture.objects.filter(status="p").order_by("?")[0:25]
+    serializer_class = PictureSerializer
+    permission_classes = (AllowAny, )
+
+class ExploreProjectApiView (generics.ListAPIView):
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
+    pagination_class = MyPagination
+    permission_classes = (AllowAny, )
+    
+#send data ?username=admin 
+class timelineRetrieveApiView(generics.ListAPIView):
+    serializer_class = TimeLineserializers
+    def get_queryset(self):
+        return Timeline.objects.filter(person__username=self.request.GET['username'])
+
+
+class timelineDeleteApi(APIView):
+    def delete(self, request, pk):
+        timelineInstance=Timeline.objects.get(pk=pk)
+        if timelineInstance.person == request.user:
+            timelineInstance.delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+class MassageApi(APIView):
+
+    def get(self, request):
+        messages_User = Message.objects.filter(author=User.objects.get(username=request.GET["user"]),
+                receiver=request.user,read=False).order_by('pk')
+        listMessage=[]
+        for  message in messages_User:
+            message.read = True
+            message.save()
+            MessageSerializersInstance=MessageSerializers(message)
+            listMessage.append(MessageSerializersInstance.data)
+        return Response(listMessage,status=status.HTTP_200_OK)
+
+    def put(self, request):
+        # for data in request.data:
+        # print(request.data)
+        # data = json.loads(request.data) 
+        String_2 = request.data["text"].strip()
+        if String_2 != "":
+            Message(text=request.data["text"],author=request.user,receiver=User.objects.get(username=request.data["receiver"])).save()
+        return Response(status=status.HTTP_200_OK)
+
+class AllMassageApi(APIView):
+    def get(self, request):
+        messages_User = Message.objects.filter(author=request.user,
+                                               receiver=User.objects.get(username=request.GET["user"])) | Message.objects.filter(
+                author=User.objects.get(username=request.GET["user"]), receiver=request.user).order_by('pk')
+        listMessage=[]
+        for  message in messages_User:
+            if message.receiver == request.user :
+                message.read = True
+                message.save()
+            MessageSerializersInstance=MessageSerializers(message)
+            listMessage.append(MessageSerializersInstance.data)
+        return Response(listMessage,status=status.HTTP_200_OK)
+
+    def post(self, request):
+        for data in request.data:
+            data = json.loads(data) 
+        Message(text=data["text"],author=request.user,receiver=User.objects.get(username=data["receiver"])).save()
+        return Response(status=status.HTTP_200_OK)
+
+class FollowUnfollowApi(APIView):
+    def get(self,request,username):
+            UserInstance = User.objects.get(username=username)
+            if UserInstance in request.user.following.all() :
+                request.user.following.remove(UserInstance)
+                UserInstance.followers.remove(request.user)
+            else:
+                request.user.following.add(UserInstance)
+                UserInstance.followers.add(request.user)
+                notificationAdd(receiver=UserInstance, title="شما را دنبال کرد", url=f"/p/{request.user.username}/"
+                                , user=request.user)
+            return Response(status=status.HTTP_200_OK)
+
+
+class ServiceListApi(generics.ListAPIView):
+    permission_classes = (AllowAny, )
+    serializer_class= ServiceSerializers
+    def get_queryset(self):
+        return Service.objects.filter(author=User.objects.get(username=self.kwargs.get('username')))
+
+
+
+class ServiceSearchApi(generics.ListAPIView):
+    queryset = Service.objects.all()
+    serializer_class= ServiceSerializers
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter,filterSpecial.DjangoFilterBackend]
+    filterset_class = ServiceFilter
+    ordering_fields  = ['price',"hour"]
+    search_fields = ["specialName","nameProduct__title"]
+    pagination_class= MyPagination
+
+
+class DestroyServiceApi(generics.DestroyAPIView):
+    serializer_class = ServiceSerializers
+    def get_queryset(self):
+        return Service.objects.filter(author=self.request.user,pk=self.kwargs.get('pk'))
+
+
+
+class UserSettingApi(generics.RetrieveUpdateAPIView):
+    queryset=User.objects.all()
+    serializer_class = UserSettingSerializers
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance == request.user:
+            serializer = self.get_serializer(instance,data=request.data,partial=True)
+            if serializer.is_valid() :
+                self.perform_update(serializer)
+                return Response(serializer.data)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
+
+class UserRetrieveApi(generics.RetrieveAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+    lookup_field="username"
+
+
+class UserSearchListApi(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializers
+    filter_backends = [filters.SearchFilter,filterSpecial.DjangoFilterBackend]
+    filterset_fields = ['category__title']
+    search_fields = ["username","first_name","last_name","bio"]
+    pagination_class = MyPagination
+
+    
+
+
+class UserCreate(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UsersRegisterSerializer
+    permission_classes = (AllowAny, )
+
+#TODO : inside serializer.save
+class AddPostPictureApi(generics.CreateAPIView):
+    queryset = Picture.objects.all()
+    serializer_class = PictureSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+
+class AddRequestApi(generics.CreateAPIView):
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user,subcategories=[])
+
+
+class RequestSearchApi(generics.ListAPIView):
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter,filterSpecial.DjangoFilterBackend]
+    filterset_class = RequestFilter
+    search_fields = ["title","body"]
+    ordering_fields = ["createdAdd"]
+    pagination_class = MyPagination
+
+
+class NotificationApi(generics.ListAPIView):
+    serializer_class = NotificationSerializers
+    def get_queryset(self):
+        return Notification.objects.filter(receiver=self.request.user)
+    pagination_class = MyPagination
+
+
+class CashApi(generics.ListAPIView):
+    serializer_class = CashSerializers
+    def get_queryset(self):
+        return [self.request.user]
+
+
+class PaymentWalletApi(generics.ListAPIView):
+    def get_queryset(self):
+        return PaymentWallet.objects.filter(user=self.request.user)
+    serializer_class = PaymentWalletSerializers
+
+
+
+class favoritesApi(generics.ListAPIView):
+    def get_queryset(self):
+        return User.objects.get(username=self.kwargs.get('username')).like.all()
+    serializer_class = PictureSerializer
+
+
+class TrelloApi(generics.ListAPIView):
+    serializer_class = TrelloSerializers
+    def get_queryset(self):
+        return Trello.objects.filter(Q(forSafePayment__pk = self.kwargs["pk"]) & (Q(forSafePayment__receiver=self.request.user) | Q(forSafePayment__sender=self.request.user)))
+
+
+class SafePaymentApi(generics.ListAPIView):
+    serializer_class = SafePaymentSerializer
+    def get_queryset(self):
+        return SafePayment.objects.filter(Q(receiver__username= self.request.user) | Q(sender__username= self.request.user)) 
+
+# TODO : check it
+class AcceptSafePaymentApi(APIView):
+    def get(self, request):
+        safePaymentResult = SafePayment.objects.get(pk=self.kwargs["pk"])
+        if request.user == safePaymentResult.sender:
+            if safePaymentResult.paymentBoolean:
+                userResult = safePaymentResult.receiver
+                userResult.cash += safePaymentResult.price
+                userResult.save()
+            safePaymentResult.senderBoolean = True
+            safePaymentResult.save()
+            return Response(status=status.HTTP_200_OK)
+
+        elif request.user == safePaymentResult.receiver:
+            if safePaymentResult.senderBoolean:
+                userResult = safePaymentResult.receiver
+                userResult.cash += safePaymentResult.price
+                userResult.save()
+            safePaymentResult.paymentBoolean = True
+            safePaymentResult.save()
+            return Response(status=status.HTTP_200_OK) 
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+# TODO : check it
+class RefuseSafePaymentApi(APIView):
+    def get(self, request):
+        safePaymentResult = SafePayment.objects.get(pk=self.kwargs["pk"])
+
+        if request.user == safePaymentResult.receiver:
+            if safePaymentResult.senderBoolean is False and safePaymentResult.paymentBoolean is not None:
+                userResult = safePaymentResult.sender
+                userResult.cash += safePaymentResult.price
+                userResult.save()
+                safePaymentResult.paymentBoolean = None
+                safePaymentResult.save()
+                return Response(status=status.HTTP_200_OK) 
+        return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+class TrelloDestroyApi(generics.DestroyAPIView):
+    serializer_class = TrelloSerializers
+    def get_queryset(self):
+        return Trello.objects.filter((Q(forSafePayment__receiver=self.request.user) | Q(forSafePayment__sender=self.request.user)) &
+                Q(pk=self.kwargs.get('pk')))
+                
+
+
+class SubsetTrelloDestroyApi(generics.DestroyAPIView):
+    serializer_class = SubsetTrelloSerializers
+    def get_queryset(self):
+        return SubsetTrello.objects.filter(author=self.request.user,pk=self.kwargs.get('pk'))
+
+
+
+class DisputeApi(generics.ListAPIView):
+    serializer_class = DisputeSerializer
+    def get_queryset(self):
+        return Dispute.objects.filter(Q(safePayment__receiver=self.request.user) | Q(safePayment__sender=self.request.user))
+
+
+
+class DisputeDestroyApi(generics.DestroyAPIView):
+    serializer_class = DisputeSerializer
+    def get_queryset(self):
+        return Dispute.objects.filter(author = self.request.user, pk=self.kwargs['pk']) 
+    
+
+
+class OrderApi(generics.ListAPIView):
+    serializer_class = OrderSerializer
+    def get_queryset(self):
+        return OrderUser.objects.filter(Q(designer=self.request.user) | Q(author=self.request.user))
+
+
+class OrderTrueApi(APIView):
+    def get(self,request):
+        OrderUserInstance = OrderUser.objects.filter(designer=request.user,pk=self.kwargs["pk"])
+        OrderUserInstance.accept = True
+        OrderUserInstance.save()
+        return Response(status=status.HTTP_200_OK)
+
+
+class OrderFalseApi(APIView):
+    def get(self,request):
+        OrderUserInstance = OrderUser.objects.filter(designer=self.request.user,pk=self.kwargs["pk"])
+        OrderUserInstance.accept = False
+        OrderUserInstance.save()
+        return Response(status=status.HTTP_200_OK)
+
+
+class CheckToken(APIView):
+    permission_classes = (AllowAny, )
+    def get(self,request):
+        is_tokened = Token.objects.filter(key=self.request.GET['token'])
+        print(is_tokened)
+        if len(is_tokened) != 0 :
+            return Response(status=status.HTTP_200_OK)
+        else :
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class PicturePostListApi(generics.ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = PictureSerializer
+    def get_queryset(self):
+        return Picture.objects.filter(author = User.objects.get(username=self.kwargs.get('username'))).order_by('createdAdd')[::-1]
+    
+
+class CountReadStatus(APIView):
+    def get(self,request):
+        notification = Notification.objects.filter(readingStatus=False,receiver=request.user)
+        message = Message.objects.filter(read=False,receiver=request.user)
+        return Response({"message":len(message),"notification":len(notification)},status=status.HTTP_200_OK)
+
+
+class ListUserMessageApi(APIView):
+    def get(self, request):
+        result=list()
+        messages = Message.objects.filter(Q(author=request.user) | Q(receiver=request.user))
+        userlist = []
+        for message in messages:
+            if message.receiver == self.request.user:
+                userlist.append(message.author)
+            elif message.author == self.request.user:
+                userlist.append(message.receiver)
+        deleteDuplicateData = deleteDuplicate(userlist)
+        for data in deleteDuplicateData:
+            serializerData = UserSerializers(data,context={'request':request})
+            dictData={'user':serializerData.data,
+                'number':len(Message.objects.filter(receiver=request.user,read=False,author=data))}
+            result.append(dictData)
+        return Response(result,status=status.HTTP_200_OK)
+
+    
+

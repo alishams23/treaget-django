@@ -1,0 +1,64 @@
+{% load define_action %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>قوانین</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+    {% include "include/header.html" %}
+    <link rel="stylesheet" href="{% static 'inside/css/cv.css' %}">
+
+    <style>
+        @media (min-width: 1024px) {
+            header .header_inner {
+                max-width: 980px;
+            }
+            .pro-container {
+                max-width: 860px;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="rtl container irsa">
+        <h1 class="irsa text-bold text-xl">قوانین</h1>
+    <br>
+        {% for result in Rules %}
+        <div class="d-flex">
+        <p class="text-lg bg-gray-200 p-3 rounded-2xl">{{ result.title }}</p>
+
+        </div>
+        <p>
+            {{ result.body | safe }}
+        </p>
+        {% endfor %}
+    </div>
+
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+</html>

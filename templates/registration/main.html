@@ -1,0 +1,188 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>خانه</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+{% include "include/header.html" %}
+    <script type="text/javascript">
+      window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+
+</head>
+
+<body>
+
+
+    <div id="wrapper" >
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content " >
+
+        {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto">
+            {%  include "include/downNavbar.html" %}
+
+              
+
+                <div class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5">
+
+                    <!-- left sidebar-->
+                    <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+                    <div id="posts" class="space-y-5" >
+                        {% include "registration/posts.html" %}
+                        </div>
+                        <!-- post 2-->
+
+                        <!-- Load more-->
+                        <div class="flex justify-center mt-6" >
+                            <a  class="bg-white dark:bg-gray-900 font-semibold my-3 px-6 py-2 rounded-full shadow-md dark:bg-gray-800 dark:text-white" id="lazyLoadLink" href="javascript:void(0);" data-page="2">
+                                Load more ..</a>
+                        </div>
+
+                     
+                    </div>
+
+                    <!-- right sidebar-->
+                    <div class="lg:w-5/12">
+                        {% if UserRequirements %}
+                        <div class="rtl bg-white dark:bg-gray-900  rounded-lg overflow-hidden uk-animation-slide-top-medium">
+
+                            <div class="bg-gray-50 dark:bg-gray-800 border-b border-gray-100 flex items-baseline justify-between py-4 px-6 dark:border-gray-800">
+                                <div class="font-semibold text-lg irsa">افراد اخیر</div>
+                                <div class=" " > </div>
+                            </div>
+
+                           
+                            {% for result in UserRequirements %}
+                                {% if result != request.user %}
+                                <form action="{% url 'account:follow' %}" method="POST" class="">
+                                    <a href="{% url 'main:profile' result.username %}" class="flex py-3 px-3">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="follow" value="{{ result.username }}" />
+                                        <div class="flex flex-1 items-center space-x-4">
+                                            <div class=" w-10 h-10 rounded-2xl overflow-hidden ml-2">
+                                                <img src="{% if result.image %}{{ result.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class="bg-gray-200   rounded-2xl ">
+                                            </div>
+                                            <div class="flex flex-col ">
+                                                <span class="block capitalize font-semibold irsa"> {{ result.get_full_name }} </span>
+                                                <span class="block  text-sm"> {{ result.username  }} </span>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 dark:border-gray-800 irsa"> دنبال کردن </button>
+                                    </a>
+                                </form>
+                                {% endif %}
+                                {% endfor %}
+
+
+                            </div>
+
+                        </div>
+                        {% endif %}
+                       
+
+   
+
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+     <script>
+
+    $('body').on('click', '.hapus_krs',function(){
+
+        var formData = {
+        'id_mhs': $(this).attr('value'),
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+        };
+        $.ajax({
+            type: 'POST',
+            url: `/account/LikePost/`,
+            data: formData,
+            dataType: 'json',
+            encode: true
+        })
+        svgChannged = document.getElementById($(this).attr('value'));
+        if (svgChannged.getAttribute("fill") == "blue") {
+            svgChannged.setAttribute("fill", "");
+        } else {
+            svgChannged.setAttribute("fill", "blue");
+        }
+        
+    });
+    function shareLinkF(dataValue){
+        let input = document.body.appendChild(document.createElement("input"));
+        input.value = `${window.location.hostname}/account/post/${dataValue}`;
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+        input.parentNode.removeChild(input);
+        alert(`${window.location.hostname}/account/post/${dataValue} کپی شد.`)
+    }
+    function shareLinkP(dataValue){
+        let input = document.body.appendChild(document.createElement("input"));
+        input.value = `${window.location.hostname}/request/${dataValue}`;
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+        input.parentNode.removeChild(input);
+        alert(`${window.location.hostname}/request/${dataValue} کپی شد.`)
+    }
+
+</script>
+<script> (function($) {
+      $('#lazyLoadLink').on('click', function() {
+        var link = $(this);
+        var page = link.data('page');
+        $.ajax({
+          type: 'post',
+          url: 'lazy_load_posts/',
+          data: {
+            'page': page,
+            'csrfmiddlewaretoken': window.CSRF_TOKEN // from index.html
+          },
+          success: function(data) {
+            // if there are still more pages to load,
+            // add 1 to the "Load More Posts" link's page data attribute
+            // else hide the link
+            if (data.has_next) {
+                link.data('page', page+1);
+            } else {
+              link.hide();
+            }
+            // append html to the posts div
+            console.log(data.posts_html)
+            $('#posts').append(data.posts_html);
+          },
+          error: function(xhr, status, error) {
+            // shit happens friends!
+          }
+        });
+      });
+    }(jQuery));</script>
+</body>
+
+
+
+
+</html>

@@ -1,0 +1,134 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>تنظیمات</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+    {% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+        {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto"> 
+                {%  include "include/downNavbar.html" %}
+                
+
+                <div class="grid  mt-12 gap-8">
+                    {% comment %} <div>
+                        <h3 class="text-xl mb-2"> Basic</h3>
+                        <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
+                    </div> {% endcomment %}
+                    <form method="post" enctype="multipart/form-data" class="bg-white rounded-md  col-span-2">
+                        {% csrf_token %}
+                       <div class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+                           <div >
+                               <label for="" class="irsa"> نام</label>
+                               {% comment %} <input type="text"  placeholder="Your name.." class="shadow-none bg-gray-100"> {% endcomment %}
+                               {% render_field form.first_name  class="shadow-none bg-gray-100" placeholder="Your name.." %}
+                           </div>
+                           <div>
+                               <label for="" class="irsa"> نام خانوادگی</label>
+                               {% comment %} <input type="text" placeholder="" class="shadow-none bg-gray-100"> {% endcomment %}
+                               {% render_field form.last_name  class="shadow-none bg-gray-100" placeholder="Your last name.." %}
+                            </div>
+                            <div class="col-span-2">
+                                <label for="" class="irsa">ایمیل</label>
+                                {% comment %} <input type="email"  placeholder="Your email.." class="shadow-none bg-gray-100"> {% endcomment %}
+                                {% render_field form.email  class="shadow-none bg-gray-100" placeholder="Your email.." type="email"%}
+                            </div>
+                           <div class="col-span-2">
+                                <label for="" class="irsa">نام کاربری</label>
+                                {% comment %} <input type="email"  placeholder="Your email.." class="shadow-none bg-gray-100"> {% endcomment %}
+                                {% render_field form.username  class="shadow-none bg-gray-100" placeholder="Your email.."%}
+                            </div>
+                            <div class="col-span-2">
+                                <label for="about" class="irsa">اطلاعاتی درباره خود (bio)</label>  
+                                {% comment %} <textarea id="about" name="bio" rows="3"  class="shadow-none bg-gray-100"></textarea> {% endcomment %}
+                                {% render_field form.bio  class="shadow-none bg-gray-100" placeholder="biography" maxlength="800"%}
+                            </div>
+                           <div class="col-span-2 rtl irsa">
+                                <label for="about" class="" >توانایی شما</label>
+                                {% comment %} <textarea id="about" name="bio" rows="3"  class="shadow-none bg-gray-100"></textarea> {% endcomment %}
+                                {% render_field form.category style="height: 100px" class="shadow-none bg-gray-100" %}
+                               <p>با نگه داشتن کلید کنترل چند گزینه را انتخاب یا لغو کنید</p>
+                            </div>
+                            <br>
+                           <div class="col-span-2 ">
+                                <div class="irsa text-lg rtl">عکس پروفایل</div>
+                                {% comment %} <textarea id="about" name="bio" rows="3"  class="shadow-none bg-gray-100"></textarea> {% endcomment %}
+                               {% if request.user.image %}
+                               <div class="d-flex">
+                               <input type="checkbox" name="image-clear" class="form-check-input  form-control" id="image-clear_id">
+                             <label class="form-check-label irsa" for="image-clear_id">
+                                حذف عکس پروفایل
+                             </label>
+                               </div>
+                               {% endif %}
+                               {% comment %} <input type="file" name="image" accept="image/*" class="form-control" id="id_image"> {% endcomment %}
+                               <div class="js-upload" uk-form-custom>
+
+                                    <input type="file" name="image" id="id_image" accept="image/*"  multiple>
+                                    <button class="uk-button irsa uk-button-default" type="button" tabindex="-1">انتخاب عکس پروفایل</button>
+                                </div>
+
+                           
+                       </div> 
+    
+                       <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3 col-span-2 ">
+                           {% comment %} <button type="button" class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button> {% endcomment %}
+                           <button  class="button bg-blue-700 irsa"> ذخیره </button>
+                       </div>
+    
+                    </form>
+
+                    {% comment %} <div>
+                        <h3 class="text-xl mb-2"> Privacy</h3>
+                        <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
+                    </div> {% endcomment %}
+
+
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+
+
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+</html>

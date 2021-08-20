@@ -1,0 +1,169 @@
+{% load define_action %}
+{% load jalali %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" >
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>{{ user.get_full_name }} - تریگت</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Instello - Sharing Photos platform HTML Template">
+    {% include "include/header.html" %}
+
+    <style>
+        @media (min-width: 1024px) {
+            header .header_inner {
+                max-width: 980px;
+            }
+            .pro-container {
+                max-width: 860px;
+            }
+        }
+
+    </style>
+
+
+</head>
+
+<body >
+
+
+    <div id="wrapper" >
+
+        {% include "include/sidebar.html" %}
+    
+
+        <div class="main_content" id="profile" value="{{ user.username }}">
+
+        {% include "include/mainHeader.html" %}
+
+            <div class="container pro-container  m-auto">
+            {%  include "include/downNavbar.html" %}
+
+                {% include "include/container.html" %}
+                <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
+                    <div class="bg-primary  rounded-lg" style="height:30px;padding:1.6px;padding-top:3px;background-image: linear-gradient(#FF3600, #FFA38B);"></div>
+                    <p class="irsa text-lg px-3" style="color:#B4B4B4;">{% if user.ServiceProvider == True %}نمونه کار ها{% else %}پروژه ها {% endif %}</p>
+                </div>
+                {% if user.ServiceProvider == True %}
+                {% if pictures %}
+                
+                <div  class="d-flex flex-column align-items-center" v-if="loading">
+                    <img  src="{% static 'inside/images/loading.gif' %}" style="width: 70px;"  alt="">
+                </div>
+                <div class="uk-child-width-1-2 uk-child-width-1-3@m uk-grid-small my-5" uk-grid="masonry: true" v-else>
+                    <a v-bind:href="PictureUrl('{% url "account:post" 0 %}/') + item.id" v-for="item in picture">
+                        <img v-bind:src="item.image" class="uk-card uk-card-default uk-flex uk-flex-center uk-flex-middle rounded-md" style="height:auto;width:100%;">
+                    </a>
+                </div>
+                {% else %}
+                {% include "include/empty.html" %}
+                {% endif %}
+                    {% else %}
+                    <div class="grid  mt-12 gap-8 row">
+                    {% for result in RequestServices %}
+                        <div  class="bg-white rounded-md lg:shadow-lg shadow  rtl">
+                             <div class="flex justify-between items-center px-4 py-3 mt-3 rounded-lg bg-gray-100">
+                                <div class="flex flex-1 items-center space-x-4">
+
+                                <p class="irsa px-2">{% jalali result.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p>
+                                <P class="px-3 py-2 irsa bg-white  rounded-lg"> قیمت {{ result.price }} تومان</P>
+
+
+                                </div>
+                                <div>
+                                    <a href="#"> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i> </a>
+                                    <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700" uk-drop="mode: hover;pos: top-right">
+
+                                        <ul class="rtl space-y-1">
+                                            <li>
+                                                <button href="#"  onclick="shareLink('request/{{ result.pk }}')" class="shareLink irsa flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                                    <i class="uil-share-alt mr-1"></i> اشتراک گذاری
+                                                </button>
+                                            </li>
+                                            {% if result.author == request.user %}
+                                            <li>
+                                                <hr class="-mx-2 my-2 dark:border-gray-800">
+                                            </li>
+                                            <li>
+                                                <form action="" method="POST" class="irsa flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="flag" value="{{ result.pk }}" />
+
+                                                    <button type="submit" class="  irsa " /><i class="uil-trash-alt mr-1  mr-1 "></i> حذف<button>
+                                                </form>
+                                            </li>
+                                            {% endif %}
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{% url "main:request" result.pk  %}" class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+                                <h2 class="irsa text-2xl">{{ result.title }}</h2>
+                                <br>
+                                <p class="irsa">{{ result.body }}</p>
+                                <br>
+                                <p class="irsa text-blue-400">{{ result.subcategories.count }} پیشنهاد</p>
+                            </a>
+                        </div>
+                        {% empty %}
+                                {% include "include/empty.html" %}
+                    {% endfor %}
+                    </div>
+               {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+        function shareLinkF(dataValue){
+        let input = document.body.appendChild(document.createElement("input"));
+        input.value = `${window.location.hostname}/p/${dataValue}`;
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+        input.parentNode.removeChild(input);
+        alert(`${window.location.hostname}/p/${dataValue} کپی شد.`)
+    }
+    function shareLinkP(dataValue){
+        let input = document.body.appendChild(document.createElement("input"));
+        input.value = `${window.location.hostname}/request/${dataValue}`;
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+        input.parentNode.removeChild(input);
+        alert(`${window.location.hostname}/request/${dataValue} کپی شد.`)
+    }
+
+
+    </script>
+
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+    
+    <script src="{% static "vue/js/profile.js" %}"></script>
+
+
+</body>
+
+
+
+</html>

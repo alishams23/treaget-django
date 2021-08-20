@@ -1,0 +1,131 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>جستجو</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Instello - Sharing Photos platform HTML Template">
+{% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto">
+
+
+              <form class="  " method="post" >
+              {% csrf_token %}
+              <div class="d-flex">
+                <input type="text " name="name" class="irsa px-3  rounded-2xl">
+                  <button class="bg-gradient-blue rounded-2xl mx-2 shadow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="m-2  bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                  </button>
+              </div>
+                <div class="bg-white mt-8  p-3  rounded-2xl  ">
+                <div class="d-flex rtl">
+                    <label for="category" class="irsa mx-2 py-2  rounded-2xl">خدمات</label>
+                    <select name="category" id="category" class="irsa  " >
+                        <option  {% if category %}value="{{ category }}"{% endif %}>{% if category %}{{ category }}{% endif %}</option>
+                        {% for productSearch in productsSearch %}
+                        <option  value="{{ productSearch.title }}">{{ productSearch.title }}</option>
+                        {% endfor %}
+                    </select>
+              </div>
+
+
+            </div>
+
+        </form>
+        <div class="my-6 grid   gap-2  uk-link-reset rtl">
+                 {% for result in results %}
+                <div class ="p-3 m-1 rounded-lg bg-white row">
+                    <a href="{% url 'main:profile' result.username %}" class="d-flex flex-row">
+                        {% if result.image %}
+                        <div class="col-2 w-10 h-10 m-1 rounded-2xl overflow-hidden"> <img src="{{ result.image.url }}" alt="" class=" rounded-2xl">
+                        </div>
+                        {% endif %}
+                        <div class="p-1">
+                            <p class="irsa"> <strong>{{ result.username }}</strong>
+                                {{ result.bio }}
+                            </p>
+
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+        </div>
+
+    </div>
+
+
+    <script>
+
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+</body>
+
+
+
+</html>

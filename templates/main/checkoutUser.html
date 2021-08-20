@@ -1,0 +1,101 @@
+{% load widget_tweaks %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
+    <link
+      href="{% static 'inside/images/favicon.png' %}"
+      rel="icon"
+      type="image/png"
+    />
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>سفارش</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {% include "include/header.html" %}
+  </head>
+
+  <body>
+    <div id="wrapper">
+      {% include "include/sidebar.html" %}
+
+      <div class="main_content">
+        {% include "include/mainHeader.html" %}
+
+        <div class="container m-auto">
+          {% include "include/downNavbar.html" %}
+
+          <div class="grid mt-12 gap-8">
+            <form
+              method="post"
+              class="bg-white rounded-md  col-span-2"
+            >
+              {% csrf_token %}
+              <div class="grid grid-cols-1 gap-3 lg:p-6 p-4">
+                {% if service %}
+                <div>
+                  <p class="irsa rtl">
+                    محصول درخواستی شما
+                    <span class="text-danger">{% if service.specialName %}{{ service.specialName }}{%else %}{{ service.nameProduct.title }}{% endif %}</span>
+                    {% if service.price %}
+                    با قیمت
+                    <span class="text-danger">{{ service.price }}</span> تومان
+                    {% endif %}
+                    است
+                  </p>
+                </div>
+                {% if service.price %}
+                {% else %}
+                <div>
+                  <label for="id_price" class="irsa text-right"> قیمت</label>
+                  {% render_field form.price class="shadow-none bg-gray-100" %}
+                </div>
+            
+                {% endif %}
+
+                {% else %}
+                <div>
+                  <label for="" class="irsa text-right"> محصول درخواستی</label>
+                  {% render_field form.title class="shadow-none bg-gray-100"
+                  required="on" %}
+                </div>
+                <div>
+                  <label for="id_price" class="irsa text-right"> قیمت</label>
+                  {% render_field form.price class="shadow-none bg-gray-100" %}
+                </div>
+                {% endif %}
+                <div>
+                  <label for="id_body" class="irsa text-right"> توضیحات</label>
+                  {% render_field form.body class="shadow-none bg-gray-100" %}
+                </div>
+              </div>
+              <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+
+                <button class="button bg-blue-700 irsa">ذخیره</button>
+              </div>
+            </form>
+          </div>
+          <div class="grid mt-12 gap-8">
+            <div class="bg-white rounded-md  col-span-2">
+              <div class="grid grid-cols-1 gap-3 text-center irsa lg:p-6 p-4">
+                درخواست شما به طراح ارسال خواهد شد و در صورت تایید درخواست طراح
+                میتواند از طریق چت با شما در ارتباط باشد <br />
+                در صورت تایید درخواست شما توسط طراح ایمیلی به شما در رابطه با
+                این موضوع زده خواهد شد
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+  </body>
+</html>

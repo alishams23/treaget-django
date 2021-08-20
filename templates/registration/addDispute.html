@@ -1,0 +1,120 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>اختلافات</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+{% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto">
+
+
+
+                <div class="grid  mt-12 gap-8">
+                    {% comment %} <div>
+                        <h3 class="text-xl mb-2"> Basic</h3>
+                        <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
+                    </div> {% endcomment %}
+                    <form method="post" enctype="multipart/form-data" class="bg-white rounded-md lg:shadow-lg shadow col-span-2">
+                        {% csrf_token %}
+                       <div class="grid rtl grid-cols-2 gap-3 lg:p-6 p-4">
+                           <div class="col-span-2" id="nameProduct">
+                               <label for="" class="irsa">علت اختلاف</label>
+                               {% render_field form.description  class="shadow-none irsa bg-gray-100" required="on" %}
+                            </div>
+                       </div>
+                       <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                           <button  class="button bg-blue-700 irsa"> ذخیره </button>
+                       </div>
+
+                    </form>
+
+                    {% comment %} <div>
+                        <h3 class="text-xl mb-2"> Privacy</h3>
+                        <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
+                    </div> {% endcomment %}
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+
+
+        (function (window, document, undefined) {
+
+            'use strict';
+
+            // Feature test
+            if (!('localStorage' in window)) return;
+
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+</html>

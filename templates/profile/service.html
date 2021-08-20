@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>خدمات</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+    <link rel="stylesheet" href="{% static 'inside/css/styleprice.css' %}">
+    {% include "include/header.html" %}
+
+    <style>
+        @media (min-width: 1024px) {
+            header .header_inner {
+                max-width: 980px;
+            }
+
+            .pro-container {
+                max-width: 860px;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container pro-container m-auto">
+                {% include "include/downNavbar.html" %}
+
+
+                <!-- profile-cover-->
+                {% include "include/container.html" %}
+                <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
+                    <div class="bg-primary  rounded-lg"
+                        style="height:30px;padding:1.6px;padding-top:3px;background-image: linear-gradient(#FF3600, #FFA38B);">
+                    </div>
+                    <p class="irsa text-lg px-3" style="color:#B4B4B4;">خدمات</p>
+                </div>
+
+                <!-- edith1 open -->
+
+                <!-- price box -->
+                <div class="container " id="service" value="{{ user.username }}">
+
+                    <div class="d-flex justify-content-center" v-if="loading"> <img
+                            src="{% static 'vue/image/loading.gif' %}" alt="loading"></div>
+                    <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-small" uk-grid="masonry: true">
+                        <div class=" my-2 " v-for='data in service' v-if="loading == false">
+                            <div class=" rounded-lg  bg-white w-full text-center "
+                                style="box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;">
+                                <h4 class="irsa py-3 text-md" v-if="data.nameProduct != null "> [[
+                                    data.nameProduct.title ]]
+                                </h4>
+                                <h4 class="irsa py-3 text-md" v-else>[[ data.specialName ]] </h4>
+                                <div class=" my-2 pb-2" v-if='data.price'>
+                                    <p class=" irsa text-sm text-dark">[[data.price]]</p>
+                                    <span class="coins irsa text-sm  ">تومان</span>
+                                </div>
+                                <div class='p-2 pb-3 ' v-for='facilities in data.serviceFacilities'>
+                                    <div class="d-flex flex-row border-bottom justify-content-between p-2 mx-4">
+                                        <div class="col-2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                                            height="16" fill="#FF3600" class="bi bi-check2-circle"
+                                            viewBox="0 0 16 16">
+                                            <path
+                                                d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+                                            <path
+                                                d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+                                        </svg></div>
+                                        <div class='col-10 text-right'>[[facilities.title]]</div>
+                                        
+                                    </div>
+                                </div>
+                                <a v-bind:href="selfUser!=''?'/account/p/' + selfUser + '/checkout/' + data.id:'/account/login/' "
+                                    class="text-white bg-dark  rounded-lg px-3 py-1 irsa"
+                                    v-if="selfUser != data.author.username && selfUserService != 'True'">
+                                    سفارش دادن
+                                </a>
+                                <a v-bind:href="'/account/deleteservice/'+data.id + '/' "
+                                    class="text-white bg-dark rounded-lg px-3 py-1 irsa"
+                                    v-if="selfUser == data.author.username">
+                                    حذف
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if='service.length == 0'>{% include "include/empty.html" %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Story modal -->
+    <script>
+        (function (window, document, undefined) {
+            'use strict';
+            if (!('localStorage' in window)) return;
+            var nightMode = localStorage.getItem('gmtNightMode');
+            if (nightMode) {
+                document.documentElement.className += ' dark';
+            }
+        })(window, document);
+        (function (window, document, undefined) {
+            'use strict';
+            // Feature test
+            if (!('localStorage' in window)) return;
+            // Get our newly insert toggle
+            var nightMode = document.querySelector('#night-mode');
+            if (!nightMode) return;
+            // When clicked, toggle night mode on or off
+            nightMode.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.documentElement.classList.toggle('dark');
+                if (document.documentElement.classList.contains('dark')) {
+                    localStorage.setItem('gmtNightMode', true);
+                    return;
+                }
+                localStorage.removeItem('gmtNightMode');
+            }, false);
+
+        })(window, document);
+    </script>
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+    <script src="{% static 'vue/js/profileService.js' %}"></script>
+
+</body>
+
+
+
+</html>

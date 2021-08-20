@@ -1,0 +1,118 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>کیف پول</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+    {% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto"> 
+        {%  include "include/downNavbar.html" %}
+
+                {% include "include/dashboardHeader.html" %}
+                
+
+                <div class="grid  mt-12 gap-8">
+                    {% comment %} <div>
+                        <h3 class="text-xl mb-2"> Basic</h3>
+                        <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
+                    </div> {% endcomment %}
+                    {% if error or success %}
+                         <div class="col-span-2 irsa alert alert-warning" role="alert">
+                              {{ error }}
+                             {{ success }}
+                            </div>
+                    {% endif %}
+                    <div  class="bg-white rounded-md  col-span-2">
+                       
+                       <div class="rounded-lg grid gap-3 lg:p-6 p-4 bg-gradient-yellow text-white text-bold text-lg">
+                            <div class="irsa text-right">
+                            اعتبار شما : {{ request.user.cash }}
+                            </div>
+                       </div>
+    
+                    </div>
+                    <form  method="post" action="{% url 'wallet:increaseMoney' %}" class="bg-white rounded-md  col-span-2">
+                        <p class="irsa rtl p-4 rounded-lg bg-light text-bold text-lg">شارژ کیف پول</p>
+                       {% csrf_token %}
+                       <div class="grid  gap-3 lg:p-6 p-4">
+                            <div class="irsa text-right">
+                       (به تومان)  مبلغ درخواستی برای افزایش به ریال
+                                <input type="number" name="number" min="1">
+                            </div>
+                           
+                       </div>
+                        <div class="grid  gap-3 lg:p-6 p-4">
+                                <button type="submit" class="irsa btn bg-success text-white" >پرداخت</button>
+                            </div>
+                    </form>
+                    <form  method="post" action="{% url 'wallet:WithdrawMoney' %}" class="bg-white rounded-md  col-span-2">
+                       <p class="irsa rtl p-4 rounded-lg bg-light text-bold text-lg">دریافت وجه</p>
+                        {% csrf_token %}
+                       <div class="grid  gap-3 lg:p-6 p-4">
+                            <div class="irsa text-right">
+                        (به تومان) مبلغ درخواستی برای دریافت
+                                <input type="number" name="number" min="1" max="{{ request.user.cash }}">
+                            </div>
+                                <div class="irsa text-right">
+                         شماره کارت
+                                <input type="cardNumber" name="number">
+                            </div>
+                           <div class="irsa text-right">
+                         نام صاحب کارت
+                                <input type="name" name="text">
+                            </div>
+
+                       </div>
+                        <div class="grid  gap-3 lg:p-6 p-4">
+                                <button type="submit" class="irsa btn bg-success text-white" >دریافت</button>
+                            </div>
+                    </form>
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+
+
+
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+</html>

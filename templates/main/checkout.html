@@ -1,0 +1,99 @@
+{% load widget_tweaks %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Instello - Sharing Photos platform HTML Template">
+    {% include "include/header.html" %}
+
+
+</head>
+
+<body>
+
+
+    <div id="wrapper">
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content">
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container m-auto"> 
+
+
+                <div class="grid lg:grid-cols-3 mt-12 gap-8">
+
+                    <form method="post" class="bg-white rounded-md lg:shadow-lg shadow col-span-2">
+                        {% csrf_token %}
+                       <div class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+                           <div >
+                               <label for="" class="irsa"> نام</label>
+                               
+                               {% render_field form.first_name  class="shadow-none bg-gray-100" placeholder="Your name.." %}
+                           </div>
+                           <div>
+                               <label for="" class="irsa"> نام خانوادگی</label>
+                               
+                               {% render_field form.last_name  class="shadow-none bg-gray-100" placeholder="Your last name.." %}
+                            </div>
+                            <div class="col-span-2">
+                                <label for="" class="irsa">ایمیل</label>
+                              
+                                {% render_field form.email  class="shadow-none bg-gray-100" placeholder="Your email.." type="email"%}
+                            </div>
+                            <div class="col-span-2">
+                                <label for="about" class="irsa">اطلاعاتی درباره خود (bio)</label>  
+                                
+                                {% render_field form.bio  class="shadow-none bg-gray-100" placeholder="biography" maxlength="800"%}
+                            </div> 
+
+                       </div> 
+    
+                       <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                        
+                           <button  class="button bg-blue-700"> Save </button>
+                       </div>
+    
+                    </form>   
+
+                </div>
+
+            </div>
+            
+        </div>
+
+    </div>
+
+
+    <script>
+        
+
+    </script>
+
+ <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+
+
+</body>
+
+
+
+</html>

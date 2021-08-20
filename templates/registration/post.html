@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
+    <link
+      href="{% static 'inside/images/favicon.png' %}"
+      rel="icon"
+      type="image/png"
+    />
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>پست</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین" />
+
+    {% include "include/header.html" %}
+    <script type="text/javascript">
+      window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+  </head>
+
+  <body>
+    <div id="wrapper">
+      {% include "include/sidebar.html" %}
+
+      <div class="main_content">
+        {% include "include/mainHeader.html" %}
+
+        <div class="container m-auto">
+          {% include "include/downNavbar.html" %} 
+
+          <div
+            class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5"
+          >
+            <!-- left sidebar-->
+            <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+              <div id="posts" class="space-y-5">
+                {% include "registration/posts.html" %}
+              </div>
+              <!-- post 2-->
+
+              <!-- Load more-->
+            </div>
+
+            <!-- right sidebar-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+    <script>
+      $("body").on("click", ".hapus_krs", function () {
+        var formData = {
+          id_mhs: $(this).attr("value"),
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+        };
+        $.ajax({
+          type: "POST",
+          url: `/account/LikePost/`,
+          data: formData,
+          dataType: "json",
+          encode: true,
+        });
+        svgChannged = document.getElementById($(this).attr("value"));
+        if (svgChannged.getAttribute("fill") == "blue") {
+          svgChannged.setAttribute("fill", "");
+        } else {
+          svgChannged.setAttribute("fill", "blue");
+        }
+      });
+      function shareLinkF(dataValue) {
+        let input = document.body.appendChild(document.createElement("input"));
+        input.value = `${window.location.hostname}/account/post/${dataValue}`;
+        input.focus();
+        input.select();
+        document.execCommand("copy");
+        input.parentNode.removeChild(input);
+        alert(`${window.location.hostname}/account/post/${dataValue} کپی شد.`);
+      }
+    </script>
+    <script>
+      (function ($) {
+        $("#lazyLoadLink").on("click", function () {
+          var link = $(this);
+          var page = link.data("page");
+          $.ajax({
+            type: "post",
+            url: "lazy_load_posts/",
+            data: {
+              page: page,
+              csrfmiddlewaretoken: window.CSRF_TOKEN, // from index.html
+            },
+            success: function (data) {
+              // if there are still more pages to load,
+              // add 1 to the "Load More Posts" link's page data attribute
+              // else hide the link
+              if (data.has_next) {
+                link.data("page", page + 1);
+              } else {
+                link.hide();
+              }
+              // append html to the posts div
+              console.log(data.posts_html);
+              $("#posts").append(data.posts_html);
+            },
+            error: function (xhr, status, error) {
+              // shit happens friends!
+            },
+          });
+        });
+      })(jQuery);
+    </script>
+  </body>
+
+</html>

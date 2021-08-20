@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+{% load static %}
+{% load widget_tweaks %}
+<html lang="en" class="h-100">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="فضایی برای خدمات دهندگان آنلاین و کارفرمایان تا با روشی ساده و کاربردی نیاز های این بازار را برآورده کنند." />
+  <meta name="keywords"
+    content="فریلنسر , ‌‌فریلنسری, سایت, برنامه نویس ,  طراح , گرافیک, خدمات ,آنلاین,دورکاری, ترجمه, حسابدار, مشاور, دستیار مجازی, بازاریاب,دیجیتال مارکتینگ" />
+
+  <title>تریگت - ورود</title>
+  <!-- favicon -->
+  <link rel="shortcut icon" href="{% static 'main/img/logo-site-min.png' %}" type="image/x-icon" />
+
+  <!-- Bootstrap 4.5 -->
+  <link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}" type="text/css" />
+
+
+  <link rel="stylesheet" href="{% static 'main/WebFonts/css/fontiran.css' %}" type="text/css" />
+  <!-- animate -->
+  <link rel="stylesheet" href="{% static 'main/css/animate.css' %}" type="text/css" />
+  <!-- Swiper -->
+  <link rel="stylesheet" href="{% static 'main/css/swiper.min.css' %}" />
+  <!-- icons -->
+  <link rel="stylesheet" href="{% static 'main/css/icons.css' %}" type="text/css" />
+  <!-- aos -->
+  <link rel="stylesheet" href="{% static 'main/css/aos.css' %}" type="text/css" />
+  <!-- main css -->
+  <link rel="stylesheet" href="{% static 'main/css/main.css' %}" type="text/css" />
+  <!-- normalize -->
+  <link rel="stylesheet" href="{% static 'main/css/normalize.css' %}" type="text/css" />
+
+  <!-- js for Brwoser -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body class="signup_full bg_dark ">
+
+  <!-- Start form_signup_onek -->
+  <section class="form_signup_one signup_two">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-5 offset-1 my-auto">
+
+          <div class="item_brand margin-b-3">
+            <a >
+{#              <img class="mr-2" src="{% static 'main/img/logo-o.png' %}" alt="">#}
+              <span>treaget.</span>
+            </a>
+          </div>
+
+          <div class="title_sections margin-b-5">
+            <h2 class="c-white mb-1 irsa">ورود</h2>
+            <p class="c-gray irsa ">کاربر جدید هستید? <a href="{% url 'account:register'  %}" class="c-blue irsa">ساخت اکانت</a></p>
+          </div>
+
+          <div class="list__point">
+          </div>
+
+        </div>
+        <div class="col-md-7 col-lg-5 ml-lg-auto">
+          <div class="item_group">
+            <form method="post" class="row">
+            {% for error in form.non_field_errors %}
+           
+              <div class="gr-text-10 mb-13 text-danger irsa text-right"> {{ error }}</div>
+            {% endfor %}
+            {% csrf_token %}
+              <div class="col-12 ">
+                <div class="form-group text-right">
+                  <label class="irsa">نام کاربری</label>
+                  {% comment %} <input type="email" class="form-control" placeholder="email address"> {% endcomment %}
+                  {% render_field form.username class="form-control"  placeholder="username" %}
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="form-group --password text-right" id="show_hide_password">
+                  <label class="irsa">پسورد</label>
+                  <div class="input-group">
+                    {% comment %} <input type="password" class="form-control"  placeholder="+6 Characters" required="" /> {% endcomment %}
+                    {% render_field form.password class="form-control" type="password"  placeholder="********" %}
+                    <div class="input-group-prepend hide_show">
+                      <a href=""><span class="input-group-text tio hidden_outlined"></span></a>
+                    </div>
+                  </div>
+                </div>
+                <a href="{% url "password_reset" %}" class="d-flex justify-content-end font-s-13 c-blue irsa">فراموشی رمز عبور?</a>
+              </div>
+
+              <div class="col-12">
+                <button href="#" class="btn w-100 margin-t-3 btn_account bg-orange-red c-white rounded-8 irsa">
+                  ورود
+                </button>
+              </div>
+              <div class="col-12">
+                <div class="google_sign margin-t-3">
+                </div>
+              </div>
+
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+  <!-- End.form_signup_one -->
+
+  <div class="prgoress_indicator">
+    <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+      <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+    </svg>
+  </div>
+
+  <!-- jquery -->
+  <script src="{% static 'main/js/jquery-3.5.0.js' %}" type="text/javascript"></script>
+  <!-- jquery-migrate -->
+  <script src="{% static 'main/js/jquery-migrate.min.js' %}" type="text/javascript"></script>
+  <!-- popper -->
+  <script src="{% static 'main/js/popper.min.js' %}" type="text/javascript"></script>
+  <!-- bootstrap -->
+  <script src="{% static 'main/js/bootstrap.min.js' %}" type="text/javascript"></script>
+  <!--
+  ============
+  vendor file
+  ============
+   -->
+  <!-- particles -->
+  <script src="{% static 'main/js/vendor/particles.min.js' %}" type="text/javascript"></script>
+  <!-- TweenMax -->
+  <script src="{% static 'main/js/vendor/TweenMax.min.js' %}" type="text/javascript"></script>
+  <!-- ScrollMagic -->
+  <script src="{% static 'main/js/vendor/ScrollMagic.js' %}" type="text/javascript"></script>
+  <!-- animation.gsap -->
+  <script src="{% static 'main/js/vendor/animation.gsap.js' %}" type="text/javascript"></script>
+  <!-- addIndicators -->
+  <script src="{% static 'main/js/vendor/debug.addIndicators.min.js' %}" type="text/javascript"></script>
+  <!-- Swiper js -->
+  <script src="{% static 'main/js/vendor/swiper.min.js' %}" type="text/javascript"></script>
+  <!-- countdown -->
+  <script src="{% static 'main/js/vendor/countdown.js' %}" type="text/javascript"></script>
+  <!-- simpleParallax -->
+  <script src="{% static 'main/js/vendor/simpleParallax.min.js' %}" type="text/javascript"></script>
+  <!-- waypoints -->
+  <script src="{% static 'main/js/vendor/waypoints.min.js' %}" type="text/javascript"></script>
+  <!-- counterup -->
+  <script src="{% static 'main/js/vendor/jquery.counterup.min.js' %}" type="text/javascript"></script>
+  <!-- charming -->
+  <script src="{% static 'main/js/vendor/charming.min.js' %}" type="text/javascript"></script>
+  <!-- imagesloaded -->
+  <script src="{% static 'main/js/vendor/imagesloaded.pkgd.min.js' %}" type="text/javascript"></script>
+  <!-- BX-Slider -->
+  <script src="{% static 'main/js/vendor/jquery.bxslider.min.js' %}" type="text/javascript"></script>
+  <!-- Sharer -->
+  <script src="{% static 'main/js/vendor/sharer.js' %}" type="text/javascript"></script>
+  <!-- sticky -->
+  <script src="{% static 'main/js/vendor/sticky.min.js' %}" type="text/javascript"></script>
+  <!-- Aos -->
+  <script src="{% static 'main/js/vendor/aos.js' %}" type="text/javascript"></script>
+  <!-- main file -->
+  <script src="{% static 'main/js/main.js' %}" type="text/javascript"></script>
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+{% load define_action %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>خدمات</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+    <link rel="stylesheet" href="{% static 'inside/css/cv.css' %}?v=001">
+{% include "include/header.html" %}
+
+
+
+
+</head>
+
+<body >
+
+
+    <div id="wrapper" >
+
+        {% include "include/sidebar.html" %}
+
+        <div class="main_content" >
+
+            {% include "include/mainHeader.html" %}
+
+            <div class="container pro-container m-auto">
+            {%  include "include/downNavbar.html" %}
+
+                <!-- profile-cover-->
+               {% include "include/container.html" %}
+                <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
+                    <div class="bg-primary  rounded-lg" style="height:30px;padding:1.6px;padding-top:3px;background-image: linear-gradient(#FF3600, #FFA38B);"></div>
+                    <p class="irsa text-lg px-3" style="color:#B4B4B4;">رزومه</p>
+                </div>
+           
+            <!-- edith1 open -->
+    {% if cv %}
+            <div class="container-fluid col 10">
+                <div class="container col-8 ">
+                
+                    <ul class="timeline w-full">
+                     {% for result in cv %}
+                        <li>
+                            <div class="direction-l ">
+                                <div class="flag-wrapper">
+                                    {% if result.title %}<span class=" irsa">{{ result.title }}</span>{% endif %}
+                                    <span class="time-wrapper irsa">{% if request.user == user %} <a href="{% url "account:deleteCv" result.pk %}" class="p-2">حذف</a> {% endif %}<span class="time text-muted">{% if result.start %}{{ result.JSpublish.0 }}/{{ result.JSpublish.1 }}  <br/>{% endif %} {% if result.end and result.start %}{{ result.JEpublish.0 }}/{{ result.JEpublish.1 }} {% endif %}</span></span>
+
+                                </div>
+                                <div class="flag bg-white p-2 m-2 flex-fill rounded-lg irsa" style=""><div class="p-2">{{ result.body }}</div></div>
+                        </li>
+                        {% endfor %}
+                        
+                    
+                    </ul>
+                    
+                        
+
+                </div>
+            </div>
+            {% else %}
+                {% include "include/empty.html" %}
+        {% endif %}
+        </div>
+
+    </div>
+
+
+
+
+
+    <!-- Scripts
+    ================================================== -->
+    {% include "include/footer.html" %}
+
+</body>
+
+
+
+</html>

@@ -1,0 +1,11 @@
+
+        {% for result in image %}
+    
+            <a class="" href="{% url "account:post" result.pk %}">
+                
+            <img src="{{ result.image.url }}" class="uk-card uk-card-default uk-flex uk-flex-center uk-flex-middle rounded-md" style="height:auto;width:100%;">
+                
+
+            </a>
+        
+        {% endfor %}

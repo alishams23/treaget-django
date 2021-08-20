@@ -1,0 +1,210 @@
+{% load jalali %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+
+    <!-- Basic Page Needs
+    ================================================== -->
+    <title>درخواست</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
+
+{% include "include/header.html" %}
+    <script type="text/javascript">
+      window.CSRF_TOKEN = "{{ csrf_token }}";
+    </script>
+</head>
+
+<body>
+    <div id="wrapper">
+        {% include "include/sidebar.html" %}
+        <div class="main_content">
+        {% include "include/mainHeader.html" %}
+            <div class="container m-auto">
+            {%  include "include/downNavbar.html" %}
+                <div class="lg:flex justify-center lg:space-x-10 lg:space-y-0 space-y-5">
+                    <!-- left sidebar-->
+                    <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+                        <div id="posts" class="space-y-5">
+                            <div class="grid  mt-12 gap-8 row">
+                                <div  class="bg-white rounded-md lg:shadow-lg shadow  rtl">
+                                     <div class="flex justify-between items-center px-4 py-3 mt-3 rounded-lg bg-gray-100">
+                                        <div  class="flex flex-1 items-center space-x-4">
+                                        <a href="{% url "main:profile" result.author.username %}">
+                                            <div class="mx-3    w-8 h-8 overflow-hidden "  style="border-radius:10px;">
+                                                <img src="{% if result.author.image %}{{ result.author.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class="">
+                                            </div>
+                                        </a>
+                                            <a href="{% url "main:profile" result.author.username %}" class="block capitalize font-semibold dark:text-gray-100 irsa"> {{ result.author.get_full_name }} </a>
+                                            <P class="px-3 py-2 irsa bg-white  rounded-lg"> قیمت {{ result.price }} تومان</P>
+                                        </div>
+                                        <div>
+                                            <a > <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i> </a>
+                                            <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700" uk-drop="mode: hover;pos: top-right">
+
+                                                <ul class="rtl space-y-1">
+                                                    <li>
+                                                        <button href="#"  onclick="shareLinkP('{{ result.pk }}')" class="shareLink irsa flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
+                                                            <i class="uil-share-alt mr-1"></i> اشتراک گذاری
+                                                        </button>
+                                                    </li>
+                                                    {% if result.author == request.user %}
+                                                    <li>
+                                                        <hr class="-mx-2 my-2 dark:border-gray-800">
+                                                    </li>
+                                                    <li>
+                                                        <form action="" method="POST" class="irsa flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="flag" value="{{ result.pk }}" />
+
+                                                            <button type="submit" class="  irsa " /><i class="uil-trash-alt mr-1  mr-1 "></i> حذف<button>
+                                                        </form>
+                                                    </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="#" class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+                                        <h2 class="irsa text-2xl">{{ result.title }}</h2>
+                                        <br>
+                                        <p class="irsa">{{ result.body }}</p>
+                                        <br>
+                                        <p class="irsa px-2">{% jalali result.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p>
+                                    </a>
+                                    {% if result.author != request.user %}
+                                <a href="{% url "account:addAcceptRequest" result.pk  %}" class="py-3 px-3 rounded-lg text-white irsa bg-blue-600">قبول درخواست</a>
+                                {% endif %}
+                                </div>
+                                {% for resultAccept in result.subcategories.all %}
+                                <div  class="bg-white rounded-md lg:shadow-lg shadow  rtl">
+                                     <div class="flex justify-between items-center px-4 py-3 mt-3 rounded-lg bg-gray-100">
+                                        <div class="flex flex-1 items-center space-x-4">
+                                            <a href="{% url "main:profile" resultAccept.author.username %}">
+                                                <div class="mx-3    w-8 h-8 overflow-hidden "  style="border-radius:10px;">
+                                                    <img src="{% if resultAccept.author.image %}{{ resultAccept.author.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class="">
+                                                </div>
+                                             </a>
+                                        <a href="{% url "main:profile" resultAccept.author.username %}" class="block capitalize font-semibold dark:text-gray-100 irsa"> {{ resultAccept.author.get_full_name }} </a>
+                                        </div>
+
+                                    </div>
+                                    <div class="   lg:p-6 p-4">
+                                        <p class="irsa text-dark text-2xl">{{ resultAccept.time }}</p>
+
+                                        <p class="irsa  px-2">{% jalali resultAccept.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p>
+                                    </div>
+                                {% if result.author == request.user %}
+                                <a href="{% url "account:createSafePayment" result.pk resultAccept.pk %}" class="py-3 px-3 rounded-lg text-white irsa bg-blue-600">ایجاد پرداخت امن</a>
+                                {% endif %}
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <!-- post 2-->
+
+                        <!-- Load more-->
+
+
+                    </div>
+
+                    <!-- right sidebar-->
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+ <!-- Scripts
+    ================================================== -->
+{% include "include/footer.html" %}
+
+     <script>
+    $('body').on('click', '.hapus_krs',function(){
+
+        var formData = {
+        'id_mhs': $(this).attr('value'),
+        csrfmiddlewaretoken: '{{ csrf_token }}'
+        };
+        $.ajax({
+            type: 'POST',
+            url: `/account/LikePost/`,
+            data: formData,
+            dataType: 'json',
+            encode: true
+        })
+        svgChannged = document.getElementById($(this).attr('value'));
+        if (svgChannged.getAttribute("fill") == "blue") {
+            svgChannged.setAttribute("fill", "");
+        } else {
+            svgChannged.setAttribute("fill", "blue");
+        }
+
+    });
+    function shareLinkP(dataValue){
+        let input = document.body.appendChild(document.createElement("input"));
+        input.value = `${window.location.hostname}/request/${dataValue}`;
+        input.focus();
+        input.select();
+        document.execCommand('copy');
+        input.parentNode.removeChild(input);
+        alert(`${window.location.hostname}/request/${dataValue} کپی شد.`)
+    }
+</script>
+<script> (function($) {
+      $('#lazyLoadLink').on('click', function() {
+        var link = $(this);
+        var page = link.data('page');
+        $.ajax({
+          type: 'post',
+          url: 'lazy_load_posts/',
+          data: {
+            'page': page,
+            'csrfmiddlewaretoken': window.CSRF_TOKEN // from index.html
+          },
+          success: function(data) {
+            // if there are still more pages to load,
+            // add 1 to the "Load More Posts" link's page data attribute
+            // else hide the link
+            if (data.has_next) {
+                link.data('page', page+1);
+            } else {
+              link.hide();
+            }
+            // append html to the posts div
+            console.log(data.posts_html)
+            $('#posts').append(data.posts_html);
+          },
+          error: function(xhr, status, error) {
+            // shit happens friends!
+          }
+        });
+      });
+    }(jQuery));</script>
+</body>
+
+
+</html>
