@@ -28,6 +28,10 @@ urlpatterns = [
          views.FollowUnfollowApi.as_view(), name="FollowUnfollowApi"),
     path('ServiceListApi/<str:username>/',
          views.ServiceListApi.as_view(), name="ServiceListApi"),
+     path('AddOptionService/',
+         views.AddOptionService.as_view(), name="AddOptionService"),
+     path('AddService/',
+         views.AddService.as_view(), name="AddService"),
     # get data like this ?&min_price=50001&max_price=80000&search=logo&ordering=-price
     path('ServiceSearchApi/', views.ServiceSearchApi.as_view(),
          name="ServiceSearchApi"),

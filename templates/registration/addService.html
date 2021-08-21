@@ -30,26 +30,26 @@
             {% include "include/mainHeader.html" %}
             <div class="container m-auto">
                 <div class="grid  mt-12 gap-8" id='addService'>
-                    <form method="post" enctype="multipart/form-data" class="bg-white rounded-md   col-span-2">
+                    <form @submit.prevent="submitForm" class="bg-white rounded-md   col-span-2">
                         {% csrf_token %}
                         <div class="grid rtl grid-cols-2 gap-3 lg:p-6 p-4">
                             <div id="specialName" class=" col-span-2" hidden>
-                                <label for="" class="irsa"> نام خدمات</label> {% render_field form.specialName class="shadow-none px-2 bg-gray-100" %}
+                                <label for="" class="irsa"> نام خدمات</label> {% render_field form.specialName v-model="specialName" class="shadow-none px-2 bg-gray-100" %}
                             </div>
                             <div class="col-span-2" id="nameProduct">
-                                <label for="" class="irsa">نام خدمات طبق دسته بندی</label> {% render_field form.nameProduct class="shadow-none px-2 irsa bg-gray-100" %}
+                                <label for="" class="irsa">نام خدمات طبق دسته بندی</label> {% render_field form.nameProduct v-model="nameProduct" class="shadow-none px-2 irsa bg-gray-100" %}
                             </div>
                             <div class="col-span-2">
                                 <a class="text-blue-400 text-xs irsa" v-on:click="changeDiv()">انتخاب نام خدمات خارج از
                                     دسته بندی</a>
                             </div>
                             <div class="col-span-2">
-                                <label for="" class="irsa">قیمت به تومان</label> {% render_field form.price placeholder='price' class="shadow-none bg-gray-100" %}
+                                <label for="" class="irsa">قیمت به تومان</label> {% render_field form.price placeholder='price' v-model="priceProduct" class="shadow-none bg-gray-100" %}
                             </div>
                         </div>
                         <div v-for="(data, index) in serviceOption" class="d-flex flex-row border-top px-3 mx-3 py-2">
-                            <div class="col-8">[[ data[0] ]]</div>
-                            <div class="col-3 px-1 text-dark">[[ data[1] ]]</div>
+                            <div class="col-8">[[ data.title ]]</div>
+                            <div class="col-3 px-1 text-dark">[[ data.price ]]</div>
                             <div class="col-1" v-on:click="deleteOption(index)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="red" class="bi  bi-x-square-fill" viewBox="0 0 16 16">
                                     <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
@@ -83,6 +83,7 @@
                                         <div class="alert alert-secondary rtl" v-if="priceOption != ''" role="alert">
                                             در صورت اضافه کردن هزینه این قابلیت در خدمات شما به صورت آپشن در می آید و کارفرما باید بابت آن هزینه بپردازد
                                         </div>
+
                                     </div>
                                 </div>
                                 <div class="modal-footer">

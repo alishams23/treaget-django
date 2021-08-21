@@ -1,6 +1,7 @@
 
 from django.core.exceptions import ValidationError
 from django.db.models import fields, manager
+from django.http import request
 from rest_framework import serializers
 from account.models import Message, Notification, User
 from main.models import *
@@ -111,14 +112,24 @@ class ServiceFacilitiesSerializers(serializers.ModelSerializer):
 
 
 class ServiceSerializers(serializers.ModelSerializer):
-    subsetService = ServiceSubsetSerializers(many=True)
-    serviceFacilities = ServiceFacilitiesSerializers(many=True)
-    author = UserLessInformationSerializers()
-    nameProduct = ProductsSerializer()
+    author = UserLessInformationSerializers(required=False,read_only=True)
 
     class Meta:
         model = Service
         fields = "__all__"
+
+    def to_representation(self, instance):
+        self.fields['nameProduct'] =  ProductsSerializer(required=False,read_only=True)
+        self.fields['serviceFacilities'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
+        return super(ServiceSerializers, self).to_representation(instance)
+
+
+    def validate(self, data):
+        nameProduct = data.get('nameProduct', None)
+        specialName = data.get('specialName', None)
+        if not nameProduct and not specialName:
+            raise serializers.ValidationError("at least one date input required.")
+        return data
 
 
 class UserSettingSerializers(serializers.ModelSerializer):

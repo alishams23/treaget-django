@@ -4,13 +4,13 @@ const profile = {
         return {
             service: [],
             loading: true,
-            selfUser:document.getElementById('SelfInformation').innerHTML,
-            selfUserService:document.getElementById('SelfInfoServiceProvider').innerHTML
+            selfUser: document.getElementById('SelfInformation').innerHTML,
+            selfUserService: document.getElementById('SelfInfoServiceProvider').innerHTML
 
         }
     },
     methods: {
-        SerciseApi() {
+        ServiseApi() {
             fetch(`/api/ServiceListApi/${document.getElementById('service').getAttribute('value')}/`)
                 .then(response => response.json())
                 .then((data) => {
@@ -19,10 +19,9 @@ const profile = {
                     console.log(data);
                 });
         },
-
     },
     mounted() {
-        this.SerciseApi();
+        this.ServiseApi();
     }
 }
 Vue.createApp(profile).mount('#service')

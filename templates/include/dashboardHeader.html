@@ -1,9 +1,8 @@
-                <ul class="mt-5 -mr-3 flex-nowrap lg:overflow-hidden overflow-x-scroll uk-tab" id="dashboardHeader">
-                    <li class="{% if request.resolver_match.url_name == "desk" %} uk-active {% endif %} irsa"><a href="{% url "account:desk" %}">میز کار</a></li>
-                    <li class="{% if request.resolver_match.url_name == "notification" %} uk-active {% endif %}"><a href="{% url "account:notification" %}" class=" irsa">نوتیفیکیشن</a></li>
-                    <li class="{% if request.resolver_match.url_name == "orders" %} uk-active {% endif %}"><a href="{% url "account:orders" %}" class="irsa">سفارشات شما</a></li>
-                    <li class="{% if request.resolver_match.url_name == "listSafePayment" %} uk-active {% endif %}"><a href="{% url "account:listSafePayment" %}" class="irsa">پرداخت های امن</a></li>
-                    <li class="{% if request.resolver_match.url_name == "listDispute" %} uk-active {% endif %}"><a href="{% url "account:listDispute" %}" class="irsa">اختلافات</a></li>
-                    <li class="{% if request.resolver_match.url_name == "wallet" %} uk-active {% endif %}"><a href="{% url "wallet:wallet" %}" class="irsa">کیف پول</a></li>
-
-                </ul>
+<ul class="mt-5 -mr-3 flex-nowrap lg:overflow-hidden overflow-x-scroll uk-tab" id="dashboardHeader">
+    <li class="{% if request.resolver_match.url_name == " desk " %} uk-active {% endif %} irsa"><a href="{% url " account:desk " %}">میز کار</a></li>
+    <li class="{% if request.resolver_match.url_name == " notification " %} uk-active {% endif %}"><a href="{% url " account:notification " %}" class=" irsa">نوتیفیکیشن</a></li>
+    <li class="{% if request.resolver_match.url_name == " orders " %} uk-active {% endif %}"><a href="{% url " account:orders " %}" class="irsa">سفارشات شما</a></li>
+    <li class="{% if request.resolver_match.url_name == " listSafePayment " %} uk-active {% endif %}"><a href="{% url " account:listSafePayment " %}" class="irsa">پرداخت های امن</a></li>
+    <li class="{% if request.resolver_match.url_name == " listDispute " %} uk-active {% endif %}"><a href="{% url " account:listDispute " %}" class="irsa">اختلافات</a></li>
+    <li class="{% if request.resolver_match.url_name == " wallet " %} uk-active {% endif %}"><a href="{% url " wallet:wallet " %}" class="irsa">کیف پول</a></li>
+</ul>

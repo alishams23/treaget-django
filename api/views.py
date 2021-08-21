@@ -187,7 +187,7 @@ class ServiceListApi(generics.ListAPIView):
     permission_classes = (AllowAny, )
     serializer_class= ServiceSerializers
     def get_queryset(self):
-        return Service.objects.filter(author=User.objects.get(username=self.kwargs.get('username')))
+        return Service.objects.filter(author=User.objects.get(username=self.kwargs.get('username'))).order_by("-pk")
 
 
 
@@ -251,6 +251,19 @@ class AddPostPictureApi(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
+
+class AddOptionService(generics.CreateAPIView):
+    queryset = ServiceFacilities.objects.all()
+    serializer_class = ServiceFacilitiesSerializers
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class AddService(generics.CreateAPIView):
+    queryset = Service.objects.all()
+    serializer_class = ServiceSerializers
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class AddRequestApi(generics.CreateAPIView):
