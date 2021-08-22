@@ -258,7 +258,7 @@ class OrderSerializers(serializers.ModelSerializer):
     def to_representation(self, instance):
         self.fields['service'] =  ServiceSerializers(required=False,read_only=True)
         self.fields['optionService'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
-        return super(ServiceSerializers, self).to_representation(instance)
+        return super(OrderSerializers, self).to_representation(instance)
 
 
     def validate(self, data):

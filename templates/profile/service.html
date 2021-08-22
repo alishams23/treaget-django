@@ -1,184 +1,267 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-
-
-
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon -->
-    <link href="{% static 'inside/images/favicon.png' %}" rel="icon" type="image/png">
+    <link
+      href="{% static 'inside/images/favicon.png' %}"
+      rel="icon"
+      type="image/png"
+    />
 
     <!-- Basic Page Needs
     ================================================== -->
     <title>خدمات</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
-    <link rel="stylesheet" href="{% static 'inside/css/styleprice.css' %}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین" />
+    <link rel="stylesheet" href="{% static 'inside/css/styleprice.css' %}" />
     {% include "include/header.html" %}
 
     <style>
-        @media (min-width: 1024px) {
-            header .header_inner {
-                max-width: 980px;
-            }
-
-            .pro-container {
-                max-width: 860px;
-            }
+      @media (min-width: 1024px) {
+        header .header_inner {
+          max-width: 980px;
         }
+
+        .pro-container {
+          max-width: 860px;
+        }
+      }
     </style>
+  </head>
 
-
-</head>
-
-<body>
-
-
+  <body>
     <div id="wrapper">
+      {% include "include/sidebar.html" %}
 
-        {% include "include/sidebar.html" %}
+      <div class="main_content">
+        {% include "include/mainHeader.html" %}
 
-        <div class="main_content">
+        <div class="container pro-container m-auto">
+          {% include "include/downNavbar.html" %}
 
-            {% include "include/mainHeader.html" %}
+          <!-- profile-cover-->
+          {% include "include/container.html" %}
+          <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
+            <div
+              class="bg-primary rounded-lg"
+              style="
+                height: 30px;
+                padding: 1.6px;
+                padding-top: 3px;
+                background-image: linear-gradient(#ff3600, #ffa38b);
+              "
+            ></div>
+            <p class="irsa text-lg px-3" style="color: #b4b4b4">خدمات</p>
+          </div>
 
-            <div class="container pro-container m-auto">
-                {% include "include/downNavbar.html" %}
+          <!-- edith1 open -->
 
-
-                <!-- profile-cover-->
-                {% include "include/container.html" %}
-                <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
-                    <div class="bg-primary  rounded-lg"
-                        style="height:30px;padding:1.6px;padding-top:3px;background-image: linear-gradient(#FF3600, #FFA38B);">
-                    </div>
-                    <p class="irsa text-lg px-3" style="color:#B4B4B4;">خدمات</p>
-                </div>
-
-                <!-- edith1 open -->
-
-                <!-- price box -->
-                <div class="container " id="service" value="{{ user.username }}">
-
-                    <div class="d-flex justify-content-center" v-if="loading"> <img
-                            src="{% static 'vue/image/loading.gif' %}" alt="loading"></div>
-                    <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-small" uk-grid="masonry: true">
-                        <div class=" my-2 " v-for='data in service' v-if="loading == false">
-                            <div class=" rounded-lg  bg-white w-full text-center "
-                                style="box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;">
-                                <h4 class="irsa py-3 text-md" v-if="data.nameProduct != null "> [[
-                                    data.nameProduct.title ]]
-                                </h4>
-                                <h4 class="irsa py-3 text-md" v-else>[[ data.specialName ]] </h4>
-                                <div class=" my-2 pb-2" v-if='data.price'>
-                                    <p class=" irsa text-sm text-dark">[[data.price]]</p>
-                                    <span class="coins irsa text-sm  ">تومان</span>
-                                </div>
-                                <div class='p-2 pb-3 ' v-for='facilities in data.serviceFacilities'>
-                                    <div class="d-flex flex-row border-bottom justify-content-between p-2 mx-4">
-                                        <div class="col-2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                                height="16" fill="#FF3600" class="bi bi-check2-circle"
-                                                viewBox="0 0 16 16">
-                                                <path
-                                                    d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
-                                                <path
-                                                    d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
-                                            </svg></div>
-                                        <div class='col-10 text-right'>[[facilities.title]]</div>
-
-                                    </div>
-                                </div>
-                                <div>
-                                    <button data-bs-toggle="modal" data-bs-target="#exampleModal"
-                                        data-bs-whatever="@mdo" class="text-white bg-dark  rounded-lg px-3 py-1 irsa"
-                                        v-if="selfUser != data.author.username && selfUserService != 'True'">
-                                        سفارش دادن
-                                    </button>
-                                    <a v-bind:href="'/account/deleteservice/'+data.id + '/' "
-                                        class="text-white bg-dark rounded-lg px-3 py-1 irsa"
-                                        v-if="selfUser == data.author.username">
-                                        حذف
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div v-if='service.length == 0'>{% include "include/empty.html" %}</div>
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <form class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">توضیحات سفارش</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div>
-                                        <div class="mb-3">
-                                            <label for="message-text" class="rtl col-form-label">توضیحات
-                                                شما:</label>
-                                            <textarea class="form-control border-none bg-gray-50" id="message-text"
-                                                required></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="px-3 mx-1 py-2 shadow-md rounded-full bg-gray-100"
-                                        data-bs-dismiss="modal" ref="btnClose">بستن</button>
-                                    <button class="px-3 mx-1 py-2 bg-treaget shadow-md rounded-full text-white">اضافه
-                                        کردن</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+          <!-- price box -->
+          <div class="container" id="service" value="{{ user.username }}">
+            <div class="d-flex justify-content-center" v-if="loading">
+              <img src="{% static 'vue/image/loading.gif' %}" alt="loading" />
             </div>
+            <div
+              class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-small"
+              uk-grid="masonry: true"
+            >
+              <div
+                class="my-2"
+                v-for="(data,index) in service"
+                v-if="loading == false"
+              >
+                <div
+                  class="rounded-lg bg-white w-full text-center"
+                  style="
+                    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+                      rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+                  "
+                >
+                  <h4
+                    class="irsa py-3 text-md"
+                    v-if="data.nameProduct != null "
+                  >
+                    [[ data.nameProduct.title ]]
+                  </h4>
+                  <h4 class="irsa py-3 text-md" v-else>
+                    [[ data.specialName ]]
+                  </h4>
+                  <div class="my-2 pb-2" v-if="data.price">
+                    <p class="irsa text-sm text-dark">[[data.price]]</p>
+                    <span class="coins irsa text-sm">تومان</span>
+                  </div>
+                  <div
+                    class="p-2 pb-3"
+                    v-for="(facilities,indexOption) in data.serviceFacilities"
+                  >
+                    <div
+                      class="
+                        d-flex
+                        flex-row
+                        border-bottom
+                        justify-content-between
+                        p-2
+                        mx-4
+                      "
+                    >
+                      <div class="col-2">
+                        <div>
+                            <svg
+                            v-if="facilities.price == 0 || facilities.price == null"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="17"
+                            height="17"
+                            fill="#FF3600"
+                            class="bi bi-check2-circle"
+                            viewBox="0 0 16 16">
+                                <path
+                                    d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+                                <path
+                                    d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+                            </svg>
+                            <svg v-if="facilities.price != 0 && facilities.isChoice != true && facilities.price != null "  xmlns="http://www.w3.org/2000/svg" v-on:click="plusKey(index,indexOption)" width="16" height="16" fill="green" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                            </svg>
+                            <svg v-if="facilities.isChoice" xmlns="http://www.w3.org/2000/svg" v-on:click="minesKey(index,indexOption)" width="15" height="15" fill="red" class="bi bi-dash-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/>
+                            </svg>
+                        </div>
+                      </div>
+                      <div class="col-10 text-right">
+                        <div>[[facilities.title]]</div>
+                        <div v-if='facilities.price != 0 '>
+                            [[ facilities.price ]]
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      data-bs-toggle="modal"
+                      v-on:click="order(index)"
+                      data-bs-target="#exampleModal"
+                      data-bs-whatever="@mdo"
+                      class="text-white bg-dark rounded-lg px-3 py-1 irsa"
+                      v-if="selfUser != data.author.username && selfUserService != 'True'">
+                      سفارش دادن
+                    </button>
+                    <a
+                      v-bind:href="'/account/deleteservice/'+data.id + '/' "
+                      class="text-white bg-dark rounded-lg px-3 py-1 irsa"
+                      v-if="selfUser == data.author.username">
+                      حذف
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-if="service.length == 0">
+              {% include "include/empty.html" %}
+            </div>
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <form class="modal-content" @submit.prevent="sendOrder">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      توضیحات سفارش
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div>
+                      <div class="mb-3">
+                        <label for="message-text" class="rtl col-form-label">توضیحات شما:</label>
+                        <textarea
+                          v-model="descriptionOrder"
+                          class="form-control border-none bg-gray-50"
+                          id="message-text"
+                          required
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="px-3 mx-1 py-2 shadow-md rounded-full bg-gray-100"
+                      data-bs-dismiss="modal"
+                      ref="btnClose">
+                      بستن
+                    </button>
+                    <button
+                      class="
+                        px-3
+                        mx-1
+                        py-2
+                        bg-treaget
+                        shadow-md
+                        rounded-full
+                        text-white
+                      " >
+                      اضافه کردن
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
     <!-- Story modal -->
     <script>
-        (function (window, document, undefined) {
-            'use strict';
-            if (!('localStorage' in window)) return;
-            var nightMode = localStorage.getItem('gmtNightMode');
-            if (nightMode) {
-                document.documentElement.className += ' dark';
+      (function (window, document, undefined) {
+        "use strict";
+        if (!("localStorage" in window)) return;
+        var nightMode = localStorage.getItem("gmtNightMode");
+        if (nightMode) {
+          document.documentElement.className += " dark";
+        }
+      })(window, document);
+      (function (window, document, undefined) {
+        "use strict";
+        // Feature test
+        if (!("localStorage" in window)) return;
+        // Get our newly insert toggle
+        var nightMode = document.querySelector("#night-mode");
+        if (!nightMode) return;
+        // When clicked, toggle night mode on or off
+        nightMode.addEventListener(
+          "click",
+          function (event) {
+            event.preventDefault();
+            document.documentElement.classList.toggle("dark");
+            if (document.documentElement.classList.contains("dark")) {
+              localStorage.setItem("gmtNightMode", true);
+              return;
             }
-        })(window, document);
-        (function (window, document, undefined) {
-            'use strict';
-            // Feature test
-            if (!('localStorage' in window)) return;
-            // Get our newly insert toggle
-            var nightMode = document.querySelector('#night-mode');
-            if (!nightMode) return;
-            // When clicked, toggle night mode on or off
-            nightMode.addEventListener('click', function (event) {
-                event.preventDefault();
-                document.documentElement.classList.toggle('dark');
-                if (document.documentElement.classList.contains('dark')) {
-                    localStorage.setItem('gmtNightMode', true);
-                    return;
-                }
-                localStorage.removeItem('gmtNightMode');
-            }, false);
-
-        })(window, document);
+            localStorage.removeItem("gmtNightMode");
+          },
+          false
+        );
+      })(window, document);
     </script>
 
     <!-- Scripts
     ================================================== -->
     {% include "include/footer.html" %}
     <script src="{% static 'vue/js/profileService.js' %}"></script>
-
-</body>
-
-
-
+  </body>
 </html>

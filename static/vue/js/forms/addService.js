@@ -44,18 +44,14 @@ const addService = {
                 }).then(response => response.json())
                 .then((data) => {
                     this.serviceOption.push({ "title": data["title"], "price": data.price, "id": data["id"] })
-
                 });
-
             this.$refs.btnClose.click()
             this.optionName = ""
             this.priceOption = ""
-
         },
         submitForm() {
             let dataOption = []
             this.serviceOption.forEach(element => { dataOption.push(element["id"]) })
-
             fetch("/api/AddService/", {
                     method: "post",
                     credentials: "same-origin",
@@ -69,7 +65,6 @@ const addService = {
                 .then((data) => {
                     window.location.href = `/p/${this.selfUser}/service`
                 });
-
             console.log(this.priceProduct)
             console.log(this.nameProduct)
             console.log(this.specialName)
