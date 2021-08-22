@@ -82,32 +82,61 @@
                                 <div class='p-2 pb-3 ' v-for='facilities in data.serviceFacilities'>
                                     <div class="d-flex flex-row border-bottom justify-content-between p-2 mx-4">
                                         <div class="col-2"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                            height="16" fill="#FF3600" class="bi bi-check2-circle"
-                                            viewBox="0 0 16 16">
-                                            <path
-                                                d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
-                                            <path
-                                                d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
-                                        </svg></div>
+                                                height="16" fill="#FF3600" class="bi bi-check2-circle"
+                                                viewBox="0 0 16 16">
+                                                <path
+                                                    d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z" />
+                                                <path
+                                                    d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z" />
+                                            </svg></div>
                                         <div class='col-10 text-right'>[[facilities.title]]</div>
-                                        
+
                                     </div>
                                 </div>
-                                <a v-bind:href="selfUser!=''?'/account/p/' + selfUser + '/checkout/' + data.id:'/account/login/' "
-                                    class="text-white bg-dark  rounded-lg px-3 py-1 irsa"
-                                    v-if="selfUser != data.author.username && selfUserService != 'True'">
-                                    سفارش دادن
-                                </a>
-                                <a v-bind:href="'/account/deleteservice/'+data.id + '/' "
-                                    class="text-white bg-dark rounded-lg px-3 py-1 irsa"
-                                    v-if="selfUser == data.author.username">
-                                    حذف
-                                </a>
-
+                                <div>
+                                    <button data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                        data-bs-whatever="@mdo" class="text-white bg-dark  rounded-lg px-3 py-1 irsa"
+                                        v-if="selfUser != data.author.username && selfUserService != 'True'">
+                                        سفارش دادن
+                                    </button>
+                                    <a v-bind:href="'/account/deleteservice/'+data.id + '/' "
+                                        class="text-white bg-dark rounded-lg px-3 py-1 irsa"
+                                        v-if="selfUser == data.author.username">
+                                        حذف
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div v-if='service.length == 0'>{% include "include/empty.html" %}</div>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <form class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">توضیحات سفارش</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div>
+                                        <div class="mb-3">
+                                            <label for="message-text" class="rtl col-form-label">توضیحات
+                                                شما:</label>
+                                            <textarea class="form-control border-none bg-gray-50" id="message-text"
+                                                required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="px-3 mx-1 py-2 shadow-md rounded-full bg-gray-100"
+                                        data-bs-dismiss="modal" ref="btnClose">بستن</button>
+                                    <button class="px-3 mx-1 py-2 bg-treaget shadow-md rounded-full text-white">اضافه
+                                        کردن</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

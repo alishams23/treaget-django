@@ -390,9 +390,15 @@ class DisputeDestroyApi(generics.DestroyAPIView):
 
 
 class OrderApi(generics.ListAPIView):
-    serializer_class = OrderSerializer
+    serializer_class = OrderSerializers
     def get_queryset(self):
         return OrderUser.objects.filter(Q(designer=self.request.user) | Q(author=self.request.user))
+
+
+class AddOrderApi(generics.CreateAPIView):
+    serializer_class = OrderSerializers
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user,designer=User.objects.get(username=self.kwargs["username"]))
 
 
 class OrderTrueApi(APIView):

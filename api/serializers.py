@@ -132,6 +132,8 @@ class ServiceSerializers(serializers.ModelSerializer):
         return data
 
 
+
+
 class UserSettingSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -243,11 +245,25 @@ class DisputeSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class OrderSerializer(serializers.ModelSerializer):
-    designer = UserLessInformationSerializers()
-    author = UserLessInformationSerializers()
-    safePayment = SafePaymentSerializer()
-
+class OrderSerializers(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(
+        read_only=True, default=serializers.CurrentUserDefault()
+    )
+    designer = UserLessInformationSerializers(read_only=True)
+    safePayment = SafePaymentSerializer(read_only=True)
     class Meta:
         model = OrderUser
         fields = "__all__"
+
+    def to_representation(self, instance):
+        self.fields['service'] =  ServiceSerializers(required=False,read_only=True)
+        self.fields['optionService'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
+        return super(ServiceSerializers, self).to_representation(instance)
+
+
+    def validate(self, data):
+        service = data.get('service', None)
+        title = data.get('title', None)
+        if not service and not title:
+            raise serializers.ValidationError("at least one date input (service,title) required.")
+        return data
