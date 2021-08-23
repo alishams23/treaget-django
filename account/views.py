@@ -454,12 +454,7 @@ def register(request):
     return render(request, "registration/signup.html", context)
 
 
-# @login_required
-# def OrderViews(request):
-#     contex = {
-#         "Orders": OrderUser.objects.filter(Q(designer=request.user) | Q(author=request.user)).order_by("-pk"),
-#     }
-#     return render(request, "registration/Order.html", contex)
+
 
 
 @login_required

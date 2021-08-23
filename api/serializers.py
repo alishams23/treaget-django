@@ -246,9 +246,7 @@ class DisputeSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializers(serializers.ModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(
-        read_only=True, default=serializers.CurrentUserDefault()
-    )
+    author = UserLessInformationSerializers(read_only=True)
     designer = UserLessInformationSerializers(read_only=True)
     safePayment = SafePaymentSerializer(read_only=True)
     class Meta:
