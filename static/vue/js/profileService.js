@@ -12,7 +12,7 @@ const profile = {
         }
     },
     methods: {
-        ServiseApi() {
+        ServiceApi() {
             fetch(`/api/ServiceListApi/${document.getElementById('service').getAttribute('value')}/`)
                 .then(response => response.json())
                 .then((data) => {
@@ -34,6 +34,11 @@ const profile = {
             this.service[index]["serviceFacilities"][indexOption]["isChoice"] = false
         },
         sendOrder() {
+            let listOptionService = []
+            this.orderData["serviceFacilities"].forEach(element => {
+                if (element["isChoice"]) listOptionService.push(element["id"])
+                if (element["price"] == 0 || element["price"] == null) listOptionService.push(element["id"])
+            });
             fetch(`/api/AddOrderApi/${this.orderData["author"]["username"]}` + "/", {
                     method: "post",
                     credentials: "same-origin",
@@ -42,7 +47,7 @@ const profile = {
                         "Content-Type": "application/json",
                         'X-CSRFToken': window.CSRF_TOKEN
                     },
-                    body: JSON.stringify({ "price": this.orderData["price"], "title": this.orderData["title"], "body": this.descriptionOrder, "service": this.orderData["id"] }),
+                    body: JSON.stringify({ "price": this.orderData["price"], "title": this.orderData["title"], "body": this.descriptionOrder, "service": this.orderData["id"], "optionService": listOptionService }),
                 }).then(response => response.json())
                 .then((data) => {
                     window.location.href = `/account/orders/`
@@ -50,7 +55,7 @@ const profile = {
         }
     },
     mounted() {
-        this.ServiseApi();
+        this.ServiceApi();
     }
 }
 Vue.createApp(profile).mount('#service')
