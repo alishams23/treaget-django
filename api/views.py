@@ -49,7 +49,6 @@ class AddLikeView(APIView):
 
 
 class HomeApiView(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
     def list(self, request):
         firstData = Picture.objects.filter(
         Q(author__id__in=request.user.following.all()) | Q(author=request.user))
