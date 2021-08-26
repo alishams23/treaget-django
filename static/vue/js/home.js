@@ -4,47 +4,36 @@ const home = {
         return {
             postPage: 1,
             results: [],
-            selfUser: ""
+            selfUser: "",
+            loading: true
         }
     },
     methods: {
-        getDataExplore() {
+        getDataHome() {
             fetch(`/api/HomeApiView/?page=${this.postPage}`)
                 .then(response => response.json())
                 .then((data) => {
                     data.forEach(element => this.results.push(element))
-                    console.log(this.results)
+                    if (data.length == 0) this.loading = false
                 });
         },
         handleScroll() {
             if (document.body.scrollHeight - window.scrollY <= 1000) {
                 this.postPage += 1
-                this.getDataExplore();
+                this.getDataHome();
                 this.wait(100)
             }
         },
-        like(id) {
-            fetch(`/api/AddLikeView/?Picture=${id}`)
-                .then(response => response.json())
-                .then((data) => {
-                    svgChannged = document.getElementById($(this).attr("value"));
-                    if (svgChannged.getAttribute("fill") == "blue") {
-                        svgChannged.setAttribute("fill", "");
-                    } else {
-                        svgChannged.setAttribute("fill", "blue");
-                    }
-                });
-
-        },
-        checkLike(data) {
-            for (const item of data["like"]) {
-                if (item["username"] == this.userInfo) {
-                    return true
-                } else {
-                    return false
-                }
-
+        async like(id, index) {
+            await fetch(`/api/AddLikeView/?Picture=${id}`)
+            if (this.results[index].data.likeAuthor == true) {
+                this.results[index].data.likeAuthor = false
+                this.results[index].data.like_count--
+            } else {
+                this.results[index].data.likeAuthor = true
+                this.results[index].data.like_count++
             }
+
         },
         wait(ms) {
             var start = new Date().getTime();
@@ -64,9 +53,9 @@ const home = {
         }
     },
     mounted() {
-        this.getDataExplore();
+        this.getDataHome();
         this.selfUser = document.getElementById('SelfInformation').innerHTML
-            // window.addEventListener('scroll', this.handleScroll);
+        window.addEventListener('scroll', this.handleScroll);
     }
 }
 Vue.createApp(home).mount('#home')

@@ -51,8 +51,8 @@ class AddLikeView(APIView):
 class HomeApiView(viewsets.ModelViewSet):
     def list(self, request):
         firstData = Picture.objects.filter(
-        Q(author__id__in=request.user.following.all()) | Q(author=request.user))
-        secondData = Request.objects.filter(Q(author__id__in=request.user.following.all()) | Q(author=request.user))
+        Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
+        secondData = Request.objects.filter(Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
         result_list = sorted(
             chain(firstData, secondData),
             key=attrgetter('createdAdd'), reverse=True)
