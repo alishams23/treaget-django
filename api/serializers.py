@@ -11,9 +11,12 @@ from rest_framework.fields import CurrentUserDefault
 
 
 class UserLessInformationSerializers(serializers.ModelSerializer):
+    def get_author(self, obj):
+        return  f"{obj.first_name + ' ' + obj.last_name}" 
+    full_name = serializers.SerializerMethodField("get_author")
     class Meta:
         model = User
-        fields = ("username", "first_name", "last_name",
+        fields = ("username", "first_name", "last_name","full_name",
                   "image", "ServiceProvider")
 
 
@@ -69,15 +72,15 @@ class PictureSerializer(serializers.ModelSerializer):
 
 
 class RequestSerializer(serializers.ModelSerializer):
-    def get_author(self, obj):
-        return {
-            "username": obj.author.username,
-            "first_name": obj.author.first_name,
-            "last_name": obj.author.last_name,
-            "full_name": f"{obj.author.first_name + ' ' + obj.author.last_name}"
-        }
+    # def get_author(self, obj):
+    #     return {
+    #         "username": obj.author.username,
+    #         "first_name": obj.author.first_name,
+    #         "last_name": obj.author.last_name,
+    #         "full_name": f"{obj.author.first_name + ' ' + obj.author.last_name}"
+    #     }
     subcategories = AcceptSerializers(many=True, required=False)
-    author = serializers.SerializerMethodField("get_author")
+    author = UserLessInformationSerializers()
 
     class Meta:
         model = Request

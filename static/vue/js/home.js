@@ -35,6 +35,30 @@ const home = {
             }
 
         },
+        async deleteRequest(id, index) {
+            await fetch(`/api/DestroyRequestApi/${id}/`, {
+                method: "delete",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    'X-CSRFToken': window.CSRF_TOKEN
+                }
+            })
+            this.results.splice(index, 1);
+        },
+        async deletePicture(id, index) {
+            await fetch(`/api/PicturePostDestroyRetrive/${id}/`, {
+                method: "delete",
+                credentials: "same-origin",
+                headers: {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    'X-CSRFToken': window.CSRF_TOKEN
+                }
+            })
+            this.results.splice(index, 1);
+        },
         wait(ms) {
             var start = new Date().getTime();
             var end = start;

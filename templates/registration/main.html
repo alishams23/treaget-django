@@ -59,6 +59,12 @@
                                         <a v-bind:href="'/p/'+data.data.author.username" class="block capitalize font-semibold px-4 dark:text-gray-100 irsa">
                                             [[ data.data.author.first_name ]] [[ data.data.author.last_name ]]</a>
                                     </div>
+                                    <button v-on:click="deletePicture(data.data.id, index)" class="rounded-full mx-2 bg-gray-100 p-2" v-if="selfUser == data.data.author.username">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                          </svg>
+                                    </button>
                                     <button v-on:click="shareLink(`account/post/${data.data.id}/`)" class="rounded-full bg-gray-100 p-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
                                             fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
@@ -68,7 +74,7 @@
                                     </button>
                                 </div>
                                 <div class="p-3">
-                                    <img v-bind:src="data.data.image" class="w-full h-full " alt="" style="border-radius:12px;box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;">
+                                    <img v-bind:src="data.data.image" class="w-full h-full " alt="" style="border-radius:12px;">
                                 </div>
                                 <div class="py-3 px-4 space-y-3">
                                     <div class="flex items-center space-x-3">
@@ -91,8 +97,8 @@
                                             [[ data.data.alt ]]
                                         </div>
                                     </div>
-                                    <div class=" irsa d-flex flex-wrap" v-for="category in  data.data.category">
-                                        <p class="irsa rounded-full m-1 bg-gray-100 text-xs px-4 py-1">[[ category.title ]]</p>
+                                    <div class=" irsa d-flex flex-wrap">
+                                        <p class="irsa rounded-full m-1 bg-gray-100 text-xs px-4 py-1" v-for="category in  data.data.category">[[ category.title ]]</p>
                                     </div>
                                 </div>
                             </div>
@@ -104,27 +110,25 @@
                                                 <img v-bind:src="data.data.author.image ? data.data.author.image :  '/static/inside/avatar.jpg'" class="">
                                             </div>
                                         </a>
-                                        <a v-bind:href="'/p/' + data.data.author.username" class="block capitalize font-semibold dark:text-gray-100 irsa">
+                                        <div><a v-bind:href="'/p/' + data.data.author.username" class=" capitalize font-semibold text-sm">
                                             [[ data.data.author.full_name ]] </a>
-                                        <P class="px-3 py-2 irsa bg-white  rounded-lg"> قیمت [[ data.data.price ]] تومان
-                                        </P>
-                                    </div>
-                                    <div>
-                                        <div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class=" text-2xl  rounded-full transition -mr-1 dark:hover:bg-gray-700 bi bi-chevron-down" viewBox="0 0 16 16">
-                                                <path fill-rule="evenodd"
-                                                    d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
-                                            </svg> </div>
-                                        <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700" uk-drop="mode: hover;pos: top-right">
-                                            <ul class="rtl space-y-1">
-                                                <li>
-                                                    <button v-on:click="shareLink(`account/post/${data.data.id}/`)" class="shareLink irsa flex items-center px-3 py-2  hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
-                                                        <i class="uil-share-alt mr-1"></i> اشتراک گذاری
-                                                    </button>
-                                                </li>
-                                            </ul>
-
+                                            <P class=" text-sm   rounded-full"> قیمت [[ data.data.price ]] تومان
+                                            </P>
                                         </div>
                                     </div>
+                                    <button v-on:click="deleteRequest(data.data.id,index)" class="rounded-full mx-2 bg-gray-100 p-2" v-if="selfUser == data.data.author.username">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                          </svg>
+                                    </button>
+                                    <button v-on:click="shareLink(`request/${data.data.id}/`)" class="rounded-full bg-gray-100 p-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13"
+                                            fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                                            <path
+                                                d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                                        </svg>
+                                    </button>
                                 </div>
                                 <a v-bind:href="'/request/' +data.data.id" class="grid gap-3 lg:p-6 p-4">
                                     <h2 class="irsa text-2xl">[[ data.data.title ]]</h2>

@@ -272,6 +272,11 @@ class AddRequestApi(generics.CreateAPIView):
         serializer.save(author=self.request.user,subcategories=[])
 
 
+class DestroyRequestApi(generics.DestroyAPIView):
+    serializer_class = RequestSerializer
+    def get_queryset(self):
+        return Request.objects.filter(author=self.request.user,pk=self.kwargs.get('pk'))
+
 class RequestSearchApi(generics.ListAPIView):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
