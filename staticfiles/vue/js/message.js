@@ -86,8 +86,6 @@ const message = {
                 }
                 this.counter += 1
             }
-
-
         },
         getNewMessage() {
             this.counter = 0
@@ -96,22 +94,18 @@ const message = {
                 .then((data) => {
                     data.forEach(element => {
                         this.message.push(element);
-
                     });
                 });
-
         },
         userClick(info) {
             this.counter = 0
             this.user = info
             this.getMessage()
             setInterval(() => this.getMessageRepeat(), 3000);
-
         },
     },
     mounted() {
         this.ListUserMessageApi();
-
         if (this.userUrl != "") {
             this.getUser()
         }

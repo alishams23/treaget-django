@@ -9,7 +9,7 @@
                     <img src="{% if picture.author.image %}{{ picture.author.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class="">
                 </div>
             </a>
-            <a href="{% url " main:profile " picture.author.username %}" class="block capitalize font-semibold px-4 dark:text-gray-100 irsa"> {{ picture.author.get_full_name }} </a>
+            <a href="{% url 'main:profile' picture.author.username %}" class="block capitalize font-semibold px-4 dark:text-gray-100 irsa"> {{ picture.author.get_full_name }} </a>
         </div>
         <div>
             <a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class=" text-2xl  rounded-full transition -mr-1 dark:hover:bg-gray-700 bi bi-chevron-down" viewBox="0 0 16 16">

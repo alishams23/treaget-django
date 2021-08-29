@@ -15,7 +15,6 @@ const profile = {
                     this.loading = false;
                     console.log(data);
                 });
-
         },
         PictureUrl(data) {
             var newStr = data.slice(0, -3);
