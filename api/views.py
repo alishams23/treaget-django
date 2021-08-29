@@ -56,6 +56,8 @@ class HomeApiView(viewsets.ModelViewSet):
         result_list = sorted(
             chain(firstData, secondData),
             key=attrgetter('createdAdd'), reverse=True)
+        if len(result_list) == 0 :
+            result_list = Picture.objects.all()
         results = list()
         results_per_page = 5
         postnumber = self.request.GET['page']
