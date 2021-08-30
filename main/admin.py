@@ -210,4 +210,4 @@ class ServiceFacilitiesAdmin(admin.ModelAdmin):
     list_display = ("title",)
 
 
-admin.site.register(ServiceFacilities, ServiceFacilitiesAdmin)
+admin.site.register(ServiceOptionMain, ServiceFacilitiesAdmin)

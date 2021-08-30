@@ -26,16 +26,16 @@ const profile = {
         },
         plusKey(index, indexOption) {
             if (this.service[index]["price"] == null) this.service[index]["price"] = 0
-            this.service[index]["price"] += this.service[index]["serviceFacilities"][indexOption]["price"]
-            this.service[index]["serviceFacilities"][indexOption]["isChoice"] = true
+            this.service[index]["price"] += this.service[index]["serviceOption"][indexOption]["price"]
+            this.service[index]["serviceOption"][indexOption]["isChoice"] = true
         },
         minesKey(index, indexOption) {
-            this.service[index]["price"] -= this.service[index]["serviceFacilities"][indexOption]["price"]
-            this.service[index]["serviceFacilities"][indexOption]["isChoice"] = false
+            this.service[index]["price"] -= this.service[index]["serviceOption"][indexOption]["price"]
+            this.service[index]["serviceOption"][indexOption]["isChoice"] = false
         },
         sendOrder() {
             let listOptionService = []
-            this.orderData["serviceFacilities"].forEach(element => {
+            this.orderData["serviceOption"].forEach(element => {
                 if (element["isChoice"]) listOptionService.push(element["id"])
                 if (element["price"] == 0 || element["price"] == null) listOptionService.push(element["id"])
             });

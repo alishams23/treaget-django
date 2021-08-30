@@ -110,7 +110,7 @@ class ServiceSubsetSerializers(serializers.ModelSerializer):
 
 class ServiceFacilitiesSerializers(serializers.ModelSerializer):
     class Meta:
-        model = ServiceFacilities
+        model = ServiceOptionMain
         fields = "__all__"
 
 
@@ -123,7 +123,7 @@ class ServiceSerializers(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         self.fields['nameProduct'] =  ProductsSerializer(required=False,read_only=True)
-        self.fields['serviceFacilities'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
+        self.fields['serviceOption'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
         return super(ServiceSerializers, self).to_representation(instance)
 
 
@@ -258,7 +258,7 @@ class OrderSerializers(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         self.fields['service'] =  ServiceSerializers(required=False,read_only=True)
-        self.fields['optionService'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
+        self.fields['optionsService'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
         return super(OrderSerializers, self).to_representation(instance)
 
 

@@ -254,7 +254,7 @@ class AddPostPictureApi(generics.CreateAPIView):
 
 
 class AddOptionService(generics.CreateAPIView):
-    queryset = ServiceFacilities.objects.all()
+    queryset = ServiceOptionMain.objects.all()
     serializer_class = ServiceFacilitiesSerializers
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

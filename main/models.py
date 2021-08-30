@@ -140,7 +140,8 @@ class OrderUser(models.Model):
         max_length=300, verbose_name="محصول درخواستی", blank=True, null=True)
     body = models.TextField(
         verbose_name="توضیحات محصول", blank=True, null=True)
-    optionService= models.ManyToManyField("main.ServiceFacilities",blank=True,related_name="ServiceFacilitiesOrder",verbose_name="آپشن ها")
+    # optionService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionMainOrder",verbose_name="آپشن ها")
+    optionsService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionlastOrder",verbose_name="آپشن ها")
     createdAdd = models.DateField(auto_now_add=True)
     service = models.ForeignKey("main.Service", verbose_name="نوع خدمات",
                                 on_delete=models.SET_NULL, related_name="serviceOrderUser", null=True)
@@ -237,11 +238,43 @@ class Timeline(models.Model):
         return jalali_converter(self.end)
 
 
-class ServiceFacilities (models.Model):
+# class ServiceFacilities (models.Model):
+#     title = models.TextField(verbose_name="متن")
+#     createdadd = models.DateField(auto_now_add=True)
+#     author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
+#                                related_name="ServiceFacilitiesAuthor")
+#     price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
+
+#     class Meta:
+#         verbose_name = "خدمات خدمات دهنده امکانات"
+#         verbose_name_plural = "امکانات خدمات خدمات دهندگان"
+#         ordering = ["-createdadd"]
+
+#     def __str__(self):
+#         return self.title
+
+
+# class ServiceOptions (models.Model):
+#     title = models.TextField(verbose_name="متن")
+#     createdadd = models.DateField(auto_now_add=True)
+#     author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
+#                                related_name="ServiceOptionsAuthor")
+#     price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
+
+#     class Meta:
+#         verbose_name = "خدمات خدمات دهنده امکانات"
+#         verbose_name_plural = "امکانات خدمات خدمات دهندگان"
+#         ordering = ["-createdadd"]
+
+#     def __str__(self):
+#         return self.title
+
+
+class ServiceOptionMain (models.Model):
     title = models.TextField(verbose_name="متن")
     createdadd = models.DateField(auto_now_add=True)
     author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
-                               related_name="ServiceFacilitiesAuthor")
+                               related_name="ServiceOptionMainAuthor")
     price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
 
     class Meta:
@@ -270,8 +303,10 @@ class Service(models.Model):
         blank=True, null=True, verbose_name="قیمت")
     subsetService = models.ManyToManyField(
         "main.ServiceSubset", related_name="subsetServiceRelated", blank=True)
-    serviceFacilities = models.ManyToManyField(
-        ServiceFacilities, related_name="ServiceFacilitiesRelated", blank=True)
+    # serviceFacilities = models.ManyToManyField(
+    #     ServiceOptionMain, related_name="ServiceOptionMainRelated", blank=True)
+    serviceOption = models.ManyToManyField(
+        ServiceOptionMain, related_name="ServiceOptionlastRelated", blank=True)
 
     class Meta:
         verbose_name = "خدمات خدمات دهنده"

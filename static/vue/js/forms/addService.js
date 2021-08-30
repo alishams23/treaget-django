@@ -60,7 +60,7 @@ const addService = {
                         "Content-Type": "application/json",
                         'X-CSRFToken': window.CSRF_TOKEN
                     },
-                    body: JSON.stringify({ serviceFacilities: dataOption, 'nameProduct': parseInt(this.nameProduct), 'price': parseInt(this.priceProduct), "specialName": this.specialName }),
+                    body: JSON.stringify({ "serviceOption": dataOption, 'nameProduct': parseInt(this.nameProduct), 'price': parseInt(this.priceProduct), "specialName": this.specialName }),
                 }).then(response => response.json())
                 .then((data) => {
                     window.location.href = `/p/${this.selfUser}/service`
