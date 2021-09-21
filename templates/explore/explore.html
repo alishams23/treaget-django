@@ -165,7 +165,7 @@
                                         
                                         <p class="irsa text-xs text-blue-400">[[ data.subcategories.length ]] پیشنهاد</p>
                                     </a>
-                                    <div class="py-3 my-3"><a v-if="userInfo != data.author.username" v-bind:href="'/account/addAcceptRequest/'+data.id" class="py-1 px-3 mx-3  rounded-2xl text-sm shadow-md irsa bg-treaget text-white">قبول درخواست</a></div>
+                                    <div class="py-3 my-3"><a v-if="userInfo != data.author.username && userInfoStatus == 'True'" v-bind:href="'/account/addAcceptRequest/'+data.id" class="py-1 px-3 mx-3  rounded-2xl text-sm shadow-md irsa bg-treaget text-white">قبول درخواست</a></div>
                                    
                                
                                 </div>

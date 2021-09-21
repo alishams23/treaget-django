@@ -9,6 +9,7 @@ const explore = {
             resultsProject: [],
             project: false,
             userInfo: document.getElementById("SelfInformation").innerHTML,
+            userInfoStatus: document.getElementById("SelfInfoServiceProvider").innerHTML,
         }
     },
     methods: {
