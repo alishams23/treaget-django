@@ -33,30 +33,60 @@
 
             <div class="container m-auto" id="explore">
                 {% include "include/downNavbar.html" %}
+                <div class="d-flex justify-content-between mt-3 mb-5 ">
 
-                <div class="flex-row mb-5 border-b d-flex justify-content-between ">
-                    <div v-on:click="project=false" v-bind:class="project==false ? ' border-bottom-1  text-treaget' : 'color-muted-1'" class="d-flex flex-fill justify-content-center ">
-                        <div class="irsa m-2">نمونه کار</div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="m-2 bi bi-image-alt" viewBox="0 0 16 16">
+                    <div class="d-flex">
+                        <a class=" shadow  w-14 h-14 overflow-hidden d-flex  justify-content-center bg-black" style="border-radius:24px;" data-bs-toggle="modal" data-bs-target="#filter" data-bs-whatever="@mdo">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class=" bi bi-sliders" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+                          </svg>
+                        </a>
+                        <div class=" shadow mx-2 w-14 h-14 overflow-hidden d-flex  justify-content-center bg-white" style="border-radius:24px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
+                                <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
+                                <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>
+                                <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>
+                              </svg>
+                        </div>
+                    </div>
+                    <div class="rtl">
+                        <div class="mb-2 mt-1 font-semibold text-xl rtl"> سلام , {{request.user.first_name}} عزیز 👋</div>
+                        <div class="  text-md rtl"> به تریگت خوش آمدید</div>
+                    </div>
+                </div>
+                <div class="d-flex ">
+
+                    <form class="  bg-white w-full rounded-2xl uk-search uk-search-default " action="{% url 'main:search' %}" method="post">
+                        {% csrf_token %}
+                        <span uk-search-icon></span>
+                        <input class="uk-search-input rounded-2xl" name="name" type="search" placeholder="search" style="box-shadow:  0px 0px 0px 0px ;">
+                    </form>
+                </div>
+                <div class="flex-row mb-3 mt-5 border-b  d-flex justify-content-between ">
+                    <div v-on:click="project=false" v-bind:class="project==false ? ' border-bottom-2  text-gray-700 ' : 'color-muted-1'" class="d-flex flex-fill justify-content-center ">
+                        <div class="irsa  m-2">گالری</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class=" bi bi-image-alt" viewBox="0 0 16 16">
                                  <path d="M7 2.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0zm4.225 4.053a.5.5 0 0 0-.577.093l-3.71 4.71-2.66-2.772a.5.5 0 0 0-.63.062L.002 13v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5l-4.777-3.947z"/>
                                 </svg>
                     </div>
-                    <div v-on:click="project=true" v-bind:class="project!=false ?  'border-bottom-1 text-treaget' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
+                    <div v-on:click="project=true" v-bind:class="project!=false ?  'border-bottom-2 text-gray-700   ' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
                         <div class="irsa m-2">پروژه</div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="m-2 bi bi-shop-window" viewBox="0 0 16 16">
-                              <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
-                            </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
+                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
+                          </svg>
+                    </div>
+                    <div v-on:click="project=true" v-bind:class="project==none ?  'border-bottom-2 text-gray-700   ' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
+                        <div class="irsa m-2">کاربر</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        </svg>
                     </div>
 
                 </div>
-                <form class="mb-3  bg-white w-full rounded-md uk-search uk-search-default d-block d-xl-none" action="{% url 'main:search' %}" method="post">
-                    {% csrf_token %}
-                    <span uk-search-icon></span>
-                    <input class="uk-search-input rounded-md" name="name" type="search" placeholder="search" style="box-shadow:  0px 0px 0px 0px ;">
-                </form>
+
 
                 <div class="relative" uk-slider="finite: true">
-
+                    {% comment %}
                     <div class="uk-slider-container">
 
                         <ul class="uk-slider-items uk-child-width-1-5 uk-child-width-1-4@s uk-child-width-1-5@m uk-grid-small">
@@ -71,7 +101,6 @@
                                             <div class="w-full truncate text-md irsa"> {{ result.get_full_name }} </div>
                                             <div class="leading-5 text-xs">
                                                 <div> {{ result.username }} </div>
-
                                             </div>
                                             <a href="{% url 'account:follow_User' result.username %}" class="absolute right-3 bottom-3 rounded-full d-none d-sm-block 
                                                  from-blue-500 to-purple-700">
@@ -92,7 +121,7 @@
                         <a class="uk-position-center-right uk-positsion-small p-3.5 bg-white rounded-full w-10 h-10 flex justify-center items-center -mx-4 shadow-md dark:bg-gray-800 dark:text-white" href="#" uk-slidenav-next uk-slider-item="next"></a>
 
                     </div>
-
+                    {% endcomment %}
                 </div>
                 <div>
 
@@ -102,9 +131,10 @@
                             <div id="posts" class="uk-child-width-1-2 uk-child-width-1-3@m uk-grid-small my-4" uk-grid="masonry: true">
                                 <a class="" v-bind:href="'/account/post/'+data.id" v-for="data in results[0]">
 
-                                    <img v-bind:src="[[data.image]]" class="uk-card uk-card-default uk-flex uk-flex-center uk-flex-middle rounded-md" style="height:auto;width:100%;">
+                                    <img v-bind:src="[[data.image]]" class="uk-card uk-card-default uk-flex uk-flex-center uk-flex-middle shadow-none rounded-md" style="height:auto;width:100%;">
 
                                 </a>
+
                             </div>
                         </li>
                         <li v-show="project">
@@ -173,28 +203,44 @@
                     </ul>   
                 </div> 
            
-                
+                <div class="modal fade" id="filter" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form @submit.prevent="submitModel" class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">قابلیت جدید</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
 
-                <!-- Load more-->
-                <div class="flex justify-center mt-6">
-                    <img src="{% static 'vue/image/loading.gif' %}" alt="loading" />
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="px-3 mx-1 py-2 shadow-md rounded-full bg-gray-100" data-bs-dismiss="modal">بستن</button>
+                                            <button class="px-3 mx-1 py-2 bg-treaget shadow-md rounded-full text-white">اضافه کردن</button>
+                                        </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Load more-->
+                                <div class="flex justify-center mt-6">
+                                    <img src="{% static 'vue/image/loading.gif' %}" alt="loading" />
+                                </div>
+
+
+                            </div>
+
                 </div>
- 
 
             </div>
 
-        </div>
-
-    </div>
 
 
-   
 
 
- <!-- Scripts
+            <!-- Scripts
     ================================================== -->
-    {% include "include/footer.html" %}
-    <script src="{% static 'vue/js/explore.js' %}"></script>
+            {% include "include/footer.html" %}
+            <script src="{% static 'vue/js/explore.js' %}"></script>
 
 
 </body>

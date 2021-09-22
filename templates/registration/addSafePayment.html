@@ -1,5 +1,4 @@
-{% load widget_tweaks %}
-{% load static %}
+{% load widget_tweaks %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,9 +16,7 @@
     <title>پرداخت امن</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
-
-{% include "include/header.html" %}
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین"> {% include "include/header.html" %}
 
 
 </head>
@@ -40,34 +37,33 @@
 
 
                 <div class="grid  mt-12 gap-8">
-                    {% comment %} <div>
+                    {% comment %}
+                    <div>
                         <h3 class="text-xl mb-2"> Basic</h3>
                         <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
                     </div> {% endcomment %}
-                    <form method="post"  class="bg-white rounded-md lg:shadow-lg shadow col-span-2">
+                    <form method="post" class="bg-white rounded-md lg:shadow-lg shadow col-span-2">
                         {% csrf_token %}
-                       <div class="grid rtl grid-cols-2 gap-3 lg:p-6 p-4">
-                           <div  class=" col-span-2"  >
-                               <label for="" class="irsa">توضیحات</label>
-
-                               {% render_field form.description  class="shadow-none  bg-gray-100" %}
-                           </div>
-                           <div class="col-span-2" id="nameProduct">
-                               <label for="" class="irsa">قیمت</label>
-                               {% render_field form.price  class="shadow-none irsa bg-gray-100" min="1" %}
+                        <div class="grid rtl grid-cols-2 gap-3 lg:p-6 p-4">
+                            <div class=" col-span-2">
+                                <label for="" class="irsa">توضیحات</label> {% render_field form.description class="shadow-none bg-gray-100" %}
                             </div>
-                           <div class="col-span-2 irsa alert alert-warning" role="alert">
-                              در صورتی که مبلغ انتخابی شما بیشتر از اعتبار شما در کیف پولتان باشد به درگاه پرداخت منتقل میشوید تا کیف پول شما شارژ شود و پس از آن باید <b>دوباره</b> فرم پرداخت امن خود را پر کنید
+                            <div class="col-span-2" id="nameProduct">
+                                <label for="" class="irsa">قیمت</label> {% render_field form.price class="shadow-none irsa bg-gray-100" min="1" %}
                             </div>
-                       </div>
+                            <div class="col-span-2 irsa alert alert-warning" role="alert">
+                                در صورتی که مبلغ انتخابی شما بیشتر از اعتبار شما در کیف پولتان باشد به درگاه پرداخت منتقل میشوید تا کیف پول شما شارژ شود و پس از آن باید <b>دوباره</b> فرم پرداخت امن خود را پر کنید
+                            </div>
+                        </div>
 
-                       <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                           <button  class="button bg-blue-700 irsa"> ذخیره </button>
-                       </div>
+                        <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                            <button class="button bg-blue-700 irsa"> ذخیره </button>
+                        </div>
 
                     </form>
 
-                    {% comment %} <div>
+                    {% comment %}
+                    <div>
                         <h3 class="text-xl mb-2"> Privacy</h3>
                         <p> Lorem ipsum dolor sit amet nibh consectetuer adipiscing elit</p>
                     </div> {% endcomment %}
@@ -83,8 +79,7 @@
 
 
     <script>
-
-        (function (window, document, undefined) {
+        (function(window, document, undefined) {
             'use strict';
             if (!('localStorage' in window)) return;
             var nightMode = localStorage.getItem('gmtNightMode');
@@ -94,7 +89,7 @@
         })(window, document);
 
 
-        (function (window, document, undefined) {
+        (function(window, document, undefined) {
 
             'use strict';
 
@@ -106,7 +101,7 @@
             if (!nightMode) return;
 
             // When clicked, toggle night mode on or off
-            nightMode.addEventListener('click', function (event) {
+            nightMode.addEventListener('click', function(event) {
                 event.preventDefault();
                 document.documentElement.classList.toggle('dark');
                 if (document.documentElement.classList.contains('dark')) {
@@ -119,7 +114,7 @@
         })(window, document);
     </script>
 
- <!-- Scripts
+    <!-- Scripts
     ================================================== -->
     {% include "include/footer.html" %}
 

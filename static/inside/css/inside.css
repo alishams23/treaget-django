@@ -53,9 +53,13 @@
 }
 
 .color-muted-1 {
-    color: #D6D6D6;
+    color: #b9b9b9;
 }
 
 .border-bottom-1 {
     border-bottom: 1px solid rgb(235, 84, 33);
+}
+
+.border-bottom-2 {
+    border-bottom: 1px solid black;
 }
