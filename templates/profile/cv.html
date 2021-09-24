@@ -44,7 +44,7 @@
                {% include "include/container.html" %}
                 <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
                     <div class="bg-primary  rounded-lg" style="height:30px;padding:1.6px;padding-top:3px;background-image: linear-gradient(#FF3600, #FFA38B);"></div>
-                    <p class="irsa text-lg px-3" style="color:#B4B4B4;">رزومه</p>
+                    <p class="irsa text-lg px-3" >رزومه</p>
                 </div>
            
             <!-- edith1 open -->
@@ -61,7 +61,7 @@
                                     <span class="time-wrapper irsa">{% if request.user == user %} <a href="{% url "account:deleteCv" result.pk %}" class="p-2">حذف</a> {% endif %}<span class="time text-muted">{% if result.start %}{{ result.JSpublish.0 }}/{{ result.JSpublish.1 }}  <br/>{% endif %} {% if result.end and result.start %}{{ result.JEpublish.0 }}/{{ result.JEpublish.1 }} {% endif %}</span></span>
 
                                 </div>
-                                <div class="flag bg-white p-2 m-2 flex-fill rounded-lg irsa" style=""><div class="p-2">{{ result.body }}</div></div>
+                                <div class="flag shadow-1 border-top1 p-2 m-2 flex-fill rounded-lg irsa" ><div class="p-2">{{ result.body }}</div></div>
                         </li>
                         {% endfor %}
                         

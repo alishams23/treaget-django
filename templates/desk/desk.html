@@ -89,41 +89,41 @@
 
                    <div class="my-6 grid lg:grid-cols-5 grid-cols-3 gap-2  uk-link-reset " uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 200; repeat: true">
 
-                        <div class="bg-white uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ request.user.numberVisitors.count }}</p> <span class="irsa m-4 text-center"> بازدید کننده  </span>
                         </div>
-                        <div class="bg-white uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberSafePayment }}</p> <span class="irsa m-4 text-center"> پرداخت امن  </span>
                         </div>
-                        <div class="bg-white uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberOrders }}</p> <span class="irsa m-4 text-center">  سفارشات  </span>
                         </div>
                    {% if numberService %}
-                        <div class="bg-white uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberPicture }}</p> <span class="irsa m-4 text-center">  نمونه کار های شما </span>
                         </div>
                    {% else %}
-                       <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberRequest }}</p> <span class="irsa m-4 text-center">  درخواست های شما </span>
                         </div>
                    {% endif %}
-                        <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <div class="bg-white shadow-1 border-top1  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ request.user.cash }}</p> <span class="irsa m-4 text-center">موجودی شما</span>
                         </div>
-                        <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <div class="bg-white shadow-1 border-top1  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ request.user.followers.count }}</p> <span class="irsa m-4 text-center"> دنبال کنندگان</span>
                         </div>
-                       <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ request.user.following.count }}</p> <span class="irsa m-4 text-center"> دنبال شوندگان</span>
                         </div>
-                       <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberDoProject }}</p> <span class="irsa m-4 text-center"> پروژه های انجام شده</span>
                         </div>
-                       <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberDoingProject }}</p> <span class="irsa m-4 text-center"> پروژه های در حال انجام</span>
                        </div>
                        {% if numberService %}
-                       <div class="bg-white  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
                             <p class="irsa text-xl pt-3 text-dark">{{ numberService }}</p> <span class="irsa m-4 text-center">خدماتی که انجام میدید</span>
                        </div>
                        {% endif %}

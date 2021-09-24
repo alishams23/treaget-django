@@ -47,7 +47,7 @@
                 {% include "include/downNavbar.html" %} {% include "include/container.html" %}
                 <div class="d-flex flex-row-reverse align-items-center px-3 pt-4">
                     <div class="bg-primary  rounded-lg" style="height:30px;padding:1.6px;padding-top:3px;background-image: linear-gradient(#FF3600, #FFA38B);"></div>
-                    <p class="irsa text-lg px-3" style="color:#B4B4B4;">{% if user.ServiceProvider == True %}نمونه کار ها{% else %}پروژه ها {% endif %}</p>
+                    <p class="irsa text-lg px-3" >{% if user.ServiceProvider == True %}نمونه کار ها{% else %}پروژه ها {% endif %}</p>
                 </div>
                 {% if user.ServiceProvider == True %} {% if pictures %}
 

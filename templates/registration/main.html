@@ -45,9 +45,9 @@
 
                     <!-- left sidebar-->
                     <div class="space-y-5 flex-shrink-0 lg:w-7/12">
-                        <div id="posts" class="space-y-5" v-if="" v-for="(data,index) in results">
+                        <div id="posts" class="space-y-5 pb-3" v-if="" v-for="(data,index) in results">
 
-                            <div class="bg-white  rounded-lg -mx-2 lg:mx-0 rtl uk-nav uk-dropdown-nav" v-if="data.item == 'picture'">
+                            <div class="bg-white  rounded-2xl border-top1  shadow-1 -mx-2 lg:mx-0 rtl uk-nav uk-dropdown-nav" v-if="data.item == 'picture'">
                                 <!-- post header-->
                                 <div class="flex justify-between items-center px-4  py-3">
                                     <div class="flex flex-1 items-center space-x-4">
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="bg-white rounded-md -mx-2 lg:mx-0 rtl" v-if="data.item == 'request'">
+                            <div class="bg-white  rounded-2xl  border-top1 shadow-1  -mx-2 lg:mx-0 rtl" v-if="data.item == 'request'">
                                 <div class="flex justify-between items-center px-4 py-3 mt-3 ">
                                     <div class="flex flex-1 items-center space-x-4">
                                         <a v-bind:href="'/p/' + data.data.author.username">
@@ -143,25 +143,25 @@
 
                         <!-- Load more-->
                         <div class="d-flex justify-content-center" v-if="loading">
-                            <img src="{% static 'vue/image/loading.gif' %}" alt="loading" />
+                            <img src="{% static 'vue/image/loading.gif' %}" alt="loading" style="width: 40px;"/>
                         </div>
 
 
                     </div>
 
                     <!-- right sidebar-->
-                    <div class="lg:w-5/12">
+                    <div class="lg:w-5/12 d-sm-block d-none">
                         {% if UserRequirements %}
-                        <div class="rtl bg-white dark:bg-gray-900  rounded-lg overflow-hidden uk-animation-slide-top-medium">
+                        <div class="rtl bg-gray-100 rounded-2xl overflow-hidden uk-animation-slide-top-medium">
 
-                            <div class="bg-gray-50 dark:bg-gray-800 border-b border-gray-100 flex items-baseline justify-between py-4 px-6 dark:border-gray-800">
+                            <div class="   flex items-baseline justify-between py-4 px-6 ">
                                 <div class="font-semibold text-lg irsa">افراد اخیر</div>
                                 <div class=" "> </div>
                             </div>
 
 
                             {% for result in UserRequirements %} {% if result != request.user %}
-                            <form action="{% url 'account:follow' %}" method="POST" class="">
+                            <form action="{% url 'account:follow' %}" method="POST" >
                                 <a href="{% url 'main:profile' result.username %}" class="flex py-3 px-3">
                                     {% csrf_token %}
                                     <input type="hidden" name="follow" value="{{ result.username }}" />
@@ -177,7 +177,7 @@
                                         </div>
                                     </div>
                                     <button type="submit"
-                                        class="border border-gray-200 font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600 dark:border-gray-800 irsa">
+                                        class="border border-gray-200 bg-white font-semibold px-4 py-1 rounded-full hover:bg-pink-600 hover:text-white hover:border-pink-600  irsa">
                                         دنبال کردن </button>
                                 </a>
                             </form>

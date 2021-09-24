@@ -36,7 +36,7 @@
             {% include "include/mainHeader.html" %}
             <div class="container m-auto pt-5 h-full " id="message">
                 {% include "include/downNavbar.html" %}
-                <div class="lg:flex  h-full lg:bg-white  rounded-md  overflow-hidden ">
+                <div class="lg:flex  h-full lg:bg-white   rounded-2xl   shadow-1   overflow-hidden ">
                     <!-- left message-->
                     <div class="lg:w-4/12 bg-white h-full border-r overflow-hidden ">
 
@@ -92,7 +92,7 @@
 
                         </div>
 
-                        <div class=" border-t h-full " v-bind:class="phoneSize==true ? 'd-none d-lg-block' : '' ">
+                        <div class=" border-top1 h-full " v-bind:class="phoneSize==true ? 'd-none d-lg-block' : '' ">
 
                             <div class=" lg:p-8 p-4 space-y-5 " id="messages-list" v-bind:style="'height:'+windowHeight+'px;overflow: auto;'">
 
@@ -140,7 +140,7 @@
 
                             </div>
                             <div ref='inputSendMessage'>
-                                <div class="border-t flex p-6 dark:border-gray-700" v-show="user !=''">
+                                <div class="border-top1 flex p-6 dark:border-gray-700" v-show="user !=''">
 
                                     <input id="iconLeft4-1" placeholder="Your Message.." type="text" v-model="inputData" style="word-break: break-all;" class="border-0 flex-1     shadow-none ">
                                     <div class="flex h-full space-x-2">

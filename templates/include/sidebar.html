@@ -1,7 +1,6 @@
         {% load static %}
-        <div class="sidebar bg-white" id="sidebar">
-            <div
-                class="sidebar_header  from-gray-100 to-gray-50 bg-gradient-to-t  uk-visible@s">
+        <div class="sidebar shadow-sidebar bg-glass-sidebar" id="sidebar">
+            <div class="sidebar_header   uk-visible@s" >
                 <a href="#">
                     <img src="{% static 'main/img/treaget-img.png' %}" style="width: 62px">
 
@@ -17,8 +16,8 @@
             </div>
             <div class="sidebar_inner " data-simplebar>
                 <div class="flex flex-col items-center my-6 ">
-                    <div class="   w-24 h-24 overflow-hidden shadow" style="border-radius:39px;">
-                        <img  src="{% if request.user.image %}{{ request.user.image.url }}{% else %}{% static "inside/avatar.jpg" %}{% endif %}"
+                    <div class="   w-24 h-24 overflow-hidden shadow-1" style="border-radius:39px;">
+                        <img  src="{% if request.user.image %}{{ request.user.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}"
                             class=" w-full  overflow-hidden">
                     </div>
                     <div class="text-xl  capitalize mt-4 uk-link-reset irsa"> {{request.user.get_full_name}}
@@ -54,39 +53,41 @@
 
                     </div>
                 </div>
-                {% comment %} <hr class="-mx-4 -mt-1 uk-visible@s" style="color:grey"> {% endcomment %}
+                <hr class="-mx-4  -mt-1 uk-visible@s" > 
                 <ul class="text-right ">
-                  <li>
-                         <span class="irsa mr-4" style="color:#E0E0E0"> منو </span>
-                    </li>
+                  <div>
                     <li>
-                        <a href="{% url 'account:home' %}" class="rtl hover:text-yellow" style="color:{% if request.resolver_match.url_name == "home" %}#FF0F00{% else %}#b4b4b4{% endif %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M23.121,9.069,15.536,1.483a5.008,5.008,0,0,0-7.072,0L.879,9.069A2.978,2.978,0,0,0,0,11.19v9.817a3,3,0,0,0,3,3H21a3,3,0,0,0,3-3V11.19A2.978,2.978,0,0,0,23.121,9.069ZM15,22.007H9V18.073a3,3,0,0,1,6,0Zm7-1a1,1,0,0,1-1,1H17V18.073a5,5,0,0,0-10,0v3.934H3a1,1,0,0,1-1-1V11.19a1.008,1.008,0,0,1,.293-.707L9.878,2.9a3.008,3.008,0,0,1,4.244,0l7.585,7.586A1.008,1.008,0,0,1,22,11.19Z"/></svg>
-                            <span class="irsa mr-4 "> خانه </span> </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'main:explore' %}" class="rtl hover:text-yellow " style="color:{% if request.resolver_match.url_name == "explore" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/></svg>
-                            <span class="irsa mr-4"> کاوش </span> </a>
-                    </li>
-                    <li>
-                        <a href="{% url 'account:message' %}" class="rtl hover:text-yellow" style="color:{% if request.resolver_match.url_name == "message" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
-                           <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M24,11.247A12.012,12.012,0,1,0,12.017,24H19a5.005,5.005,0,0,0,5-5V11.247ZM22,19a3,3,0,0,1-3,3H12.017a10.041,10.041,0,0,1-7.476-3.343,9.917,9.917,0,0,1-2.476-7.814,10.043,10.043,0,0,1,8.656-8.761A10.564,10.564,0,0,1,12.021,2,9.921,9.921,0,0,1,18.4,4.3,10.041,10.041,0,0,1,22,11.342Z"/><path d="M8,9h4a1,1,0,0,0,0-2H8A1,1,0,0,0,8,9Z"/><path d="M16,11H8a1,1,0,0,0,0,2h8a1,1,0,0,0,0-2Z"/><path d="M16,15H8a1,1,0,0,0,0,2h8a1,1,0,0,0,0-2Z"/></svg>
-                            <span class="irsa mr-4"> گپ </span> <span class="nav-tag bg-treaget mx-1" v-if="counterMessage">[[ counterMessage ]]</span></a>
-                    <li>
-                        <a href="{% url "account:desk" %}" class="rtl d-flex hover:text-yellow" style="color:{% if request.resolver_match.url_name == "desk" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);"  id="Outline" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M7,0H4A4,4,0,0,0,0,4V7a4,4,0,0,0,4,4H7a4,4,0,0,0,4-4V4A4,4,0,0,0,7,0ZM9,7A2,2,0,0,1,7,9H4A2,2,0,0,1,2,7V4A2,2,0,0,1,4,2H7A2,2,0,0,1,9,4Z"/><path d="M20,0H17a4,4,0,0,0-4,4V7a4,4,0,0,0,4,4h3a4,4,0,0,0,4-4V4A4,4,0,0,0,20,0Zm2,7a2,2,0,0,1-2,2H17a2,2,0,0,1-2-2V4a2,2,0,0,1,2-2h3a2,2,0,0,1,2,2Z"/><path d="M7,13H4a4,4,0,0,0-4,4v3a4,4,0,0,0,4,4H7a4,4,0,0,0,4-4V17A4,4,0,0,0,7,13Zm2,7a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V17a2,2,0,0,1,2-2H7a2,2,0,0,1,2,2Z"/><path d="M20,13H17a4,4,0,0,0-4,4v3a4,4,0,0,0,4,4h3a4,4,0,0,0,4-4V17A4,4,0,0,0,20,13Zm2,7a2,2,0,0,1-2,2H17a2,2,0,0,1-2-2V17a2,2,0,0,1,2-2h3a2,2,0,0,1,2,2Z"/></svg>
-                            <span class="irsa mr-4">میزکار</span><span class="nav-tag bg-treaget mx-1" v-if="counterNotification">[[ counterNotification ]]</span> </a>
-                            
-                            
-                    </li>
-                    <li>
-                        <a href="{% if request.user.username %}{% url 'main:profile' request.user.username %}{% endif %}"
-                            class="rtl hover:text-yellow" style="color:{% if request.resolver_match.url_name == "profile" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
-                            <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"/><path d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"/></svg>
-                            <span class="irsa mr-4"> صفحه ی من </span> </a>
-                    </li>
+                        <span class="irsa mr-4" style="color:#E0E0E0"> منو </span>
+                   </li>
+                   <li>
+                       <a href="{% url 'account:home' %}" class="rtl hover:text-yellow rounded-2xl" style="color:{% if request.resolver_match.url_name == "home" %}#FF0F00{% else %}#b4b4b4{% endif %}">
+                           <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M23.121,9.069,15.536,1.483a5.008,5.008,0,0,0-7.072,0L.879,9.069A2.978,2.978,0,0,0,0,11.19v9.817a3,3,0,0,0,3,3H21a3,3,0,0,0,3-3V11.19A2.978,2.978,0,0,0,23.121,9.069ZM15,22.007H9V18.073a3,3,0,0,1,6,0Zm7-1a1,1,0,0,1-1,1H17V18.073a5,5,0,0,0-10,0v3.934H3a1,1,0,0,1-1-1V11.19a1.008,1.008,0,0,1,.293-.707L9.878,2.9a3.008,3.008,0,0,1,4.244,0l7.585,7.586A1.008,1.008,0,0,1,22,11.19Z"/></svg>
+                           <span class="irsa mr-4 "> خانه </span> </a>
+                   </li>
+                   <li>
+                       <a href="{% url 'main:explore' %}" class="rtl hover:text-yellow " style="color:{% if request.resolver_match.url_name == "explore" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
+                           <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M23.707,22.293l-5.969-5.969a10.016,10.016,0,1,0-1.414,1.414l5.969,5.969a1,1,0,0,0,1.414-1.414ZM10,18a8,8,0,1,1,8-8A8.009,8.009,0,0,1,10,18Z"/></svg>
+                           <span class="irsa mr-4"> کاوش </span> </a>
+                   </li>
+                   <li>
+                       <a href="{% url 'account:message' %}" class="rtl hover:text-yellow" style="color:{% if request.resolver_match.url_name == "message" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
+                          <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M24,11.247A12.012,12.012,0,1,0,12.017,24H19a5.005,5.005,0,0,0,5-5V11.247ZM22,19a3,3,0,0,1-3,3H12.017a10.041,10.041,0,0,1-7.476-3.343,9.917,9.917,0,0,1-2.476-7.814,10.043,10.043,0,0,1,8.656-8.761A10.564,10.564,0,0,1,12.021,2,9.921,9.921,0,0,1,18.4,4.3,10.041,10.041,0,0,1,22,11.342Z"/><path d="M8,9h4a1,1,0,0,0,0-2H8A1,1,0,0,0,8,9Z"/><path d="M16,11H8a1,1,0,0,0,0,2h8a1,1,0,0,0,0-2Z"/><path d="M16,15H8a1,1,0,0,0,0,2h8a1,1,0,0,0,0-2Z"/></svg>
+                           <span class="irsa mr-4"> گپ </span> <span class="nav-tag bg-treaget mx-1" v-if="counterMessage">[[ counterMessage ]]</span></a>
+                   <li>
+                       <a href="{% url "account:desk" %}" class="rtl d-flex hover:text-yellow" style="color:{% if request.resolver_match.url_name == "desk" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
+                           <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);"  id="Outline" fill="currentColor" viewBox="0 0 24 24">
+                           <path d="M7,0H4A4,4,0,0,0,0,4V7a4,4,0,0,0,4,4H7a4,4,0,0,0,4-4V4A4,4,0,0,0,7,0ZM9,7A2,2,0,0,1,7,9H4A2,2,0,0,1,2,7V4A2,2,0,0,1,4,2H7A2,2,0,0,1,9,4Z"/><path d="M20,0H17a4,4,0,0,0-4,4V7a4,4,0,0,0,4,4h3a4,4,0,0,0,4-4V4A4,4,0,0,0,20,0Zm2,7a2,2,0,0,1-2,2H17a2,2,0,0,1-2-2V4a2,2,0,0,1,2-2h3a2,2,0,0,1,2,2Z"/><path d="M7,13H4a4,4,0,0,0-4,4v3a4,4,0,0,0,4,4H7a4,4,0,0,0,4-4V17A4,4,0,0,0,7,13Zm2,7a2,2,0,0,1-2,2H4a2,2,0,0,1-2-2V17a2,2,0,0,1,2-2H7a2,2,0,0,1,2,2Z"/><path d="M20,13H17a4,4,0,0,0-4,4v3a4,4,0,0,0,4,4h3a4,4,0,0,0,4-4V17A4,4,0,0,0,20,13Zm2,7a2,2,0,0,1-2,2H17a2,2,0,0,1-2-2V17a2,2,0,0,1,2-2h3a2,2,0,0,1,2,2Z"/></svg>
+                           <span class="irsa mr-4">میزکار</span><span class="nav-tag bg-treaget mx-1" v-if="counterNotification">[[ counterNotification ]]</span> </a>
+                           
+                           
+                   </li>
+                   <li>
+                       <a href="{% if request.user.username %}{% url 'main:profile' request.user.username %}{% endif %}"
+                           class="rtl hover:text-yellow" style="color:{% if request.resolver_match.url_name == "profile" %}#FF0F00 {% else %}#b4b4b4{% endif %}">
+                           <svg xmlns="http://www.w3.org/2000/svg" style="transform: scale(.8);" fill="currentColor" id="Outline" viewBox="0 0 24 24"><path d="M12,12A6,6,0,1,0,6,6,6.006,6.006,0,0,0,12,12ZM12,2A4,4,0,1,1,8,6,4,4,0,0,1,12,2Z"/><path d="M12,14a9.01,9.01,0,0,0-9,9,1,1,0,0,0,2,0,7,7,0,0,1,14,0,1,1,0,0,0,2,0A9.01,9.01,0,0,0,12,14Z"/></svg>
+                           <span class="irsa mr-4"> صفحه ی من </span> </a>
+                   </li>
+                  </div>
                      <li>
                          <span class="irsa mr-4" style="color:#E0E0E0"> عمومی </span>
                     </li>
@@ -109,6 +110,8 @@
                             </svg>
                             <span class="irsa mr-4"> خروج </span> </a>
                     </li>
+                    
+                    
                 </ul>
             </div>
         </div>

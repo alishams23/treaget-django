@@ -47,7 +47,7 @@
                                 <label for="" class="irsa">قیمت به تومان</label> {% render_field form.price placeholder='price' v-model="priceProduct" class="shadow-none bg-gray-100" %}
                             </div>
                         </div>
-                        <div v-for="(data, index) in serviceOption" class="d-flex flex-row border-top px-3 mx-3 py-2">
+                        <div v-for="(data, index) in serviceOption" class="d-flex flex-row border-top1op px-3 mx-3 py-2">
                             <div class="col-8">[[ data.title ]]</div>
                             <div class="col-3 px-1 text-dark">[[ data.price ]]</div>
                             <div class="col-1" v-on:click="deleteOption(index)">

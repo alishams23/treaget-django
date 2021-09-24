@@ -35,7 +35,7 @@
             <div class="container m-auto">
                 {% include "include/downNavbar.html" %} {% include "include/dashboardHeader.html" %}
                 <div class="my-6  rtl" id="listOrder">
-                    <div class="p-3 my-3 m-1 rounded-lg bg-white row" v-for="order in listOrders">
+                    <div class="p-3 my-3 m-1 rounded-2xl shadow-1 bg-white row" v-for="order in listOrders">
                         <div class="d-flex align-items-center">
                             <div class="w-10 h-10 m-1 rounded-2xl overflow-hidden" v-if="order.author.username == selfUser">
                                 <img v-bind:src="order.designer.image ? order.designer.image :  '/static/inside/avatar.jpg'" alt="" class=" rounded-2xl">
