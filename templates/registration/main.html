@@ -45,6 +45,34 @@
 
                     <!-- left sidebar-->
                     <div class="space-y-5 flex-shrink-0 lg:w-7/12">
+                        <div class="relative " uk-slider="finite: true">
+
+                            <!-- <a class="-left-2 absolute bg-white bottom-1/2 flex items-center justify-center p-2 rounded-full shadow text-xl w-9 z-10 dark:bg-gray-800 dark:text-white" href="#" uk-slidenav-previous uk-slider-item="previous"> </a>
+                            <a class="absolute bg-white bottom-1/2 flex items-center justify-center p-2 right-4 rounded-full shadow text-xl w-9 z-10 dark:bg-gray-800 dark:text-white" href="#" uk-slidenav-next uk-slider-item="next"> </a> -->
+
+                            <div class="uk-slider-container pb-3 lg:mr-3">
+
+                                <ul class="uk-slider-items uk-grid uk-grid-small">
+                                    {% for result in suggestion %}
+                                    <li>
+                                        <a href="{% url 'main:profile' result.username %}">
+                                            <div class="bg-black   transform  transition hover:scale-105 m-1 w-20  h-20" style="padding: 2px;border-radius: 35px ;">
+                                                <img src="{% if result.image %}{{ result.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class=" w-full h-full  border-2 border-white bg-gray-200" style="border-radius: 33px ;">
+                                                <a href="{% url 'account:follow_User' result.username %}" class=" bg-glass-dark  pt-1 border-t rounded-full w-6 h-6 flex justify-center items-center text-white  border-white absolute right-2 bottom-0 ">
+                                                    + </a>
+                                            </div>
+                                        </a>
+
+
+                                        <a class="block  text-center text-x truncate w-24">
+                                            {{ result.username }} </a>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+
+                            </div>
+                        </div>
                         <div id="posts" class="space-y-5 pb-3" v-if="" v-for="(data,index) in results">
 
                             <div class="bg-white  rounded-2xl border-top1  shadow-1 -mx-2 lg:mx-0 rtl uk-nav uk-dropdown-nav" v-if="data.item == 'picture'">

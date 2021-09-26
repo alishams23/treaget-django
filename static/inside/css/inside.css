@@ -77,6 +77,11 @@
     backdrop-filter: blur(6px);
 }
 
+.bg-glass-dark {
+    background-color: rgba(27, 27, 27, 0.568);
+    backdrop-filter: blur(6px);
+}
+
 
 /* .border-top1 {
     border-bottom: 5px solid rgb(243, 243, 243);

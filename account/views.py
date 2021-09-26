@@ -51,6 +51,8 @@ def home(request):
         'addPost': PictureForm(),
         # 'PictureRequments':Picture.objects.all().order_by("-pk")[0:4],
     }
+    suggestion = User.objects.filter(~Q(followers=request.user) & ~Q(image="")).order_by("?")[0:8]
+    context.update({'suggestion': suggestion})
     return render(request, "registration/main.html", context)
 
 
