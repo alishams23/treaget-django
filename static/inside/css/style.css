@@ -1574,7 +1574,7 @@ input:checked+.switch-button:before {
 body {
     color: #666;
     font-size: 15px;
-    background-color: #fafafa;
+    background-color: #f8f7f7;
     line-height: 27px;
     /* background-color: #f0f2f5; */
     font-family: "Inter", sans-serif;
@@ -2358,7 +2358,7 @@ header .uk-dropdown {
     /* margin-top: 0px; */
     padding-top: 10px;
     width: 300px;
-    z-index: 100; 
+    z-index: 100;
     padding-bottom: 30px;
     overflow: hidden;
     /* --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -2744,12 +2744,12 @@ header .uk-dropdown {
 }
 
 html {
-    background-color: #fafafa;
+    background-color: rgb(246, 246, 246);
 }
 
 .main_content {
     margin-left: 300px;
-    background-color: #fafafa;
+    background-color: rgb(246, 246, 246);
     width: calc(100% - 300px);
     padding-bottom: 80px;
 }
