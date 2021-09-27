@@ -1,4 +1,5 @@
             {% load widget_tweaks %}
+            {% load position_user %}
             {% load static %}
             <header class="  border-header bg-glass">
                 <div class="header_inner">
@@ -35,6 +36,8 @@
                                        <div class=" my-3 mx-1  rounded-20 text-center">
                                           <div class ="row  ">
                                               {% if request.user.ServiceProvider == True %}
+                                              {% position_user request.user as position_page %}
+                                              {% if position_page == 0 %}
                                             <a class ="col-4 d-flex align-items-center flex-column " href="{% url "account:addPicture" %}">
                                             <div class ="bg-gray-100 rounded-2xl p-2 shadow-md">
                                               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="transform: scale(0.8);"  fill="currentColor" class=" bi bi-images" viewBox="0 0 16 16">
@@ -44,6 +47,7 @@
                                             </div>
                                                 <div class="text-xs text-dark irsa pt-2">افزودن نمونه کار</div>
                                             </a>
+                                            {% endif %}
                                             <a class ="col-4  d-flex align-items-center flex-column  text-center" href="{% url "account:addService" %}">
                                             <div class ="bg-gray-100 rounded-2xl p-2 shadow-md">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" style="transform: scale(0.8);"  fill="currentColor" class="bi bi-shop-window" viewBox="0 0 16 16">

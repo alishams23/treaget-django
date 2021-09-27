@@ -1,4 +1,4 @@
-{% load define_action %} {% load static %}
+{% load define_action %} {% load position_user %} {% load static %}
 <!-- profile-cover-->
 <div class="flex lg:flex-row flex-col justify-content-between lg:py-8 lg:space-x-8">
 
@@ -90,6 +90,8 @@
 
 <div class="flex-row mb-24 mt-8 border-b d-flex justify-content-between">
     {% if user.ServiceProvider == True %}
+    {% position_user request.user as position_page %}
+    {% if position_page == 0 %}
     <a href="{% if request.resolver_match.url_name == 'profile' %}{% else %}{% url 'main:profile' user.username %}{% endif %}" class="flex-fill">
         <div class="d-flex  justify-content-center {% if request.resolver_match.url_name == 'profile' %} border-bottom-2   text-dark {% endif %} ">
             {% comment %}
@@ -113,7 +115,7 @@
         </div>
         {% endif %}
     </a>
-
+    {% endif %}
     <a href="{% url 'main:cv' user.username %}" class="flex-fill">
         <div class="d-flex justify-content-center  {% if request.resolver_match.url_name == 'cv' %} border-bottom-2  text-dark {% endif %}   ">
             {% comment %}

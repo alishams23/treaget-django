@@ -1,4 +1,5 @@
 
+from typing import Counter
 from django.core.exceptions import ValidationError
 from django.db.models import fields, manager
 from django.http import request
@@ -13,11 +14,22 @@ from rest_framework.fields import CurrentUserDefault
 class UserLessInformationSerializers(serializers.ModelSerializer):
     def get_author(self, obj):
         return  f"{obj.first_name + ' ' + obj.last_name}" 
+    def position_page(self, obj):
+        counter = 1
+        for category in obj.category.all() :
+            if category.position == 0 :
+                counter = 0
+        if len(obj.category.all()) == 0 :
+            counter = 0
+        return  counter
+
     full_name = serializers.SerializerMethodField("get_author")
+    position_user = serializers.SerializerMethodField("position_page")
+
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name","full_name",
-                  "image", "ServiceProvider")
+                  "image", "ServiceProvider","position_user")
 
 
 class CashSerializers(serializers.ModelSerializer):
@@ -147,6 +159,15 @@ class UserSerializers(serializers.ModelSerializer):
     def getFullName(self, obj):
         return f"{obj.first_name + ' ' + obj.last_name}"
 
+    def position_page(self, obj):
+        counter = 1
+        for category in obj.category.all() :
+            if category.position == 0 :
+                counter = 0
+        if len(obj.category.all()) == 0 :
+            counter = 0
+        return  counter
+
     def visitor_count(self, obj):
         user = None
         try:
@@ -159,11 +180,12 @@ class UserSerializers(serializers.ModelSerializer):
     category = CategorySerializers(many=True)
     visitorCount = serializers.SerializerMethodField("visitor_count")
     get_full_name = serializers.SerializerMethodField("getFullName")
+    position_user = serializers.SerializerMethodField("position_page")
 
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "bio", "image", "category", "followers", "following",
-                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name")
+                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user")
 
 
 class UsersRegisterSerializer(serializers.ModelSerializer):
