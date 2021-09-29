@@ -10,10 +10,18 @@ const explore = {
             project: false,
             userInfo: document.getElementById("SelfInformation").innerHTML,
             userInfoStatus: document.getElementById("SelfInfoServiceProvider").innerHTML,
+            page: 0,
         }
     },
     methods: {
         getDataExplore() {
+            fetch("/api/ExploreApiView/")
+                .then(response => response.json())
+                .then((data) => {
+                    this.picturePage == 1 ? this.results.push(data) : data.forEach(element => this.results[0].push(element))
+                });
+        },
+        searchUser() {
             fetch("/api/ExploreApiView/")
                 .then(response => response.json())
                 .then((data) => {
@@ -29,12 +37,12 @@ const explore = {
         },
         handleScroll(event) {
             console.log(this.results[0].length)
-            if (document.body.scrollHeight - window.scrollY <= 1000 && this.project == false) {
+            if (document.body.scrollHeight - window.scrollY <= 1000 && this.page == 0) {
                 this.picturePage += 1
                 this.getDataExplore();
                 this.wait(100)
 
-            } else if (document.body.scrollHeight - window.scrollY <= 1000 && this.project != false) {
+            } else if (document.body.scrollHeight - window.scrollY <= 1000 && this.page == 1) {
                 this.ProjectPage += 1
                 this.getDataExploreProject();
                 this.wait(100)

@@ -63,19 +63,19 @@
                     </form>
                 </div>
                 <div class="flex-row mb-3 mt-5 border-b  d-flex justify-content-between ">
-                    <div v-on:click="project=false" v-bind:class="project==false ? ' border-bottom-2  text-gray-700 ' : 'color-muted-1'" class="d-flex flex-fill justify-content-center ">
+                    <div v-on:click="page=0" v-bind:class="page==0 ? ' border-bottom-2  text-gray-700 ' : 'color-muted-1'" class="d-flex flex-fill justify-content-center ">
                         <div class="irsa  m-2">گالری</div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class=" bi bi-image-alt" viewBox="0 0 16 16">
                                  <path d="M7 2.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0zm4.225 4.053a.5.5 0 0 0-.577.093l-3.71 4.71-2.66-2.772a.5.5 0 0 0-.63.062L.002 13v2a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4.5l-4.777-3.947z"/>
                                 </svg>
                     </div>
-                    <div v-on:click="project=true" v-bind:class="project!=false ?  'border-bottom-2 text-gray-700   ' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
+                    <div v-on:click="page=1" v-bind:class="page==1 ?  'border-bottom-2 text-gray-700   ' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
                         <div class="irsa m-2">پروژه</div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-bag-fill" viewBox="0 0 16 16">
                             <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
                           </svg>
                     </div>
-                    <div v-on:click="project=true" v-bind:class="project==none ?  'border-bottom-2 text-gray-700   ' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
+                    <div v-on:click="page=2" v-bind:class="page==2 ?  'border-bottom-2 text-gray-700   ' : 'color-muted-1'" class="d-flex flex-fill  justify-content-center  ">
                         <div class="irsa m-2">کاربر</div>
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
                             <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
@@ -127,7 +127,7 @@
 
 
                     <ul class="px-3">
-                        <li v-show="project == false" hide>
+                        <li v-show="page == 0" hide>
                             <div id="posts" class="uk-child-width-1-2 uk-child-width-1-3@m uk-grid-small my-4" uk-grid="masonry: true">
                                 <a class="" v-bind:href="'/account/post/'+data.id" v-for="data in results[0]">
 
@@ -137,7 +137,7 @@
 
                             </div>
                         </li>
-                        <li v-show="project">
+                        <li v-show="page == 1">
 
                             <div class="bg-white border-top1  rounded-2xl shadow-1 my-5  rtl" v-for="data in resultsProject[0]">
                                 <div class="flex justify-between items-center px-3 py-3 mt-3 border-bottom">
@@ -199,6 +199,26 @@
                                    
                                
                                 </div>
+                        </li>
+                        <li v-show="page == 2" hide>
+                            <div class="uk-child-width-1-2 uk-child-width-1-4@m uk-grid-small" uk-grid="masonry: true">
+                                <div class="my-2">
+                                    <div class="rounded-lg bg-white w-full text-center" style="
+                            box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+                              rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+                          ">
+                                        <h4 class="irsa py-3 text-md" >
+                                          ascsac
+                                  
+                                        <div class="my-2 pb-2">
+                                            <p class="irsa text-sm text-dark">ascascsac</p>
+                                      
+                                        </div>
+                                       
+                                        
+                                    </div>
+                                </div>
+                            </div>
                         </li>
                     </ul>   
                 </div> 
