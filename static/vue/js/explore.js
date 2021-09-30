@@ -5,15 +5,32 @@ const explore = {
             picturePage: 1,
             ProjectPage: 1,
             counterMessage: 0,
+            search: "",
+            UsersData: [],
             results: [],
             resultsProject: [],
-            project: false,
             userInfo: document.getElementById("SelfInformation").innerHTML,
             userInfoStatus: document.getElementById("SelfInfoServiceProvider").innerHTML,
             page: 0,
         }
     },
     methods: {
+        searchModel(data) {
+            this.UsersData = []
+            this.results = []
+            this.resultsProject = [
+                []
+            ]
+            if (this.search != "") {
+                this.getDataExplore()
+                this.searchExploreProject()
+                this.searchUser()
+            } else {
+                this.getDataExplore()
+                this.getDataExploreProject()
+                this.searchUser()
+            }
+        },
         getDataExplore() {
             fetch("/api/ExploreApiView/")
                 .then(response => response.json())
@@ -22,17 +39,28 @@ const explore = {
                 });
         },
         searchUser() {
-            fetch("/api/ExploreApiView/")
+            fetch(`/api/UserSearchListApi/?search=${this.search}`)
                 .then(response => response.json())
                 .then((data) => {
-                    this.picturePage == 1 ? this.results.push(data) : data.forEach(element => this.results[0].push(element))
+                    data["results"].forEach(element => this.UsersData.push(element))
                 });
+        },
+        userClick() {
+            this.page = 2
+            this.searchUser()
         },
         getDataExploreProject() {
             fetch(`/api/ExploreProjectApiView/?page=${this.ProjectPage}`)
                 .then(response => response.json())
                 .then((data) => {
                     this.ProjectPage == 1 ? this.resultsProject.push(data["results"]) : data["results"].forEach(element => this.resultsProject[0].push(element));
+                });
+        },
+        searchExploreProject() {
+            fetch(`/api/RequestSearchApi/?search=${this.search}`)
+                .then(response => response.json())
+                .then((data) => {
+                    data["results"].forEach(element => this.resultsProject[0].push(element));
                 });
         },
         handleScroll(event) {
@@ -72,6 +100,7 @@ const explore = {
         this.getDataExploreProject();
         window.addEventListener('scroll', this.handleScroll);
 
-    }
+    },
+
 }
 Vue.createApp(explore).mount('#explore')

@@ -57,7 +57,7 @@
                                     <li>
                                         <a href="{% url 'main:profile' result.username %}">
                                             <div class="bg-black   transform  transition hover:scale-105 m-1 w-20  h-20" style="padding: 2px;border-radius: 35px ;">
-                                                <img src="{% if result.image %}{{ result.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class=" w-full h-full  border-2 border-white bg-gray-200" style="border-radius: 33px ;">
+                                                <img src="{% if result.image %}{{ result.image.url }}{% else %}{% static 'inside/avatar.jpg' %}{% endif %}" class=" w-full h-full  border-2 border-white bg-gray-200" style="border-radius: 33px ;object-fit: cover">
                                                 <a href="{% url 'account:follow_User' result.username %}" class=" bg-glass-dark  pt-1 border-t rounded-full w-6 h-6 flex justify-center items-center text-white  border-white absolute right-2 bottom-0 ">
                                                     + </a>
                                             </div>

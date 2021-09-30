@@ -232,7 +232,7 @@ class UserRetrieveApi(generics.RetrieveAPIView):
 class UserSearchListApi(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
-    filter_backends = [filters.SearchFilter,filterSpecial.DjangoFilterBackend]
+    filter_backends = [filters.SearchFilter]
     filterset_fields = ['category__title']
     search_fields = ["username","first_name","last_name","bio"]
     pagination_class = MyPagination
@@ -284,7 +284,7 @@ class RequestSearchApi(generics.ListAPIView):
     serializer_class = RequestSerializer
     filter_backends = [filters.SearchFilter,filters.OrderingFilter,filterSpecial.DjangoFilterBackend]
     filterset_class = RequestFilter
-    search_fields = ["title","body"]
+    search_fields = ["title","body","author__username","author__first_name","author__last_name"]
     ordering_fields = ["createdAdd"]
     pagination_class = MyPagination
 
