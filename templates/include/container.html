@@ -61,7 +61,7 @@
             </form>
             {% if not request.user.ServiceProvider and request.user.username and user.ServiceProvider == True %}
             <a href="{% url 'account:checkoutUser' user.username %}" class=" bg-gray-200  shadow-sm p-2 pink-500 px-6 rounded-2xl text-black irsa text-xs  shadow-md"> ثبت سفارش</a>
-            <a href="{% url " account:addSafePayment " user.username %}" class=" bg-gray-200  shadow-sm p-2 pink-500 px-6 rounded-2xl text-black irsa  text-xs  shadow-md">پرداخت امن</a> {% endif %} {% endif %}
+            <a href="{% url 'account:addSafePayment' user.username %}" class=" bg-gray-200  shadow-sm p-2 pink-500 px-6 rounded-2xl text-black irsa  text-xs  shadow-md">پرداخت امن</a> {% endif %} {% endif %}
             <div>
 
 
