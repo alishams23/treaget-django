@@ -1,3 +1,4 @@
+from itertools import count
 from PIL.Image import Image
 from django.contrib.postgres.search import SearchVector
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -151,7 +152,13 @@ def deleteDuplicate(test_list):
 
 def profile(request, slug):
     userResult = User.objects.get(username=slug)
-
+    counter = 1
+    for category in userResult.category.all() :
+        if category.position == 0 :
+            counter = 0
+    if len(userResult.category.all()) == 0 :
+        counter = 0
+    if counter == 1 : return redirect(f"/p/{userResult.username}/cv")
     if request.user.ip_address not in userResult.numberVisitors.all():
         userResult.numberVisitors.add(request.user.ip_address)
     categorySlice = []
@@ -204,7 +211,13 @@ def search(request):
 
 
 def requestUser(request, pk):
+    validation_user = True
+    data = Request.objects.get(pk=pk)
+    for accept in  data.subcategories.all():
+        if accept.author == request.user :
+            validation_user = False
     context = {
-        'result': Request.objects.get(pk=pk)
+        'result': data,
+        'validation_user':validation_user
     }
     return render(request, "main/request.html", context)

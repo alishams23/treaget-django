@@ -117,7 +117,7 @@ class Picture(models.Model):
     class Meta:
         verbose_name = "عکس"
         verbose_name_plural = "عکس ها"
-        ordering = ("-position", "-createdAdd")
+        # ordering = ("-position", "-createdAdd")
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

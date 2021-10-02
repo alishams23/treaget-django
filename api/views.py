@@ -289,6 +289,15 @@ class RequestSearchApi(generics.ListAPIView):
     pagination_class = MyPagination
 
 
+class PictureSearchApi(generics.ListAPIView):
+    queryset = Picture.objects.all().order_by("?")
+    serializer_class = PictureSerializer
+    # ordering_fields  = ["?"]
+    filter_backends = [filters.SearchFilter,filterSpecial.DjangoFilterBackend]
+    search_fields = ["alt","category__title"]
+    pagination_class = MyPagination
+
+
 class NotificationApi(generics.ListAPIView):
     serializer_class = NotificationSerializers
     def get_queryset(self):

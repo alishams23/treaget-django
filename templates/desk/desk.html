@@ -1,5 +1,4 @@
-{% load widget_tweaks %}
-{% load static %}
+{% load widget_tweaks %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,10 +16,9 @@
     <title>میز کار</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین">
-{% include "include/header.html" %}
+    <meta name="description" content="تریگت - شبکه ی بازار خدمات آنلاین"> {% include "include/header.html" %}
     <script type="text/javascript">
-      window.CSRF_TOKEN = "{{ csrf_token }}";
+        window.CSRF_TOKEN = "{{ csrf_token }}";
     </script>
 </head>
 
@@ -33,108 +31,112 @@
 
         <div class="main_content">
 
-        {% include "include/mainHeader.html" %}
+            {% include "include/mainHeader.html" %}
 
             <div class="container  m-auto">
-            {%  include "include/downNavbar.html" %}
-
-                {% include "include/dashboardHeader.html" %}
-                   <div class="my-6 grid lg:grid-cols-5 grid-cols-3 gap-2  uk-link-reset">
+                {% include "include/downNavbar.html" %} {% include "include/dashboardHeader.html" %}
+                <div class="my-6 grid lg:grid-cols-5 grid-cols-3 gap-2  uk-link-reset">
                     {% if request.user.category.count == 0 and request.user.ServiceProvider == True %}
-                        <a href="#">
-                            <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                                <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> توانایی های خود را ثبت کنید </span>
-                            </div>
-                        </a>
+                    <a href="#">
+                        <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                            <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> توانایی های خود را ثبت کنید </span>
+                        </div>
+                    </a>
+                    {% endif %} {% if request.user.image %} {% else %}
+                    <a href="{% url " account:setting " %}">
+                        <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                            <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> تصویر پروفایل خود را اضافه کنید </span>
+                        </div>
+                    </a>
+                    {% endif %} {% if timelineCheck == True and request.user.ServiceProvider == True %}
+                    <a href="{% url " account:addCv " %}">
+                        <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                            <i class="text-4xl uil-plus-circle  m-2"></i> <span class="irsa m-4 text-center"> رزومه ی خود را ثبت کنید </span>
+                        </div>
+                    </a>
+                    {% endif %} {% if serviceCheck == True and request.user.ServiceProvider == True %}
+                    <a href="{% url 'account:addService' %}">
+                        <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                            <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> خدمات و قیمت خدمات خود را اضافه کنید </span>
+                        </div>
+                    </a>
+                    {% endif %} {% if pictureCheck == True and request.user.ServiceProvider == True %}
+                    <a href="{% url " account:addPicture " %}">
+                        <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                            <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> اولین نمونه کار خود را ثبت کنید </span>
+                        </div>
+                    </a>
+                    {% endif %} {% if request.user.bio %} {% else %}
+                    <a href="{% url " account:setting " %}">
+                        <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                            <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> بیویی برای خود ثبت کنید </span>
+                        </div>
+                    </a>
                     {% endif %}
-                       {% if request.user.image %}
-                           {% else %}
-                       <a href="{% url "account:setting" %}">
-                            <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                                <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> تصویر پروفایل خود را اضافه کنید </span>
-                            </div>
-                        </a>
-                       {% endif %}
-                   {% if timelineCheck == True and request.user.ServiceProvider == True %}
-                        <a href="{% url "account:addCv" %}">
-                            <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                                <i class="text-4xl uil-plus-circle  m-2"></i> <span class="irsa m-4 text-center"> رزومه ی خود را ثبت کنید </span>
-                            </div>
-                        </a>
-                   {% endif %}
-                    {% if serviceCheck == True and request.user.ServiceProvider == True %}
-                        <a href="{% url 'account:addService' %}">
-                            <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                                <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> خدمات و قیمت خدمات خود را اضافه کنید </span>
-                            </div>
-                        </a>
-                   {% endif %}
-                   {% if pictureCheck == True and request.user.ServiceProvider == True %}
-                        <a href="{% url "account:addPicture" %}">
-                            <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                                <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> اولین نمونه کار خود را ثبت کنید </span>
-                            </div>
-                        </a>
-                   {% endif %}
-                   {% if request.user.bio %}
-                       {% else %}
-                       <a href="{% url "account:setting" %}">
-                            <div class="bg-gray-100 border-4 border-dashed flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                                <i class="text-4xl uil-plus-circle m-2"></i> <span class="irsa m-4 text-center"> بیویی برای خود ثبت کنید </span>
-                            </div>
-                        </a>
-                   {% endif %}
 
                 </div>
 
-                   <div class="my-6 grid lg:grid-cols-5 grid-cols-3 gap-2  uk-link-reset " uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 200; repeat: true">
+                <div class="my-6 grid lg:grid-cols-5 grid-cols-3 gap-2  uk-link-reset " uk-scrollspy="cls: uk-animation-fade; target: .uk-card; delay: 200; repeat: true">
 
-                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ request.user.numberVisitors.count }}</p> <span class="irsa m-4 text-center"> بازدید کننده  </span>
-                        </div>
-                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberSafePayment }}</p> <span class="irsa m-4 text-center"> پرداخت امن  </span>
-                        </div>
-                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberOrders }}</p> <span class="irsa m-4 text-center">  سفارشات  </span>
-                        </div>
-                   {% if numberService %}
-                        <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberPicture }}</p> <span class="irsa m-4 text-center">  نمونه کار های شما </span>
-                        </div>
-                   {% else %}
-                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberRequest }}</p> <span class="irsa m-4 text-center">  درخواست های شما </span>
-                        </div>
-                   {% endif %}
-                        <div class="bg-white shadow-1 border-top1  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ request.user.cash }}</p> <span class="irsa m-4 text-center">موجودی شما</span>
-                        </div>
-                        <div class="bg-white shadow-1 border-top1  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ request.user.followers.count }}</p> <span class="irsa m-4 text-center"> دنبال کنندگان</span>
-                        </div>
-                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ request.user.following.count }}</p> <span class="irsa m-4 text-center"> دنبال شوندگان</span>
-                        </div>
-                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberDoProject }}</p> <span class="irsa m-4 text-center"> پروژه های انجام شده</span>
-                        </div>
-                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberDoingProject }}</p> <span class="irsa m-4 text-center"> پروژه های در حال انجام</span>
-                       </div>
-                       {% if numberService %}
-                       <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
-                            <p class="irsa text-xl pt-3 text-dark">{{ numberService }}</p> <span class="irsa m-4 text-center">خدماتی که انجام میدید</span>
-                       </div>
-                       {% endif %}
+                    <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ request.user.numberVisitors.count }}</p> <span class="irsa m-4 text-center"> بازدید کننده  </span>
+                    </div>
+                    <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberSafePayment }}</p> <span class="irsa m-4 text-center"> پرداخت امن  </span>
+                    </div>
+                    <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberOrders }}</p> <span class="irsa m-4 text-center">  سفارشات  </span>
+                    </div>
+                    {% if numberService %}
+                    <div class="bg-white shadow-1 border-top1 uk-card flex flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberPicture }}</p> <span class="irsa m-4 text-center">  نمونه کار های شما </span>
+                    </div>
+                    {% else %}
+                    <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberRequest }}</p> <span class="irsa m-4 text-center">  درخواست های شما </span>
+                    </div>
+                    {% endif %}
+                    <div class="bg-white shadow-1 border-top1  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ request.user.cash }}</p> <span class="irsa m-4 text-center">موجودی شما</span>
+                    </div>
+                    <div class="bg-white shadow-1 border-top1  flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ request.user.followers.count }}</p> <span class="irsa m-4 text-center"> دنبال کنندگان</span>
+                    </div>
+                    <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ request.user.following.count }}</p> <span class="irsa m-4 text-center"> دنبال شوندگان</span>
+                    </div>
+                    <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberDoProject }}</p> <span class="irsa m-4 text-center"> پروژه های انجام شده</span>
+                    </div>
+                    <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberDoingProject }}</p> <span class="irsa m-4 text-center"> پروژه های در حال انجام</span>
+                    </div>
+                    {% if numberService %}
+                    <div class="bg-white  shadow-1 border-top1 flex uk-card flex-col h-full items-center justify-center relative rounded-2xl w-full">
+                        <p class="irsa text-xl pt-3 text-dark">{{ numberService }}</p> <span class="irsa m-4 text-center">خدماتی که انجام میدید</span>
+                    </div>
+                    {% endif %}
 
                 </div>
-            <div class="alert alert-success rtl" role="alert">
-              <h4 class="alert-heading irsa text-lg">{{ request.user.get_full_name }} عزیز خوش آمدی </h4>
-              <p class="irsa">نسخه اولیه تریگت در دسترس شما می باشد</p>
-              <hr>
-              <p class="mb-0 mt-1 irsa text-xs">لطفا قوانین و توضیحات سایت را مطالعه کنید در صورتی که به راهنمایی بیشتری نیاز داشتید با ما در ارتباط باشید</p>
-            </div>
+                <div class="alert bg-white rounded-lg rtl" role="alert">
+                    <div class="d-flex pb-3">
+                        <div class="rounded-full w-12  h-12 d-flex  justify-content-center gradient-orange">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                          <g id="Group_6445" data-name="Group 6445" transform="translate(-3 -2)">
+                            <path id="Path-75" d="M5,15,3,21.5l6.5-2Z" fill="#fd7028" fill-rule="evenodd" opacity="0.3"></path>
+                            <path id="Combined-Shape" d="M13,2A10,10,0,1,1,3,12,10,10,0,0,1,13,2ZM7.168,13.555A6.862,6.862,0,0,0,13,17a6.862,6.862,0,0,0,5.832-3.445,1,1,0,1,0-1.664-1.109A4.894,4.894,0,0,1,13,15a4.894,4.894,0,0,1-4.168-2.555,1,1,0,1,0-1.664,1.109Z" fill="#fd7028" fill-rule="evenodd"></path>
+                          </g>
+                        </svg>
+                        </div>
+                        <div class="pr-2">
+                            <h4 class="alert-heading font-semibold irsa text-lg">{{ request.user.get_full_name }} عزیز خوش آمدی </h4>
+                            <p class="irsa">نسخه اولیه تریگت در دسترس شما می باشد</p>
+
+                        </div>
+                    </div>
+                    <hr>
+                    <p class="mb-0 mt-1 irsa text-xs">لطفا قوانین و توضیحات سایت را مطالعه کنید در صورتی که به راهنمایی بیشتری نیاز داشتید با ما در ارتباط باشید</p>
+                </div>
             </div>
 
         </div>
@@ -143,7 +145,7 @@
 
 
 
- <!-- Scripts
+    <!-- Scripts
     ================================================== -->
     {% include "include/footer.html" %}
 

@@ -17,15 +17,25 @@ const explore = {
     methods: {
         searchModel(data) {
             this.UsersData = []
-            this.results = []
+            this.results = [
+                []
+            ]
             this.resultsProject = [
                 []
             ]
             if (this.search != "") {
-                this.getDataExplore()
+
+                this.picturePage = 1
+                this.searchExplorePicture()
                 this.searchExploreProject()
                 this.searchUser()
             } else {
+                this.results = [
+
+                ]
+                this.resultsProject = [
+
+                ]
                 this.getDataExplore()
                 this.getDataExploreProject()
                 this.searchUser()
@@ -61,6 +71,13 @@ const explore = {
                 .then(response => response.json())
                 .then((data) => {
                     data["results"].forEach(element => this.resultsProject[0].push(element));
+                });
+        },
+        searchExplorePicture() {
+            fetch(`/api/PictureSearchApi/?page=${this.picturePage}&search=${this.search}`)
+                .then(response => response.json())
+                .then((data) => {
+                    data["results"].forEach(element => this.results[0].push(element));
                 });
         },
         handleScroll(event) {

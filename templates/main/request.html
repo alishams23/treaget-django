@@ -35,7 +35,7 @@
                     <div class="space-y-5 flex-shrink-0 lg:w-7/12">
                         <div id="posts" class="space-y-5">
                             <div class="grid  mt-12 gap-8 row">
-                                <div class="bg-white rounded-md lg:shadow-lg shadow  rtl">
+                                <div class="bg-white rounded-md shadow-1  rtl">
                                     <div class="flex justify-between items-center px-4 py-3 mt-3 rounded-lg bg-gray-100">
                                         <div class="flex flex-1 items-center space-x-4">
                                             <a href="{% url 'main:profile' result.author.username %}">
@@ -48,7 +48,7 @@
                                         </div>
                                         <div>
                                             <a> <i class="icon-feather-more-horizontal text-2xl hover:bg-gray-200 rounded-full p-2 transition -mr-1 dark:hover:bg-gray-700"></i> </a>
-                                            <div class="bg-white w-56 shadow-md mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700" uk-drop="mode: hover;pos: top-right">
+                                            <div class="bg-white w-56 shadow-1 mx-auto p-2 mt-12 rounded-md text-gray-500 hidden text-base border border-gray-100 dark:bg-gray-900 dark:text-gray-100 dark:border-gray-700" uk-drop="mode: hover;pos: top-right">
 
                                                 <ul class="rtl space-y-1">
                                                     <li>
@@ -80,12 +80,12 @@
                                         <br>
                                         <p class="irsa px-2">{% jalali result.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p>
                                     </a>
-                                    {% if result.author != request.user and request.user.ServiceProvider %}
-                                <a href="{% url "account:addAcceptRequest" result.pk  %}" class="py-3 px-3 rounded-lg text-white irsa bg-blue-600">قبول درخواست</a>
+                                    {% if result.author != request.user and request.user.ServiceProvider and validation_user %}
+                                <a href="{% url "account:addAcceptRequest" result.pk  %}" class="py-2 px-3 rounded-2xl text-white irsa bg-treaget">قبول درخواست</a>
                                 {% endif %}
                                 </div>
                                 {% for resultAccept in result.subcategories.all %}
-                                <div  class="bg-white rounded-md lg:shadow-lg shadow  rtl">
+                                <div  class="bg-white rounded-md shadow-1   rtl">
                                      <div class="flex justify-between items-center px-4 py-3 mt-3 rounded-lg bg-gray-100">
                                         <div class="flex flex-1 items-center space-x-4">
                                             <a href="{% url 'main:profile' resultAccept.author.username %}">
