@@ -111,14 +111,19 @@
                   </p>
                 </div>
                 <div class="button_app padding-t-3">
-                  <a href="{% url 'account:register' %}" class="btn btn_with_ico rounded-pill">
-                    <span class="irsa">ثبت نام</span>
-                    <i class="tio arrow_drop_down_circle_outlined "></i>
+                  <a href="/account/register/" data-aos="fade-up" >
+                    <button type="button"
+                      class="btn btn_md_primary sweep_letter bg-orange2 c-white sweep_top rounded-pill">
+                      <div class="inside_item">
+                        <span class="irsa" data-hover="ثبت نام">ثبت نام </span>
+                      </div>
+                    </button>
                   </a>
-                  <div class=" mt-4 ">
-                    <a href="{% url 'main:explore' %}" class="btn bg-white p-3 rounded-pill  irsa">ورود به عنوان مهمان</a>
-{#                    <i class="tio apple align-middle font-s-16"></i>#}
-{#                    <i class="tio android align-middle font-s-16"></i>#}
+                  <div class=" mt-4 " data-aos="fade-up">
+                    <a href="/account/login/" class="btn bg-white p-3 rounded-pill  irsa">ورود</a>
+                  </div>
+                  <div class=" mt-4 " data-aos="fade-up">
+                    <a href="{% url 'main:explore' %}" class="text-muted   irsa">ورود به عنوان مهمان</a>
                   </div>
                 </div>
               </div>
@@ -132,7 +137,7 @@
         <!-- End. Banner -->
 
         <!-- Start Service -->
-        <section class="services_section service_four mb-5">
+        <section class="services_section service_four margin-b-10 margin-t-10">
           <div class="container ">
             <div class="row justify-content-center text-center">
               <div class="col-md-4 item mx-auto">
@@ -149,12 +154,11 @@
                         </g>
                       </svg>
                     </div>
-                  <div class="txt irsa">
-                    <h3>ارائه خدمات</h3>
-                    <p>
-                      صفحه خودتان را به عنوان خدمات دهنده ثبت کنید و با اشتراک گذاری نمونه کارها و اطلاعاتی که برای مشتریان اهمیت دارد شروع به کار کنید
-                    </p>
-                  </div>
+                    <div class="txt irsa">
+                      <h3>استخدام فریلنسر</h3>
+                      <p>
+                        بر اساس نوع کار و خدماتی که نیاز دارید فریلنسر های مورد نظرتان را پیدا و با آن ها از طریق سایت وارد مداکره شوید                    </p>
+                    </div>
                 </div>
               </div>
             </div>
@@ -177,21 +181,17 @@
 
                   </div>
                   <div class="txt irsa">
-                    <h3>ایجاد پروژه</h3>
-                    <p>
-                      پروژه ی کاریتان را با جزئیات و قیمت پیشنهادی  مشخص کنید تا خدمات دهنده مناسب خودتان را پیدا کنید
-                    </p>
+                    <h3>پرداخت امن</h3>
+                    <p>با استفاده از پرداخت امن هزینه ی پرداختی در سایت بلوکه و با اتمام کار و تایید شما هزینه برای فریلنسر قابل برداشت میشود</p>
                   </div>
                 </div>
               </div>
               <div class="col-md-4 col-lg-3 item my-md-auto order-3 order-md-0">
                 <div data-aos="fade-up" data-aos-delay="100">
-                  <button type="button"
-                    class="btn btn_md_primary sweep_letter bg-orange2 c-white sweep_top rounded-pill">
-                    <div class="inside_item">
-                      <span class="irsa" data-hover="ثبت نام">شروع کنید </span>
-                    </div>
-                  </button>
+                   <div data-aos="fade-up" data-aos-delay="100">
+                    <a  class="font-s-20 p-3 rounded-pill font-w-500 irsa">اگر شما کارفرما هستید</a>
+
+                </div>
                 </div>
               </div>
               <div class="col-md-4 item">
@@ -207,9 +207,12 @@
                             </g>
                           </svg>
                   </div>
+
+                 
                   <div class="txt irsa">
-                    <h3>گزینه مناسب</h3>
-                    <p>خدمات مورد نیازتان را میتوایند متناسب باکیفیت کار یا بودجه مدنظرتان انتخاب و ثبت سفارش کنید  </p>
+                    <h3>ثبت پروژه</h3>
+                    <p>
+                      پروژه های کاری خود را با اطمینان به افراد متخصص بسپارید و از روند پیشرفت آن ذر قالب سیستم مدیریت پروژه مطلع شوید                    </p>
                   </div>
                 </div>
               </div>
@@ -217,7 +220,92 @@
           </div>
         </section>
         <!-- End. Services -->
+        <section class="features_app_fitness padding-t-15 margin-t-5 margin-b-10" id="Features">
+          <div class="container">
+            <div class="row justify-content-center text-center">
+              <div class="col-lg-6">
+                <div class="title_sections">
+                  <h4 class="font-s-20 font-w-500">اگر شما فریلنسر هستید</h4>
+                </div>
+              </div>
+            </div>
+            <div class="body_features">
+              <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4 mb-5 mb-md-0">
+                  <div class="moc_app">
+                    <div class="tab-content" id="v-pills-tabContent">
+                      <div class="tab-pane fade" id="v-pills-screenOne" role="tabpanel"
+                        aria-labelledby="v-pills-screenOne-tab">
+                        <img class="slide-in-bottom" src="{% static 'main/img/app/002.png' %}" alt="">
+                      </div>
+                      <div class="tab-pane fade show active" id="v-pills-screenTwo" role="tabpanel"
+                        aria-labelledby="v-pills-screenTwo-tab">
+                        <img class="slide-in-bottom" src="{% static 'main/img/app/001.png' %}" alt="">
+                      </div>
+                      <div class="tab-pane fade" id="v-pills-screenThree" role="tabpanel"
+                        aria-labelledby="v-pills-screenThree-tab">
+                        <img class="slide-in-bottom" src="{% static 'main/img/app/003.png' %}" alt="">
+                      </div>
+                    </div>
 
+                  </div>
+
+                </div>
+                <div class="col-md-6 col-lg-6 offset-lg-1">
+                  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link" id="v-pills-screenOne-tab" data-toggle="pill" href="#v-pills-screenOne"
+                      role="tab" aria-controls="v-pills-screenOne" aria-selected="false">
+                      <div class="row">
+                        <div class="col-lg-8">
+                          <div class="txt_feat">
+                            <h3>پروژه های آماده</h3>
+
+                            <span>پروژه های متناسب با حرفه خود را انتخاب و زمان انجام آن را پیشنهاد دهید</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                    <a class="nav-link active" id="v-pills-screenTwo-tab" data-toggle="pill" href="#v-pills-screenTwo"
+                      role="tab" aria-controls="v-pills-screenTwo" aria-selected="true">
+                      <div class="row">
+                        <div class="col-lg-8">
+                          <div class="txt_feat">
+                            <h3>کیف پول</h3>
+
+                            <span>هزینه ی واریزی کارفرما در کیف پول مجازی شما بلوکه و در اتمام کار قابل برداشت است</span>
+                          </div>
+                        </div>
+                        <div class="col-lg-4 my-auto">
+                          <!-- <div class="play_vv">
+                            <button type="button" class="btn btn_video" data-toggle="modal"
+                              data-src="https://www.youtube.com/embed/YbJOTdZBX1g" data-target="#mdllVideo">
+                              <div class="scale rounded-circle b play_video no-before no-after">
+                                <i class="tio play_outlined"></i>
+                              </div>
+                            </button>
+                            <span class="name_vv">Play Video</span>
+                          </div> -->
+                        </div>
+                      </div>
+                    </a>
+                    <a class="nav-link" id="v-pills-screenThree-tab" data-toggle="pill" href="#v-pills-screenThree"
+                      role="tab" aria-controls="v-pills-screenThree" aria-selected="false">
+                      <div class="row">
+                        <div class="col-lg-8">
+                          <div class="txt_feat">
+                            <h3>ثبت خدمات</h3>
+
+                            <span>خدمات و تعرفه های شخصی خود را مشخص کنید تا کارفرمایان و صاحبان کار بر اساس آن با شما همکاری کنند</span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
         <!-- Start features_app_fitness -->
 {#        <section class="features_app_fitness padding-t-12 margin-b-3" id="Features">#}
 {#          <div class="container">#}
@@ -654,7 +742,7 @@
                   <div class="media-body my-auto">
                     <div class="txt">
 {#                      <span>نیازمند ارتباط با ما هستید? ارتباط با ما</span>#}
-                      <a href="mailto:info@fitness.com">
+                      <a href="mailto:info@fitness.com" class="font-s-20">
                         treaget@gmail.com
                       </a>
                         
@@ -665,7 +753,7 @@
                 </div>
              
               </div>
-                 <a href="https://instagram.com/treaget" class="btn-social c-white color-instagram border-0 mb-0 mr-2">
+                 <a href="https://instagram.com/treaget" class="btn-social c-white color-instagram border-0 mt-3 mb-0 mr-2">
                             <i class="tio instagram"></i>
                         </a>
             </div>
