@@ -89,9 +89,7 @@
 <!-- edith1 open -->
 
 <div class="flex-row mb-24 mt-8 border-b d-flex justify-content-between">
-    {% if user.ServiceProvider == True %}
-    {% position_user request.user as position_page %}
-    {% if position_page == 0 %}
+    {% if user.ServiceProvider == True %} {% position_user user as position_page %} {% if position_page == 0 %}
     <a href="{% if request.resolver_match.url_name == 'profile' %}{% else %}{% url 'main:profile' user.username %}{% endif %}" class="flex-fill">
         <div class="d-flex  justify-content-center {% if request.resolver_match.url_name == 'profile' %} border-bottom-2   text-dark {% endif %} ">
             {% comment %}
