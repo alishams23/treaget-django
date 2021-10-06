@@ -90,6 +90,24 @@
     padding-right: 1em;
 }
 
+.active_navbar {
+    border-radius: 11px;
+    color: #eb5421 !important;
+    /* box-shadow: rgba(50, 50, 105, 0.05) 0px 2px 5px 0px, rgba(0, 0, 0, 0.0) 0px 1px 1px 0px; */
+}
+
+.active_navbar .child_menu {
+    width: 2.8px;
+    height: 24px;
+    border-radius: 60px;
+    background-color: #eb5421;
+}
+
+.navbar_menu {
+    color: #b4b4b4 !important;
+    /* background-color: #eb5421; */
+}
+
 
 /* .border-top1 {
     border-bottom: 5px solid rgb(243, 243, 243);

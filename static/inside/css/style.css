@@ -2255,10 +2255,9 @@ header .uk-dropdown {
     transition: all 300ms 0s ease-in-out;
     position: fixed;
     height: 100%;
-    /* margin-top: 0px; */
-    padding-top: 10px;
+    padding-top: 2px;
     width: 300px;
-    /* z-index: 100; */
+    z-index: 100;
     padding-bottom: 30px;
     overflow: hidden;
     /* --tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
