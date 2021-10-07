@@ -89,7 +89,7 @@
 
                     </div>
                     <div class="d-flex justify-content-center" v-if="loading">
-                        <img src="{% static 'vue/image/loading.gif' %}" alt="loading" />
+                        <img src="{% static 'vue/image/loading.gif' %}" alt="loading" style="width: 40px;" />
                     </div>
                     <div v-if="listOrders.length == 0">{% include "include/empty.html" %}</div>
                 </div>
