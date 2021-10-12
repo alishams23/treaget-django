@@ -70,7 +70,7 @@ class PictureSerializer(serializers.ModelSerializer):
 
     likeAuthor = serializers.SerializerMethodField("like_author")
     like = UserLessInformationSerializers(many=True, required=False)
-    author = UserLessInformationSerializers()
+    author = UserLessInformationSerializers(required=False,read_only=True)
     like_count = serializers.IntegerField(
         source='like.count',
         read_only=True
