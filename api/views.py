@@ -57,7 +57,7 @@ class HomeApiView(viewsets.ModelViewSet):
             chain(firstData, secondData),
             key=attrgetter('createdAdd'), reverse=True)
         if len(result_list) == 0 :
-            result_list = Picture.objects.all()
+            result_list = Picture.objects.all().order_by("-pk")
         results = list()
         results_per_page = 5
         postnumber = self.request.GET['page']
@@ -116,7 +116,14 @@ class ExploreProjectApiView (generics.ListAPIView):
 class timelineRetrieveApiView(generics.ListAPIView):
     serializer_class = TimeLineserializers
     def get_queryset(self):
-        return Timeline.objects.filter(person__username=self.request.GET['username'])
+        return Timeline.objects.filter(person__username=self.request.GET['username']).order_by("pk")
+
+
+class timelineCreateApi(generics.CreateAPIView):
+    queryset = Timeline.objects.all()
+    serializer_class = TimeLineserializers
+    def perform_create(self, serializer):
+        serializer.save(person=self.request.user)
 
 
 class timelineDeleteApi(APIView):

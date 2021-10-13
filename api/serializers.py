@@ -92,7 +92,7 @@ class RequestSerializer(serializers.ModelSerializer):
     #         "full_name": f"{obj.author.first_name + ' ' + obj.author.last_name}"
     #     }
     subcategories = AcceptSerializers(many=True, required=False)
-    author = UserLessInformationSerializers()
+    author = UserLessInformationSerializers(required=False,read_only=True)
 
     class Meta:
         model = Request
@@ -100,13 +100,21 @@ class RequestSerializer(serializers.ModelSerializer):
 
 
 class TimeLineserializers(serializers.ModelSerializer):
+    person = UserLessInformationSerializers(required=False,read_only=True)
+    
     class Meta:
         model = Timeline
         fields = "__all__"
 
+    def validate(self, data):
+        body = data.get('body', None)
+        if  not body:
+            raise serializers.ValidationError("body required.")
+        return data
+
 
 class MessageSerializers(serializers.ModelSerializer):
-    author = UserLessInformationSerializers()
+    author = UserLessInformationSerializers(required=False,read_only=True)
     receiver = UserLessInformationSerializers()
 
     class Meta:

@@ -22,6 +22,8 @@ urlpatterns = [
          views.timelineDeleteApi.as_view(), name="timelineDeleteApi"),
     path('timelineRetrieveApiView/', views.timelineRetrieveApiView.as_view(),
          name="timelineRetrieveApiView"),
+    path('timelineCreateApi/', views.timelineCreateApi.as_view(),
+         name="timelineCreateApi"),
     path('MassageApi/', views.MassageApi.as_view(), name="MassageApi"),
     path('AllMassageApi/', views.AllMassageApi.as_view(), name="AllMassageApi"),
     path('FollowUnfollowApi/<str:username>/',
