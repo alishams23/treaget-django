@@ -483,4 +483,7 @@ class ListUserMessageApi(APIView):
         return Response(result,status=status.HTTP_200_OK)
 
     
-
+class RequestListApi(generics.ListAPIView):
+    serializer_class = RequestSerializer
+    def get_queryset(self):
+        return Request.objects.filter(author__username=self.kwargs.get('username')).order_by("-pk")

@@ -44,6 +44,7 @@ urlpatterns = [
     path('RequestPostDestroyRetrive/<int:pk>/',
          views.RequestPostDestroyRetrive.as_view(), name="RequestPostDestroyRetrive"),
     path('AddRequestApi/', views.AddRequestApi.as_view(), name="AddRequestApi"),
+    path('RequestListApi/<str:username>/', views.RequestListApi.as_view(), name="RequestListApi"),
     path('DestroyRequestApi/<int:pk>/', views.DestroyRequestApi.as_view(), name="DestroyRequestApi"),
     path('RequestSearchApi/', views.RequestSearchApi.as_view(),name="RequestSearchApi"),
     path('PictureSearchApi/', views.PictureSearchApi.as_view(),

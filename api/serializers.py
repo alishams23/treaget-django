@@ -91,7 +91,7 @@ class RequestSerializer(serializers.ModelSerializer):
     #         "last_name": obj.author.last_name,
     #         "full_name": f"{obj.author.first_name + ' ' + obj.author.last_name}"
     #     }
-    subcategories = AcceptSerializers(many=True, required=False)
+    subcategories = AcceptSerializers(many=True, required=False,read_only=True)
     author = UserLessInformationSerializers(required=False,read_only=True)
 
     class Meta:
