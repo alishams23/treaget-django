@@ -43,6 +43,8 @@ urlpatterns = [
          views.PicturePostDestroyRetrive.as_view(), name="PicturePostDestroyRetrive"),
     path('RequestPostDestroyRetrive/<int:pk>/',
          views.RequestPostDestroyRetrive.as_view(), name="RequestPostDestroyRetrive"),
+     path('AddAcceptRequestApi/<int:pk>/',
+         views.AddAcceptRequestApi.as_view(), name="AddAcceptRequestApi"),
     path('AddRequestApi/', views.AddRequestApi.as_view(), name="AddRequestApi"),
     path('RequestListApi/<str:username>/', views.RequestListApi.as_view(), name="RequestListApi"),
     path('DestroyRequestApi/<int:pk>/', views.DestroyRequestApi.as_view(), name="DestroyRequestApi"),

@@ -39,6 +39,8 @@ class CashSerializers(serializers.ModelSerializer):
 
 
 class AcceptSerializers(serializers.ModelSerializer):
+    author = UserLessInformationSerializers(required=False,read_only=True)
+
     class Meta:
         model = Accept
         fields = "__all__"
