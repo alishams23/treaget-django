@@ -73,7 +73,7 @@ class HomeApiView(viewsets.ModelViewSet):
             if isinstance(entry, Picture):
                 serializer = PictureSerializer(entry,context={'request': request})
             if isinstance(entry, Request):
-                serializer = RequestSerializer(entry)
+                serializer = RequestSerializer(entry,context={'request': request})
             data_dict = {'item': item_type, 'data': serializer.data}
             results.append(data_dict)
         return Response(results)
