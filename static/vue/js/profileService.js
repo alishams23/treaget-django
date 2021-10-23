@@ -47,7 +47,7 @@ const profile = {
                         "Content-Type": "application/json",
                         'X-CSRFToken': window.CSRF_TOKEN
                     },
-                    body: JSON.stringify({ "price": this.orderData["price"], "title": this.orderData["title"], "body": this.descriptionOrder, "service": this.orderData["id"], "optionService": listOptionService }),
+                    body: JSON.stringify({ "price": this.orderData["price"], "title": this.orderData["title"], "body": this.descriptionOrder, "service": this.orderData["id"], "optionsServiceMain": listOptionService }),
                 }).then(response => response.json())
                 .then((data) => {
                     window.location.href = `/account/orders/`

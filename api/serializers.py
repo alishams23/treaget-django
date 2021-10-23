@@ -284,19 +284,26 @@ class OrderSerializers(serializers.ModelSerializer):
     author = UserLessInformationSerializers(read_only=True)
     designer = UserLessInformationSerializers(read_only=True)
     safePayment = SafePaymentSerializer(read_only=True)
+    accept=serializers.BooleanField(read_only=True)
+
     class Meta:
         model = OrderUser
         fields = "__all__"
 
     def to_representation(self, instance):
+      
+        self.fields['optionsServiceMain'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
+        
         self.fields['service'] =  ServiceSerializers(required=False,read_only=True)
-        self.fields['optionsService'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
         return super(OrderSerializers, self).to_representation(instance)
 
 
     def validate(self, data):
         service = data.get('service', None)
         title = data.get('title', None)
+        accept = data.get('accept', None)
         if not service and not title:
             raise serializers.ValidationError("at least one date input (service,title) required.")
+        if accept in [True,False]:
+            raise serializers.ValidationError("accept need to be none")
         return data

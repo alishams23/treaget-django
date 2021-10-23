@@ -141,7 +141,9 @@ class OrderUser(models.Model):
     body = models.TextField(
         verbose_name="توضیحات محصول", blank=True, null=True)
     # optionService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionMainOrder",verbose_name="آپشن ها")
-    optionsService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionlastOrder",verbose_name="آپشن ها")
+    
+    optionsServiceMain= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionslastOrder",verbose_name="آپشن ها")
+
     createdAdd = models.DateField(auto_now_add=True)
     service = models.ForeignKey("main.Service", verbose_name="نوع خدمات",
                                 on_delete=models.SET_NULL, related_name="serviceOrderUser", null=True)
