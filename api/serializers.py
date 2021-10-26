@@ -178,6 +178,15 @@ class UserSerializers(serializers.ModelSerializer):
             counter = 0
         return  counter
 
+    def position_page(self, obj):
+        counter = 1
+        for category in obj.category.all() :
+            if category.position == 0 :
+                counter = 0
+        if len(obj.category.all()) == 0 :
+            counter = 0
+        return  counter
+
     def visitor_count(self, obj):
         user = None
         try:
@@ -185,17 +194,27 @@ class UserSerializers(serializers.ModelSerializer):
         except:
             print("error :request forward")
         return len(user.numberVisitors.all())
+    def is_followed_def (self , obj):
+        try:
+            user = self.context.get("request").user
+            if user in obj.followers.all():
+                return True
+        except:
+            print("error :request forward")
+        
+        return False
     followers = UserLessInformationSerializers(many=True)
     following = UserLessInformationSerializers(many=True)
     category = CategorySerializers(many=True)
     visitorCount = serializers.SerializerMethodField("visitor_count")
     get_full_name = serializers.SerializerMethodField("getFullName")
+    is_followed = serializers.SerializerMethodField("is_followed_def")
     position_user = serializers.SerializerMethodField("position_page")
 
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "bio", "image", "category", "followers", "following",
-                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user")
+                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user","is_followed")
 
 
 class UsersRegisterSerializer(serializers.ModelSerializer):
@@ -206,8 +225,8 @@ class UsersRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', "ServiceProvider",
-                  "category", 'first_name', 'last_name', "email")
+        fields = ("id",'username', 'password', "ServiceProvider"
+                  , 'first_name', 'last_name', "email")
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},

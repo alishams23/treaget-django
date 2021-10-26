@@ -51,7 +51,7 @@ urlpatterns = [
     path('RequestSearchApi/', views.RequestSearchApi.as_view(),name="RequestSearchApi"),
     path('PictureSearchApi/', views.PictureSearchApi.as_view(),
          name="PictureSearchApi"),
-    path('UserSettingApi/<int:pk>/',
+    path('UserSettingApi/',
          views.UserSettingApi.as_view(), name="UserSettingApi"),
     path('UserRetrieveApi/<str:username>/',
          views.UserRetrieveApi.as_view(), name="UserRetrieveApi"),
@@ -84,6 +84,7 @@ urlpatterns = [
          views.PicturePostListApi.as_view(), name="PicturePostListApi"),
     path('ListUserMessageApi/', views.ListUserMessageApi.as_view(),
          name="ListUserMessageApi"),
+    path('DeskApi/', views.DeskApi.as_view(),name="DeskApi"),
 ]
 
 urlpatterns += router.urls

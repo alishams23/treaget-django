@@ -219,6 +219,10 @@ class DestroyServiceApi(generics.DestroyAPIView):
 class UserSettingApi(generics.RetrieveUpdateAPIView):
     queryset=User.objects.all()
     serializer_class = UserSettingSerializers
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = self.request.user
+        return obj
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         if instance == request.user:
@@ -251,6 +255,11 @@ class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UsersRegisterSerializer
     permission_classes = (AllowAny, )
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        token, created = Token.objects.get_or_create(user_id=response.data["id"])
+        response.data["token"] = str(token)
+        return response
 
 #TODO : inside serializer.save
 class AddPostPictureApi(generics.CreateAPIView):
@@ -498,3 +507,45 @@ class RequestListApi(generics.ListAPIView):
     serializer_class = RequestSerializer
     def get_queryset(self):
         return Request.objects.filter(author__username=self.kwargs.get('username')).order_by("-pk")
+
+
+class DeskApi(APIView):
+
+    def get(self, request):
+        context = {}
+        if request.user.ServiceProvider:
+            context = {
+                "pictureCheck": False,
+                "timelineCheck": False,
+                "serviceCheck": False,
+                "numberSafePayment": SafePayment.objects.filter(receiver=request.user).count(),
+                "numberOrders": OrderUser.objects.filter(designer=request.user).count(),
+                "numberPicture": Picture.objects.filter(author=request.user).count(),
+                "numberDoProject": SafePayment.objects.filter(receiver=request.user, senderBoolean=True
+                                                            , paymentBoolean=True).count(),
+                "numberDoingProject": SafePayment.objects.filter(receiver=request.user, paymentBoolean=False).count(),
+                "numberService": Service.objects.filter(author=request.user).count(),
+
+            }
+            print((len(Picture.objects.filter(author=request.user))))
+            if len(Picture.objects.filter(author=request.user)) == 0:
+                context.update({"pictureCheck": True})
+            if len(Timeline.objects.filter(person=request.user)) == 0:
+                context.update({"timelineCheck": True})
+            if len(Service.objects.filter(author=request.user)) == 0:
+                context.update({"serviceCheck": True})
+        else:
+            context = {
+                "pictureCheck": False,
+                "timelineCheck": False,
+                "serviceCheck": False,
+                "numberSafePayment": SafePayment.objects.filter(sender=request.user).count(),
+                "numberOrders": OrderUser.objects.filter(author=request.user).count(),
+                "numberRequest": Request.objects.filter(author=request.user).count(),
+                "numberDoProject": SafePayment.objects.filter(sender=request.user, senderBoolean=True
+                                                            , paymentBoolean=True).count(),
+                "numberDoingProject": SafePayment.objects.filter(sender=request.user, paymentBoolean=False).count(),
+
+            }
+        
+        return Response(context,status=status.HTTP_200_OK)
