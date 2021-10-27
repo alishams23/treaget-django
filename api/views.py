@@ -445,18 +445,22 @@ class AddOrderApi(generics.CreateAPIView):
 
 class OrderTrueApi(APIView):
     def get(self,request):
-        OrderUserInstance = OrderUser.objects.filter(designer=request.user,pk=self.kwargs["pk"])
-        OrderUserInstance.accept = True
-        OrderUserInstance.save()
-        return Response(status=status.HTTP_200_OK)
+        OrderUserInstance = OrderUser.objects.get(pk=self.request.GET['pk'])
+        if OrderUserInstance.author == request.user or OrderUserInstance.designer == request.user:
+            OrderUserInstance.accept = True
+            OrderUserInstance.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderFalseApi(APIView):
     def get(self,request):
-        OrderUserInstance = OrderUser.objects.filter(designer=self.request.user,pk=self.kwargs["pk"])
-        OrderUserInstance.accept = False
-        OrderUserInstance.save()
-        return Response(status=status.HTTP_200_OK)
+        OrderUserInstance = OrderUser.objects.get(pk=self.request.GET['pk'])
+        if OrderUserInstance.author == request.user or OrderUserInstance.designer == request.user:
+            OrderUserInstance.accept = False
+            OrderUserInstance.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckToken(APIView):
