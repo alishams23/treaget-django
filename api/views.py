@@ -2,8 +2,9 @@ from main.views import deleteDuplicate
 from django.http import request
 from rest_framework.authtoken.models import Token
 from wallet.views import wallet
+from rest_framework.filters import OrderingFilter
 from api import filterset_class
-from api.filterset_class import RequestFilter, ServiceFilter
+from api.filterset_class import *
 from extensions.notification import notificationAdd
 from account.models import Message, Notification
 from itertools import chain
@@ -241,12 +242,16 @@ class UserRetrieveApi(generics.RetrieveAPIView):
 
 
 class UserSearchListApi(generics.ListAPIView):
-    queryset = User.objects.all()
+    # queryset = User.objects.all()
     serializer_class = UserSerializers
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter,]
+    ordering_fields = ['?']
     filterset_fields = ['category__title']
     search_fields = ["username","first_name","last_name","bio"]
     pagination_class = MyPagination
+    def get_queryset(self):
+        if "image" in self.request.GET:return User.objects.filter(~Q(image=""))
+        else : return User.objects.all()
 
     
 
