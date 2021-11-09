@@ -22,14 +22,15 @@ class UserLessInformationSerializers(serializers.ModelSerializer):
         if len(obj.category.all()) == 0 :
             counter = 0
         return  counter
-
+    def getFullName(self, obj):
+            return f"{obj.first_name + ' ' + obj.last_name}"
     full_name = serializers.SerializerMethodField("get_author")
     position_user = serializers.SerializerMethodField("position_page")
-
+    get_full_name = serializers.SerializerMethodField("getFullName")
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name","full_name",
-                  "image", "ServiceProvider","position_user")
+                  "image", "ServiceProvider","position_user","get_full_name")
 
 
 class CashSerializers(serializers.ModelSerializer):
@@ -186,6 +187,14 @@ class UserSerializers(serializers.ModelSerializer):
         if len(obj.category.all()) == 0 :
             counter = 0
         return  counter
+    
+    def post_picture(self, obj):
+        list_result = []
+        list_data = Picture.objects.filter(author__username=obj.username)[0:7]
+        for data in list_data:
+            serializer = PictureSerializer(data,context={'request': self.context.get("request")})
+            list_result.append(serializer.data)
+        return   list_result
 
     def visitor_count(self, obj):
         user = None
@@ -205,6 +214,7 @@ class UserSerializers(serializers.ModelSerializer):
         return False
     followers = UserLessInformationSerializers(many=True)
     following = UserLessInformationSerializers(many=True)
+    postPicture=serializers.SerializerMethodField("post_picture")
     category = CategorySerializers(many=True)
     visitorCount = serializers.SerializerMethodField("visitor_count")
     get_full_name = serializers.SerializerMethodField("getFullName")
@@ -214,7 +224,7 @@ class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "bio", "image", "category", "followers", "following",
-                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user","is_followed")
+                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user","is_followed","postPicture")
 
 
 class UsersRegisterSerializer(serializers.ModelSerializer):
