@@ -86,7 +86,7 @@ urlpatterns = [
          name="ListUserMessageApi"),
     path('DeskApi/', views.DeskApi.as_view(),name="DeskApi"),
     path('AcceptSafePaymentApi/', views.AcceptSafePaymentApi.as_view(),name="AcceptSafePaymentApi"),
-    path('RefuseSafePaymentApi/', views.AcceptSafePaymentApi.as_view(),name="RefuseSafePaymentApi"),
+    path('RefuseSafePaymentApi/', views.RefuseSafePaymentApi.as_view(),name="RefuseSafePaymentApi"),
 ]
 
 urlpatterns += router.urls

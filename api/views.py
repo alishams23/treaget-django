@@ -39,8 +39,9 @@ class AddLikeView(APIView):
             request.user.like.add(pictureInstance)
             pictureInstance.like.add(request.user)   #add like
             # TODO : check this result
-            notificationAdd(receiver=pictureInstance.author, title="پست شما را لایک کرد", url=f"/account/post/{pictureInstance.pk}/"
-                , user=request.user)
+            if request.user != pictureInstance.author:
+                notificationAdd(receiver=pictureInstance.author, title="پست شما را لایک کرد", url=f"/account/post/{pictureInstance.pk}/"
+                    , user=request.user)
             return Response(status=status.HTTP_200_OK)
         else:   
             request.user.like.remove(pictureInstance)
@@ -370,7 +371,7 @@ class SafePaymentApi(generics.ListAPIView):
 # TODO : check it
 class AcceptSafePaymentApi(APIView):
     def get(self, request):
-        safePaymentResult = SafePayment.objects.get(pk=self.kwargs["pk"])
+        safePaymentResult = SafePayment.objects.get(pk=self.request.GET['pk'])
         if request.user == safePaymentResult.sender:
             if safePaymentResult.paymentBoolean:
                 userResult = safePaymentResult.receiver
@@ -394,8 +395,7 @@ class AcceptSafePaymentApi(APIView):
 # TODO : check it
 class RefuseSafePaymentApi(APIView):
     def get(self, request):
-        safePaymentResult = SafePayment.objects.get(pk=self.kwargs["pk"])
-
+        safePaymentResult = SafePayment.objects.get(pk=self.request.GET['pk'])
         if request.user == safePaymentResult.receiver:
             if safePaymentResult.senderBoolean is False and safePaymentResult.paymentBoolean is not None:
                 userResult = safePaymentResult.sender
