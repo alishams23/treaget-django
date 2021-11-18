@@ -518,6 +518,12 @@ class RequestListApi(generics.ListAPIView):
         return Request.objects.filter(author__username=self.kwargs.get('username')).order_by("-pk")
 
 
+class RulesListApi(generics.ListAPIView):
+    serializer_class = RulesSerializer
+    queryset = Rules.objects.all()
+    permission_classes = (AllowAny, )
+    
+
 class DeskApi(APIView):
 
     def get(self, request):

@@ -101,6 +101,11 @@ class RequestSerializer(serializers.ModelSerializer):
         model = Request
         fields = '__all__'
 
+class RulesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rules
+        fields = '__all__'
+
 
 class TimeLineserializers(serializers.ModelSerializer):
     person = UserLessInformationSerializers(required=False,read_only=True)
