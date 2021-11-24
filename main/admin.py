@@ -211,3 +211,10 @@ class ServiceFacilitiesAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ServiceOptionMain, ServiceFacilitiesAdmin)
+
+
+class SpamAdmin(admin.ModelAdmin):
+    list_display = ("author",)
+
+
+admin.site.register(Spam, SpamAdmin)

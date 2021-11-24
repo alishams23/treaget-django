@@ -341,3 +341,16 @@ class OrderSerializers(serializers.ModelSerializer):
         if accept in [True,False]:
             raise serializers.ValidationError("accept need to be none")
         return data
+
+
+class SpamSerializers(serializers.ModelSerializer):
+    author = UserLessInformationSerializers(required=False,read_only=True)
+    class Meta:
+        model = Spam
+        fields = "__all__"
+        
+    def to_representation(self, instance):
+        self.fields['picture'] =  PictureSerializer(required=False,read_only=True)
+        self.fields['request'] =  RequestSerializer(required=False,read_only=True)
+        self.fields['user'] =  UserSerializers(required=False,read_only=True)
+        return super(SpamSerializers, self).to_representation(instance)
