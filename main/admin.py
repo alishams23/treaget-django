@@ -70,7 +70,6 @@ admin.site.register(Price, PriceAdmin)
 
 class ContactAdmin(admin.ModelAdmin):
     list_display = ( "name", "email", "body")
-    search_fields = ("title",)
 
 
 admin.site.register(contact, ContactAdmin)
@@ -93,7 +92,7 @@ admin.site.register(Rules, RulesAdmin)
 
 
 class IPAddressAdmin(admin.ModelAdmin):
-    list_display = ("ip_address",)
+    list_display = ("ip_address","id")
     search_fields = ("ip_address",)
 
 

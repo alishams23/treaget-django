@@ -169,8 +169,7 @@ class contact(models.Model):
         verbose_name_plural = "پیام های ارتباط با ما"
         ordering = ["-createdadd"]
 
-    def __str__(self):
-        return self.title
+   
 
 
 class BuyStudio(models.Model):
