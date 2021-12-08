@@ -22,14 +22,15 @@ class UserLessInformationSerializers(serializers.ModelSerializer):
         if len(obj.category.all()) == 0 :
             counter = 0
         return  counter
-
+    def getFullName(self, obj):
+            return f"{obj.first_name + ' ' + obj.last_name}"
     full_name = serializers.SerializerMethodField("get_author")
     position_user = serializers.SerializerMethodField("position_page")
-
+    get_full_name = serializers.SerializerMethodField("getFullName")
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name","full_name",
-                  "image", "ServiceProvider","position_user")
+                  "image", "ServiceProvider","position_user","get_full_name")
 
 
 class CashSerializers(serializers.ModelSerializer):
@@ -98,6 +99,11 @@ class RequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Request
+        fields = '__all__'
+
+class RulesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rules
         fields = '__all__'
 
 
@@ -178,6 +184,23 @@ class UserSerializers(serializers.ModelSerializer):
             counter = 0
         return  counter
 
+    def position_page(self, obj):
+        counter = 1
+        for category in obj.category.all() :
+            if category.position == 0 :
+                counter = 0
+        if len(obj.category.all()) == 0 :
+            counter = 0
+        return  counter
+    
+    def post_picture(self, obj):
+        list_result = []
+        list_data = Picture.objects.filter(author__username=obj.username)[0:7]
+        for data in list_data:
+            serializer = PictureSerializer(data,context={'request': self.context.get("request")})
+            list_result.append(serializer.data)
+        return   list_result
+
     def visitor_count(self, obj):
         user = None
         try:
@@ -185,17 +208,28 @@ class UserSerializers(serializers.ModelSerializer):
         except:
             print("error :request forward")
         return len(user.numberVisitors.all())
+    def is_followed_def (self , obj):
+        try:
+            user = self.context.get("request").user
+            if user in obj.followers.all():
+                return True
+        except:
+            print("error :request forward")
+        
+        return False
     followers = UserLessInformationSerializers(many=True)
     following = UserLessInformationSerializers(many=True)
+    postPicture=serializers.SerializerMethodField("post_picture")
     category = CategorySerializers(many=True)
     visitorCount = serializers.SerializerMethodField("visitor_count")
     get_full_name = serializers.SerializerMethodField("getFullName")
+    is_followed = serializers.SerializerMethodField("is_followed_def")
     position_user = serializers.SerializerMethodField("position_page")
 
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "bio", "image", "category", "followers", "following",
-                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user")
+                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user","is_followed","postPicture")
 
 
 class UsersRegisterSerializer(serializers.ModelSerializer):
@@ -206,8 +240,8 @@ class UsersRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'password', "ServiceProvider",
-                  "category", 'first_name', 'last_name', "email")
+        fields = ("id",'username', 'password', "ServiceProvider"
+                  , 'first_name', 'last_name', "email")
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},
@@ -284,19 +318,39 @@ class OrderSerializers(serializers.ModelSerializer):
     author = UserLessInformationSerializers(read_only=True)
     designer = UserLessInformationSerializers(read_only=True)
     safePayment = SafePaymentSerializer(read_only=True)
+    accept=serializers.BooleanField(read_only=True)
+
     class Meta:
         model = OrderUser
         fields = "__all__"
 
     def to_representation(self, instance):
+      
+        self.fields['optionsServiceMain'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
+        
         self.fields['service'] =  ServiceSerializers(required=False,read_only=True)
-        self.fields['optionsService'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
         return super(OrderSerializers, self).to_representation(instance)
 
 
     def validate(self, data):
         service = data.get('service', None)
         title = data.get('title', None)
+        accept = data.get('accept', None)
         if not service and not title:
             raise serializers.ValidationError("at least one date input (service,title) required.")
+        if accept in [True,False]:
+            raise serializers.ValidationError("accept need to be none")
         return data
+
+
+class SpamSerializers(serializers.ModelSerializer):
+    author = UserLessInformationSerializers(required=False,read_only=True)
+    class Meta:
+        model = Spam
+        fields = "__all__"
+        
+    def to_representation(self, instance):
+        self.fields['picture'] =  PictureSerializer(required=False,read_only=True)
+        self.fields['request'] =  RequestSerializer(required=False,read_only=True)
+        self.fields['user'] =  UserSerializers(required=False,read_only=True)
+        return super(SpamSerializers, self).to_representation(instance)

@@ -1,5 +1,6 @@
 from django_filters import rest_framework as filtersS  
 from main.models import Service ,Request
+from account.models import User
 
 
 class ServiceFilter(filtersS.FilterSet):
@@ -18,3 +19,4 @@ class RequestFilter(filtersS.FilterSet):
     class Meta:
         model = Request
         fields = ['min_price', 'max_price']
+

@@ -141,7 +141,9 @@ class OrderUser(models.Model):
     body = models.TextField(
         verbose_name="توضیحات محصول", blank=True, null=True)
     # optionService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionMainOrder",verbose_name="آپشن ها")
-    optionsService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionlastOrder",verbose_name="آپشن ها")
+    
+    optionsServiceMain= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionslastOrder",verbose_name="آپشن ها")
+
     createdAdd = models.DateField(auto_now_add=True)
     service = models.ForeignKey("main.Service", verbose_name="نوع خدمات",
                                 on_delete=models.SET_NULL, related_name="serviceOrderUser", null=True)
@@ -455,4 +457,23 @@ class Dispute(models.Model):
     class Meta:
         verbose_name = "اختلاف"
         verbose_name_plural = "اختلافات"
+        ordering = ["-createdAdd"]
+
+
+
+class Spam(models.Model):
+    description = models.TextField(
+        verbose_name="توضیحات", blank=True, null=True)
+    createdAdd = models.DateField(auto_now_add=True)
+    picture = models.ForeignKey(Picture, verbose_name="عکس", on_delete=models.SET_NULL, null=True,
+                                    related_name="SpamPicture")
+    request = models.ForeignKey(Request, verbose_name="درخواست", on_delete=models.SET_NULL, null=True,
+                                    related_name="SpamRequest")
+    user = models.ForeignKey(User, verbose_name="یوزر", on_delete=models.SET_NULL, null=True,
+                                    related_name="SpamUser")
+    author = models.ForeignKey(User, verbose_name="نویسنده", on_delete=models.SET_NULL,related_name="authorSpam",null=True)
+
+    class Meta:
+        verbose_name = "اسپم"
+        verbose_name_plural = " اسپم ها "
         ordering = ["-createdAdd"]

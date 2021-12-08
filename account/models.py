@@ -18,7 +18,7 @@ class User(AbstractUser):
     image = models.ImageField(upload_to='profile/%Y/%m/%d/', verbose_name="عکس پروفایل", blank=True, null=True)
     bio = models.TextField(verbose_name="بیو کاربر", blank=True, null=True)
     category = models.ManyToManyField("main.Category", verbose_name="عضو کدام دسته بندیست", blank=True,
-                                      related_name="CategoryRelated")
+                                      related_name="CategoryMainRelated")
     numberVisitors = models.ManyToManyField("main.IPAddress", verbose_name="بازدید ها", blank=True, related_name="hits")
     ability = models.ManyToManyField("main.Products", verbose_name="توانایی ها", blank=True, related_name="abl")
     like = models.ManyToManyField("main.Picture", verbose_name="لایک ها", blank=True, related_name="likeRelated")

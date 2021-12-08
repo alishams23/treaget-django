@@ -2,8 +2,9 @@ from main.views import deleteDuplicate
 from django.http import request
 from rest_framework.authtoken.models import Token
 from wallet.views import wallet
+from rest_framework.filters import OrderingFilter
 from api import filterset_class
-from api.filterset_class import RequestFilter, ServiceFilter
+from api.filterset_class import *
 from extensions.notification import notificationAdd
 from account.models import Message, Notification
 from itertools import chain
@@ -38,8 +39,9 @@ class AddLikeView(APIView):
             request.user.like.add(pictureInstance)
             pictureInstance.like.add(request.user)   #add like
             # TODO : check this result
-            notificationAdd(receiver=pictureInstance.author, title="پست شما را لایک کرد", url=f"/account/post/{pictureInstance.pk}/"
-                , user=request.user)
+            if request.user != pictureInstance.author:
+                notificationAdd(receiver=pictureInstance.author, title="پست شما را لایک کرد", url=f"/account/post/{pictureInstance.pk}/"
+                    , user=request.user)
             return Response(status=status.HTTP_200_OK)
         else:   
             request.user.like.remove(pictureInstance)
@@ -125,7 +127,12 @@ class timelineCreateApi(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(person=self.request.user)
 
-
+class SpamCreateApi(generics.CreateAPIView):
+    queryset = Spam.objects.all()
+    serializer_class = SpamSerializers
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+        
 class timelineDeleteApi(APIView):
     def delete(self, request, pk):
         timelineInstance=Timeline.objects.get(pk=pk)
@@ -219,6 +226,10 @@ class DestroyServiceApi(generics.DestroyAPIView):
 class UserSettingApi(generics.RetrieveUpdateAPIView):
     queryset=User.objects.all()
     serializer_class = UserSettingSerializers
+    def get_object(self):
+        queryset = self.get_queryset()
+        obj = self.request.user
+        return obj
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
         if instance == request.user:
@@ -237,12 +248,16 @@ class UserRetrieveApi(generics.RetrieveAPIView):
 
 
 class UserSearchListApi(generics.ListAPIView):
-    queryset = User.objects.all()
+    # queryset = User.objects.all()
     serializer_class = UserSerializers
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter,filters.OrderingFilter,]
+    ordering_fields = ['?']
     filterset_fields = ['category__title']
     search_fields = ["username","first_name","last_name","bio"]
     pagination_class = MyPagination
+    def get_queryset(self):
+        if "image" in self.request.GET:return User.objects.filter(~Q(image=""))
+        else : return User.objects.all()
 
     
 
@@ -251,6 +266,11 @@ class UserCreate(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UsersRegisterSerializer
     permission_classes = (AllowAny, )
+    def create(self, request, *args, **kwargs):
+        response = super().create(request, *args, **kwargs)
+        token, created = Token.objects.get_or_create(user_id=response.data["id"])
+        response.data["token"] = str(token)
+        return response
 
 #TODO : inside serializer.save
 class AddPostPictureApi(generics.CreateAPIView):
@@ -356,7 +376,7 @@ class SafePaymentApi(generics.ListAPIView):
 # TODO : check it
 class AcceptSafePaymentApi(APIView):
     def get(self, request):
-        safePaymentResult = SafePayment.objects.get(pk=self.kwargs["pk"])
+        safePaymentResult = SafePayment.objects.get(pk=self.request.GET['pk'])
         if request.user == safePaymentResult.sender:
             if safePaymentResult.paymentBoolean:
                 userResult = safePaymentResult.receiver
@@ -380,8 +400,7 @@ class AcceptSafePaymentApi(APIView):
 # TODO : check it
 class RefuseSafePaymentApi(APIView):
     def get(self, request):
-        safePaymentResult = SafePayment.objects.get(pk=self.kwargs["pk"])
-
+        safePaymentResult = SafePayment.objects.get(pk=self.request.GET['pk'])
         if request.user == safePaymentResult.receiver:
             if safePaymentResult.senderBoolean is False and safePaymentResult.paymentBoolean is not None:
                 userResult = safePaymentResult.sender
@@ -425,7 +444,7 @@ class DisputeDestroyApi(generics.DestroyAPIView):
 class OrderApi(generics.ListAPIView):
     serializer_class = OrderSerializers
     def get_queryset(self):
-        return OrderUser.objects.filter(Q(designer=self.request.user) | Q(author=self.request.user))
+        return OrderUser.objects.filter(Q(designer=self.request.user) | Q(author=self.request.user)).order_by("-pk")
 
 
 class AddOrderApi(generics.CreateAPIView):
@@ -436,18 +455,22 @@ class AddOrderApi(generics.CreateAPIView):
 
 class OrderTrueApi(APIView):
     def get(self,request):
-        OrderUserInstance = OrderUser.objects.filter(designer=request.user,pk=self.kwargs["pk"])
-        OrderUserInstance.accept = True
-        OrderUserInstance.save()
-        return Response(status=status.HTTP_200_OK)
+        OrderUserInstance = OrderUser.objects.get(pk=self.request.GET['pk'])
+        if OrderUserInstance.author == request.user or OrderUserInstance.designer == request.user:
+            OrderUserInstance.accept = True
+            OrderUserInstance.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderFalseApi(APIView):
     def get(self,request):
-        OrderUserInstance = OrderUser.objects.filter(designer=self.request.user,pk=self.kwargs["pk"])
-        OrderUserInstance.accept = False
-        OrderUserInstance.save()
-        return Response(status=status.HTTP_200_OK)
+        OrderUserInstance = OrderUser.objects.get(pk=self.request.GET['pk'])
+        if OrderUserInstance.author == request.user or OrderUserInstance.designer == request.user:
+            OrderUserInstance.accept = False
+            OrderUserInstance.save()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CheckToken(APIView):
@@ -498,3 +521,51 @@ class RequestListApi(generics.ListAPIView):
     serializer_class = RequestSerializer
     def get_queryset(self):
         return Request.objects.filter(author__username=self.kwargs.get('username')).order_by("-pk")
+
+
+class RulesListApi(generics.ListAPIView):
+    serializer_class = RulesSerializer
+    queryset = Rules.objects.all()
+    permission_classes = (AllowAny, )
+    
+
+class DeskApi(APIView):
+
+    def get(self, request):
+        context = {}
+        if request.user.ServiceProvider:
+            context = {
+                "pictureCheck": False,
+                "timelineCheck": False,
+                "serviceCheck": False,
+                "numberSafePayment": SafePayment.objects.filter(receiver=request.user).count(),
+                "numberOrders": OrderUser.objects.filter(designer=request.user).count(),
+                "numberPicture": Picture.objects.filter(author=request.user).count(),
+                "numberDoProject": SafePayment.objects.filter(receiver=request.user, senderBoolean=True
+                                                            , paymentBoolean=True).count(),
+                "numberDoingProject": SafePayment.objects.filter(receiver=request.user, paymentBoolean=False).count(),
+                "numberService": Service.objects.filter(author=request.user).count(),
+
+            }
+            print((len(Picture.objects.filter(author=request.user))))
+            if len(Picture.objects.filter(author=request.user)) == 0:
+                context.update({"pictureCheck": True})
+            if len(Timeline.objects.filter(person=request.user)) == 0:
+                context.update({"timelineCheck": True})
+            if len(Service.objects.filter(author=request.user)) == 0:
+                context.update({"serviceCheck": True})
+        else:
+            context = {
+                "pictureCheck": False,
+                "timelineCheck": False,
+                "serviceCheck": False,
+                "numberSafePayment": SafePayment.objects.filter(sender=request.user).count(),
+                "numberOrders": OrderUser.objects.filter(author=request.user).count(),
+                "numberRequest": Request.objects.filter(author=request.user).count(),
+                "numberDoProject": SafePayment.objects.filter(sender=request.user, senderBoolean=True
+                                                            , paymentBoolean=True).count(),
+                "numberDoingProject": SafePayment.objects.filter(sender=request.user, paymentBoolean=False).count(),
+
+            }
+        
+        return Response(context,status=status.HTTP_200_OK)

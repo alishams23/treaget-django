@@ -100,7 +100,7 @@ admin.site.register(IPAddress, IPAddressAdmin)
 
 
 class OrderUserAdmin(admin.ModelAdmin):
-    list_display = ("designer",)
+    list_display = ("designer","pk")
     search_fields = ("-createdAdd",)
 
 
@@ -116,7 +116,7 @@ admin.site.register(FAQ, FAQAdmin)
 
 
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ("author", "nameProduct")
+    list_display = ("author", "nameProduct","pk")
     search_fields = ("-createdadd",)
 
 
@@ -206,7 +206,14 @@ admin.site.register(Dispute, DisputeAdmin)
 
 
 class ServiceFacilitiesAdmin(admin.ModelAdmin):
-    list_display = ("title",)
+    list_display = ("title","pk")
 
 
 admin.site.register(ServiceOptionMain, ServiceFacilitiesAdmin)
+
+
+class SpamAdmin(admin.ModelAdmin):
+    list_display = ("author",)
+
+
+admin.site.register(Spam, SpamAdmin)
