@@ -78,7 +78,7 @@
                                         <br>
                                         <p class="irsa">{{ result.body }}</p>
                                         <br>
-                                        <p class="irsa px-2">{% jalali result.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p>
+                                        <!-- <p class="irsa px-2">{% jalali result.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p> -->
                                     </a>
                                     {% if result.author != request.user and request.user.ServiceProvider and validation_user %}
                                 <a href="{% url "account:addAcceptRequest" result.pk  %}" class="py-2 px-3 rounded-2xl text-white irsa bg-treaget">قبول درخواست</a>
@@ -100,7 +100,7 @@
                                     <div class="   lg:p-6 p-4">
                                         <p class="irsa text-dark text-2xl">{{ resultAccept.time }}</p>
 
-                                        <p class="irsa  px-2">{% jalali resultAccept.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p>
+                                        <!-- <p class="irsa  px-2">{% jalali resultAccept.createdAdd as dateResult %}{{ dateResult.0 }}/{{ dateResult.1 }}/{{ dateResult.2 }}</p> -->
                                     </div>
                                 {% if result.author == request.user %}
                                 <a href="{% url "account:createSafePayment" result.pk resultAccept.pk %}" class="py-3 px-3 rounded-lg text-white irsa bg-blue-600">ایجاد پرداخت امن</a>
