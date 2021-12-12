@@ -351,7 +351,7 @@ class CashApi(generics.ListAPIView):
 
 class PaymentWalletApi(generics.ListAPIView):
     def get_queryset(self):
-        return PaymentWalletData.objects.filter(user=self.request.user)
+        return PaymentWalletA.objects.filter(user=self.request.user)
     serializer_class = PaymentWalletSerializers
 
 
