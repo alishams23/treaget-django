@@ -28,7 +28,7 @@ class PaymentWalletB(models.Model):
     cash = models.BigIntegerField(verbose_name="مقدار تراکنش")
     cardNumber = models.BigIntegerField(verbose_name="شماره کارت")
     timePayment = models.DateTimeField(default=timezone.now, verbose_name="زمان انجام تراکنش")
-    user = models.ForeignKey(User, related_name='UserPayment', verbose_name="شخص", null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, related_name='UserPaymentB', verbose_name="شخص", null=True, on_delete=models.SET_NULL)
     RefID = models.TextField(verbose_name="RefID", blank=True, null=True)
 
     class Meta:
