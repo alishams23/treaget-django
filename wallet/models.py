@@ -5,7 +5,7 @@ from account.models import User
 
 # Create your models here.
 
-class PaymentWallet(models.Model):
+class PaymentWalletData(models.Model):
     payStatus = models.BooleanField(verbose_name="وضعیت ", default=True)
     typePayment = models.BooleanField(verbose_name="وضعیت ", default=True)
     name = models.TextField(blank=True, null=True, verbose_name="نام")
