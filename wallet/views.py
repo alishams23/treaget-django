@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
 from account.views import User
-from wallet.models import PaymentWalletA
+from wallet.models import PaymentWalletB
 from zeep import Client
 
 # Create your views here.
@@ -39,7 +39,7 @@ def withdrawMoney(request):
             }
             return render(request, 'desk/wallet.html', context)
         elif int(amount) <= request.user.cash:
-            PaymentWallet = PaymentWalletA(user=request.user, cash=amount, typePayment=False, cardNumber=cardNumber,
+            PaymentWallet = PaymentWalletB(user=request.user, cash=amount, typePayment=False, cardNumber=cardNumber,
                                               name=name)
             context = {
                 'success': "عملیات موفقیت آمیز بود . پرداخت حداکثر ظرف 48 ساعت دیگر انجام می شود"
@@ -70,7 +70,7 @@ def verify(request, amount):
         if result.Status == 100:
             UserPay = request.user
             UserPay.cash = UserPay.cash + int(amount)
-            paymentResult = PaymentWalletA.objects.create(user=request.user, cash=amount, RefID=str(result.RefID))
+            paymentResult = PaymentWalletB.objects.create(user=request.user, cash=amount, RefID=str(result.RefID))
             paymentResult.save()
             return redirect("/wallet/")
         elif result.Status == 101:

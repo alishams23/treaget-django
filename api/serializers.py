@@ -279,7 +279,7 @@ class NotificationSerializers(serializers.ModelSerializer):
 
 class PaymentWalletSerializers(serializers.ModelSerializer):
     class Meta:
-        model = PaymentWalletA
+        model = PaymentWalletB
         fields = "__all__"
 
 
