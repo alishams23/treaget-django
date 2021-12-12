@@ -358,13 +358,15 @@ class Blog(models.Model):
 
 class Rules(models.Model):
     createdAdd = models.DateField(auto_now_add=True)
+    position = models.IntegerField(
+        verbose_name="پوزیشن", blank=True, null=True)
     title = models.CharField(max_length=200, verbose_name="موضوع")
     body = models.TextField(verbose_name="متن")
 
     class Meta:
         verbose_name = "قانون"
         verbose_name_plural = "قوانین"
-        ordering = ["-createdAdd"]
+        ordering = ["position"]
 
     def __str__(self):
         return self.title
