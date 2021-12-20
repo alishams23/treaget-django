@@ -25,7 +25,8 @@ UserAdmin.fieldsets += (
     }),
 )
 
-UserAdmin.list_display += ('is_author', 'is_special_user')
+UserAdmin.list_display += ('is_author', 'is_special_user',"picture_show")
+UserAdmin.list_filter += ('date_joined', )
 
 admin.site.register(User, UserAdmin)
 

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from PIL import Image
+from django.utils.html import format_html
+
 
 
 # Create your models here.
@@ -26,6 +28,7 @@ class User(AbstractUser):
     following = models.ManyToManyField('User', blank=True, related_name='following_user', verbose_name="following")
     cash = models.BigIntegerField(verbose_name="پول", default=0, blank=True, null=True)
 
+        
     def is_special_user(self):
         if self.special_user > timezone.now():
             return True
@@ -53,6 +56,13 @@ class User(AbstractUser):
                 img.save(self.image.path)
         except:
             pass
+    def picture_show(self):
+        try:
+            data = format_html("<img src='{}' width=100 style='border-radius : 10px;' >".format(self.image.url))
+        except:
+            data="null"
+        return data
+
 
 
 class Message(models.Model):
