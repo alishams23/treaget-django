@@ -569,3 +569,14 @@ class DeskApi(APIView):
             }
         
         return Response(context,status=status.HTTP_200_OK)
+    
+    
+    
+class Check_username(APIView):
+    def get(self, request):
+        # get data with ?Picture=pk in url
+        username = self.request.GET['username']
+        if not User.objects.filter(username=username).exists():
+            return Response(status=status.HTTP_200_OK)
+        else:   
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)

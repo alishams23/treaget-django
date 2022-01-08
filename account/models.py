@@ -27,6 +27,8 @@ class User(AbstractUser):
     followers = models.ManyToManyField('User', blank=True, related_name='followers_user', verbose_name="followers")
     following = models.ManyToManyField('User', blank=True, related_name='following_user', verbose_name="following")
     cash = models.BigIntegerField(verbose_name="پول", default=0, blank=True, null=True)
+    verify_code = models.IntegerField(verbose_name="کد تایید", blank=True, null=True)
+    phone_number= models.IntegerField(verbose_name="شماره تلفن", blank=True, null=True)
 
         
     def is_special_user(self):
