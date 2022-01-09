@@ -522,6 +522,13 @@ class RequestListApi(generics.ListAPIView):
     def get_queryset(self):
         return Request.objects.filter(author__username=self.kwargs.get('username')).order_by("-pk")
 
+    
+class User_suggestion(generics.ListAPIView):
+    serializer_class = UserLessInformationSerializers
+    def get_queryset(self):
+        print(User.objects.filter(~Q(followers=self.request.user) & ~Q(image="")).order_by("?")[0:8])
+        return User.objects.filter(~Q(followers=self.request.user) & ~Q(image="")).order_by("?")[0:8]
+
 
 class RulesListApi(generics.ListAPIView):
     serializer_class = RulesSerializer
