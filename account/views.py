@@ -407,12 +407,16 @@ def profile(request):
     return render(request, "registration/setting.html", context)
 
 
+
+
 def register(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
         userCheck = User.objects.filter(username=username).exists()
         emailCheck = User.objects.filter(email=email).exists()
+        phoneCheck = User.objects.filter(phone_number=phone_number).exists()
         if userCheck:
             context = {
                 'form': UserAddForm(),
@@ -423,6 +427,12 @@ def register(request):
             context = {
                 'form': UserAddForm(),
                 "success": "کاربری از قبل اکانتی با این ایمیل ساخته است",
+            }
+            return render(request, "registration/signup.html", context)
+        elif phoneCheck:
+            context = {
+                'form': UserAddForm(),
+                "success": "کاربری از قبل اکانتی با این شماره تلفن ساخته است",
             }
             return render(request, "registration/signup.html", context)
         f = UserAddForm(request.POST)
@@ -436,7 +446,7 @@ def register(request):
                 ServiceProviderData = None
             User.objects.create_user(first_name=request.POST.get('first_name'), last_name=request.POST.get('last_name'),
                                      email=request.POST.get('email'), username=request.POST.get('username').lower(),
-                                     password=request.POST.get('password'), ServiceProvider=ServiceProviderData)
+                                     password=request.POST.get('password'), ServiceProvider=ServiceProviderData,phone_number=request.POST.get('phone_number'))
             userInstance = User.objects.get(username = request.POST.get('username').lower())
             try:
                 send_mail(

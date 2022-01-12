@@ -20,6 +20,10 @@ UserAdmin.fieldsets += (
             'following',
             'ServiceProvider',
             'isVerified',
+            'verify_phone',
+            'verify_phone_code',
+            'phone_number',
+            'count_sms',
 
         ),
     }),

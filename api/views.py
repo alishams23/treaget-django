@@ -26,6 +26,8 @@ from django_filters import rest_framework as filterSpecial
 from rest_framework import filters
 from api.pagination import MyPagination
 from wallet.models import *
+import random
+import requests
 # Create your views here.
 
 
@@ -47,8 +49,47 @@ class AddLikeView(APIView):
             request.user.like.remove(pictureInstance)
             pictureInstance.like.remove(request.user)   #remove like
             return Response(status=status.HTTP_200_OK)
-   
 
+    
+class Code_check(APIView):
+    def get(self, request):
+        code = self.request.GET['code']
+        if str(request.user.verify_phone_code ) == str(code):
+            userInstance= request.user
+            userInstance.verify_phone = True
+            userInstance.save()
+            
+            return Response(status=status.HTTP_200_OK)
+        else:   
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    
+class Send_code(APIView):
+    def get(self, request):
+        userInstance= request.user
+        userInstance.verify_phone_code = random.randint(10000, 99999) 
+        userInstance.save()
+        
+        if request.user.count_sms < 10 :
+            try:
+                newURL = 'https://console.melipayamak.com/api/send/shared/1806bb276635474486b7c380b2b0fbcb'
+                newHeaders = {'Content-type': 'application/json; utf-8', 'Accept': 'application/json'}
+                newBody = {
+                    "bodyId": 72447, 
+                    "to": f"{request.user.phone_number}",
+                    "args": [f"{request.user.verify_phone_code}"],
+                    }
+                response = requests.post( newURL , data = json.dumps(newBody) , headers = newHeaders)
+                print( response.json())
+                userInstance= request.user
+                userInstance.count_sms += 1
+                userInstance.save()
+                return Response(status=status.HTTP_200_OK)
+            except: 
+                return Response(status=status.HTTP_410_GONE)
+           
+    
+   
 
 class HomeApiView(viewsets.ModelViewSet):
     def list(self, request):
@@ -495,7 +536,7 @@ class CountReadStatus(APIView):
     def get(self,request):
         notification = Notification.objects.filter(readingStatus=False,receiver=request.user)
         message = Message.objects.filter(read=False,receiver=request.user)
-        return Response({"message":len(message),"notification":len(notification)},status=status.HTTP_200_OK)
+        return Response({"message":len(message),"notification":len(notification),"verify_phone":request.user.verify_phone},status=status.HTTP_200_OK)
 
 
 class ListUserMessageApi(APIView):

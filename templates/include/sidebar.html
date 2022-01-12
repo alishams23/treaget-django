@@ -116,8 +116,22 @@
                 </div>
             </li>
             {% endcomment %}
+            <a class="uk-button uk-button-default invisible" id="numberCheck" href="#modal-full" uk-toggle></a>
 
+            <div id="modal-full" class="uk-modal-full bg-glass" uk-modal>
+                <div class="uk-modal-dialog ">
+                    <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                    <div class=" pt-5 center">
+                        <div class=" container rtl col-9   pt-5 " uk-height-viewport>
+                            <h1>کد دریافتی به شماره تلفن خود را وارد کنید</h1>
+                            <input type="text" pattern="[0-9.]+" maxlength="5" minlength="5" class="shadow-none bg-gray-100 border mt-5">
+                            <div> <button class="px-5 rounded-full  py-2 bg-treaget text-white mt-5" type="button">ثبت</button>
+                            </div>
+                        </div>
 
+                    </div>
+                </div>
+            </div>
         </ul>
     </div>
 </div>

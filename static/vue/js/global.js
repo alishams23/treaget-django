@@ -18,6 +18,14 @@ const sidebar = {
                 });
 
         },
+        SendSms() {
+            fetch("/api/CountReadStatus/")
+                .then(response => response.json())
+                .then((data) => {
+                    this.counterNotification = data["notification"];
+                    this.counterMessage = data["message"];
+                });
+        }
     },
     mounted() {
         this.CountRead();

@@ -90,6 +90,8 @@ urlpatterns = [
     path('RulesListApi/', views.RulesListApi.as_view(),name="RulesListApi"),
     path('SpamCreateApi/', views.SpamCreateApi.as_view(),name="SpamCreateApi"),
     path('UserSuggestion/', views.User_suggestion.as_view(),name="User_suggestion"),
+    path('Send_code/', views.Send_code.as_view(),name="Send_code"),
+    path('Code_check/', views.Code_check.as_view(),name="Code_check"),
 ]
 
 urlpatterns += router.urls
