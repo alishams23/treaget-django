@@ -4,7 +4,8 @@ const sidebar = {
         return {
             counterNotification: 0,
             counterMessage: 0,
-            results: []
+            results: [],
+            code: null,
         }
     },
     methods: {
@@ -15,16 +16,29 @@ const sidebar = {
                 .then((data) => {
                     this.counterNotification = data["notification"];
                     this.counterMessage = data["message"];
+                    // if (data["message"] == false) {
+                    //     this.SendSms();
+                    // }
+
                 });
 
         },
         SendSms() {
-            fetch("/api/CountReadStatus/")
+            fetch("/api/Send_code/")
                 .then(response => response.json())
                 .then((data) => {
-                    this.counterNotification = data["notification"];
-                    this.counterMessage = data["message"];
+                    document.getElementById("numberCheck").onclick();
                 });
+        },
+        sendNumber() {
+            if (this.code != null) {
+                fetch(`/api/CountReadStatus/${this.code}`)
+                    .then(response => response.json())
+                    .then((data) => {
+
+                    });
+            }
+
         }
     },
     mounted() {
