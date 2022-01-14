@@ -65,12 +65,11 @@ class Code_check(APIView):
 
     
 class Send_code(APIView):
-    def get(self, request):
-        userInstance= request.user
-        userInstance.verify_phone_code = random.randint(10000, 99999) 
-        userInstance.save()
-        
+    def get(self, request):  
         if request.user.count_sms < 10 :
+            userInstance= request.user
+            userInstance.verify_phone_code = random.randint(10000, 99999) 
+            userInstance.save()
             try:
                 newURL = 'https://console.melipayamak.com/api/send/shared/1806bb276635474486b7c380b2b0fbcb'
                 newHeaders = {'Content-type': 'application/json; utf-8', 'Accept': 'application/json'}

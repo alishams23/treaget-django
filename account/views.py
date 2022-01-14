@@ -446,7 +446,7 @@ def register(request):
                 ServiceProviderData = None
             User.objects.create_user(first_name=request.POST.get('first_name'), last_name=request.POST.get('last_name'),
                                      email=request.POST.get('email'), username=request.POST.get('username').lower(),
-                                     password=request.POST.get('password'), ServiceProvider=ServiceProviderData,phone_number=request.POST.get('phone_number'))
+                                     password=request.POST.get('password'), ServiceProvider=ServiceProviderData,phone_number=request.POST.get('phone_number'),verify_phone=False)
             userInstance = User.objects.get(username = request.POST.get('username').lower())
             try:
                 send_mail(

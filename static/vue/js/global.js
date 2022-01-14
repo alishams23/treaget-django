@@ -6,6 +6,8 @@ const sidebar = {
             counterMessage: 0,
             results: [],
             code: null,
+            statusSend: false,
+            statusCheck: false
         }
     },
     methods: {
@@ -16,28 +18,34 @@ const sidebar = {
                 .then((data) => {
                     this.counterNotification = data["notification"];
                     this.counterMessage = data["message"];
-                    // if (data["message"] == false) {
-                    //     this.SendSms();
-                    // }
+                    if (data["verify_phone"] == false && this.statusSend == false) {
+                        this.SendSms();
+                    }
 
                 });
 
         },
-        SendSms() {
-            fetch("/api/Send_code/")
-                .then(response => response.json())
-                .then((data) => {
-                    document.getElementById("numberCheck").onclick();
-                });
+        async SendSms() {
+            this.statusSend = true
+            await fetch("/api/Send_code/")
+            document.getElementById("numberCheck").click();
         },
-        sendNumber() {
-            if (this.code != null) {
-                fetch(`/api/CountReadStatus/${this.code}`)
-                    .then(response => response.json())
-                    .then((data) => {
+        async sendNumber() {
+            try {
+                if (this.code != null) {
+                    this.statusCheck = false
+                    let statusCheckApi = await fetch(`/api/Code_check/?code=${this.code}`)
+                    console.log(statusCheckApi.status); // returns 200
+                    this.statusCheck = true
+                    if (statusCheckApi.ok) {
+                        document.getElementById("closeSms").click();
+                    }
 
-                    });
+                }
+            } catch (error) {
+                this.statusCheck = true
             }
+
 
         }
     },
