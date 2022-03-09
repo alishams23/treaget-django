@@ -285,6 +285,8 @@ class UserRetrieveApi(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializers
     lookup_field="username"
+    permission_classes = (AllowAny, )
+    
 
 
 class UserSearchListApi(generics.ListAPIView):

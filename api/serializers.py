@@ -205,9 +205,11 @@ class UserSerializers(serializers.ModelSerializer):
         user = None
         try:
             user = self.context.get("request").user
+            return obj.numberVisitors.count()
         except:
             print("error :request forward")
-        return len(user.numberVisitors.all())
+            return 0
+        
     def is_followed_def (self , obj):
         try:
             user = self.context.get("request").user
@@ -217,6 +219,8 @@ class UserSerializers(serializers.ModelSerializer):
             print("error :request forward")
         
         return False
+    def numberFollow(self,obj):
+        return {"followers":obj.followers.count(),"following":obj.following.count()}
     followers = UserLessInformationSerializers(many=True)
     following = UserLessInformationSerializers(many=True)
     postPicture=serializers.SerializerMethodField("post_picture")
@@ -225,11 +229,13 @@ class UserSerializers(serializers.ModelSerializer):
     get_full_name = serializers.SerializerMethodField("getFullName")
     is_followed = serializers.SerializerMethodField("is_followed_def")
     position_user = serializers.SerializerMethodField("position_page")
+    number_follow = serializers.SerializerMethodField("numberFollow")
+    
 
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name", "bio", "image", "category", "followers", "following",
-                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user","is_followed","postPicture")
+                  "isVerified", "ServiceProvider", "is_special_user", "pk", "visitorCount", "get_full_name","position_user","is_followed","postPicture","number_follow")
 
 
 class UsersRegisterSerializer(serializers.ModelSerializer):
