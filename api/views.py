@@ -156,6 +156,7 @@ class ExploreProjectApiView (generics.ListAPIView):
     
 #send data ?username=admin 
 class timelineRetrieveApiView(generics.ListAPIView):
+    permission_classes = (AllowAny, )
     serializer_class = TimeLineserializers
     def get_queryset(self):
         return Timeline.objects.filter(person__username=self.request.GET['username']).order_by("pk")
@@ -399,6 +400,7 @@ class PaymentWalletApi(generics.ListAPIView):
 
 
 class favoritesApi(generics.ListAPIView):
+    permission_classes = (AllowAny, )
     def get_queryset(self):
         return User.objects.get(username=self.kwargs.get('username')).like.all()
     serializer_class = PictureSerializer
@@ -560,6 +562,8 @@ class ListUserMessageApi(APIView):
 
     
 class RequestListApi(generics.ListAPIView):
+    permission_classes = (AllowAny, )
+    
     serializer_class = RequestSerializer
     def get_queryset(self):
         return Request.objects.filter(author__username=self.kwargs.get('username')).order_by("-pk")
