@@ -580,6 +580,12 @@ class RulesListApi(generics.ListAPIView):
     serializer_class = RulesSerializer
     queryset = Rules.objects.all()
     permission_classes = (AllowAny, )
+
+
+class ProductApi(generics.ListAPIView):
+    serializer_class = ProductsSerializer
+    queryset = Products.objects.all()
+    permission_classes = (AllowAny, )
     
 
 class DeskApi(APIView):

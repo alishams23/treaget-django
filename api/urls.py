@@ -92,6 +92,7 @@ urlpatterns = [
     path('UserSuggestion/', views.User_suggestion.as_view(),name="User_suggestion"),
     path('Send_code/', views.Send_code.as_view(),name="Send_code"),
     path('Code_check/', views.Code_check.as_view(),name="Code_check"),
+    path('ProductApi/', views.ProductApi.as_view(),name="ProductApi"),
 ]
 
 urlpatterns += router.urls
