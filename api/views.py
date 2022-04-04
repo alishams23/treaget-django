@@ -1,3 +1,5 @@
+from ast import Try
+from unicodedata import category
 from main.views import deleteDuplicate
 from django.http import request
 from rest_framework.authtoken.models import Token
@@ -320,7 +322,14 @@ class AddPostPictureApi(generics.CreateAPIView):
     queryset = Picture.objects.all()
     serializer_class = PictureSerializer
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+       data= serializer.save(author=self.request.user)
+       try:
+            if self.request.data["category"]:
+                for item in  self.request.data["category"].split(","):
+                    Picture.objects.get(pk = data.id).category.add(Products.objects.get(pk = item))
+       except:
+           print("error")
+       
 
 
 class AddOptionService(generics.CreateAPIView):
