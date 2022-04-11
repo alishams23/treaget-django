@@ -94,9 +94,16 @@ class Send_code(APIView):
 
 class HomeApiView(viewsets.ModelViewSet):
     def list(self, request):
-        firstData = Picture.objects.filter(
-        Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
-        secondData = Request.objects.filter(Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
+        if "user" in self.request.GET:
+            firstData = Picture.objects.filter(
+               author__username=self.request.GET['user']).order_by("-pk")
+        else:
+            firstData = Picture.objects.filter(
+                Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
+        if "user" in self.request.GET:
+            secondData = Request.objects.filter(author__username=self.request.GET['user']).order_by("-pk")
+        else:
+            secondData = Request.objects.filter(Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
         result_list = sorted(
             chain(firstData, secondData),
             key=attrgetter('createdAdd'), reverse=True)
@@ -583,6 +590,11 @@ class User_suggestion(generics.ListAPIView):
     def get_queryset(self):
         print(User.objects.filter(~Q(followers=self.request.user) & ~Q(image="")).order_by("?")[0:8])
         return User.objects.filter(~Q(followers=self.request.user) & ~Q(image="")).order_by("?")[0:8]
+    
+class following(generics.ListAPIView):
+    serializer_class = UserLessInformationSerializers
+    def get_queryset(self):
+        return User.objects.filter(followers=self.request.user).order_by("?")[0:15]
 
 
 class RulesListApi(generics.ListAPIView):
