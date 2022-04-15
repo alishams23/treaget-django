@@ -22,8 +22,8 @@ from django.contrib.auth import views
 
 sitemaps={
     'static':staticViewSitemap,
-    'snippet':SnippetSitemap,
-    'profile':PrpfileSitemap
+    # 'snippet':SnippetSitemap,
+    # 'profile':PrpfileSitemap
 }
 
 
@@ -32,17 +32,18 @@ urlpatterns = [
     # path('adminl/', adminlte3.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),
+    path('api/wallet/', include('wallet.urls'), name="wallet"),
+    
     path('', include('main.urls')),
     path('account/', include('account.urls'), name="account"),
-    path('wallet/', include('wallet.urls'), name="wallet"),
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     # path('accounting/', include('accounting.urls'), name="accounting"),
 
-    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('api/password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
+    path('api/password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('api/reset/<uidb64>/<token>/', views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('api/reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
 
 ]
 

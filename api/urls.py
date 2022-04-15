@@ -1,15 +1,20 @@
+import imp
 from django.urls import path
 from . import views
 # from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.authtoken.views import obtain_auth_token
+from django.contrib.auth import views as auth_view
+
 
 router = routers.SimpleRouter()
 router.register(r'HomeApiView', views.HomeApiView, basename="HomeApiView")
 
 app_name = "api"
 urlpatterns = [
+    path('login/', auth_view.LoginView.as_view(), name='login'),
+     
     path('token/', obtain_auth_token),
     path('CheckToken/', views.CheckToken.as_view(), name="CheckToken"),
     # path('token/', TokenObtainPairView.as_view(),name='token_obtain_pair'),

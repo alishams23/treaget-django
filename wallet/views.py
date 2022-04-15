@@ -10,7 +10,7 @@ from zeep import Client
 MERCHANT = 'd16f23cc-5cde-4cfb-bd0d-f5121b0887c8'
 email = ''  # Optional
 mobile = ''  # Optional
-CallbackURL = 'http://treaget.com/wallet/verify/'  # Important: need to edit for realy server.
+CallbackURL = 'http://treaget.com/api/wallet/verify/'  # Important: need to edit for realy server.
 description = "شارژ کیف پول تریگت"  # Required
 
 
