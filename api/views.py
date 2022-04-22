@@ -625,6 +625,7 @@ class DeskApi(APIView):
                                                             , paymentBoolean=True).count(),
                 "numberDoingProject": SafePayment.objects.filter(receiver=request.user, paymentBoolean=False).count(),
                 "numberService": Service.objects.filter(author=request.user).count(),
+                "cash": request.user.cash,
 
             }
             print((len(Picture.objects.filter(author=request.user))))
@@ -645,6 +646,7 @@ class DeskApi(APIView):
                 "numberDoProject": SafePayment.objects.filter(sender=request.user, senderBoolean=True
                                                             , paymentBoolean=True).count(),
                 "numberDoingProject": SafePayment.objects.filter(sender=request.user, paymentBoolean=False).count(),
+                "cash": request.user.cash,
 
             }
         
