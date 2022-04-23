@@ -6,6 +6,39 @@ from account.views import User
 from wallet.models import PaymentWalletB
 from zeep import Client
 
+
+
+
+
+from ast import Try
+from unicodedata import category
+from main.views import deleteDuplicate
+from django.http import request
+from rest_framework.authtoken.models import Token
+from rest_framework.filters import OrderingFilter
+from api import filterset_class
+from api.filterset_class import *
+from extensions.notification import notificationAdd
+from account.models import Message, Notification
+import json
+from django.utils.html import json_script
+from rest_framework import status
+from operator import attrgetter
+from django.db.models.query_utils import Q
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.authentication import SessionAuthentication
+from rest_framework import generics
+from main.models import *
+from .serializers import *
+from rest_framework import viewsets
+from django_filters import rest_framework as filterSpecial  
+from rest_framework import filters
+from api.pagination import MyPagination
+import random
+import requests
+
 # Create your views here.
 MERCHANT = 'd16f23cc-5cde-4cfb-bd0d-f5121b0887c8'
 email = ''  # Optional
@@ -46,6 +79,26 @@ def withdrawMoney(request):
             }
             return render(request, 'desk/wallet.html', context)
     return redirect('/wallet')
+
+
+
+
+class wWithdrawMoneyApi(APIView):
+    def post(self, request):
+        data = json.loads(request.data)
+        amount = data["number"]
+        cardNumber = data['cardNumber']
+        name = request.POST.get("name")
+        if int(amount) > request.user.cash:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        elif int(amount) <= 0:
+            return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
+        elif int(amount) <= request.user.cash:
+            PaymentWallet = PaymentWalletB(user=request.user, cash=amount, typePayment=False, cardNumber=cardNumber,
+                                            name=name)
+            return Response(status=status.HTTP_200_OK)
+
+
 
 
 @login_required
