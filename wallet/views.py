@@ -88,7 +88,7 @@ class wWithdrawMoneyApi(APIView):
         data = json.loads(request.data)
         amount = data["number"]
         cardNumber = data['cardNumber']
-        name = request.POST.get("name")
+        name = data['name']
         if int(amount) > request.user.cash:
             return Response(status=status.HTTP_406_NOT_ACCEPTABLE)
         elif int(amount) <= 0:

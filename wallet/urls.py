@@ -7,4 +7,6 @@ urlpatterns = [
     path('IncreaseMoney/<int:amount>/', views.increaseMoney, name="increaseMoneyAmount"),
     path('WithdrawMoney/', views.withdrawMoney, name="WithdrawMoney"),
     path('verify/<int:amount>/', views.verify, name="verify"),
+    path('wWithdrawMoneyApi/', views.wWithdrawMoneyApi.as_view(), name="wWithdrawMoneyApi"),
+    
 ]
