@@ -28,7 +28,7 @@ sitemaps={
 
 
 urlpatterns = [
-    path('adminsh/', admin.site.urls),
+    path('api/adminsh/', admin.site.urls),
     # path('adminl/', adminlte3.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),

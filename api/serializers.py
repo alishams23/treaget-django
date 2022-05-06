@@ -7,6 +7,7 @@ from rest_framework import serializers
 from account.models import Message, Notification, User
 from main.models import *
 from rest_framework.validators import UniqueValidator
+from main.views import Contact
 from wallet.models import *
 from rest_framework.fields import CurrentUserDefault
 
@@ -57,6 +58,12 @@ class ProductsSerializer (serializers.ModelSerializer):
     class Meta:
         model = Products
         fields = ['pk', "title"]
+        
+        
+class ContactSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = contact
+        fields = "__all__"
 
 
 class PictureSerializer(serializers.ModelSerializer):
@@ -247,7 +254,7 @@ class UsersRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id",'username', 'password', "ServiceProvider"
-                  , 'first_name', 'last_name', "email")
+                  , 'first_name', 'last_name', "email",'phone_number')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True},
@@ -272,6 +279,13 @@ class UsersRegisterSerializer(serializers.ModelSerializer):
         if any(c in special_characters for c in username):
             raise ValidationError("Username must don't have character")
         return username.lower()
+    
+    def validate_phone_number(self, validated_data):
+        if validated_data:
+            phoneCheck = User.objects.filter(phone_number=validated_data).exists()
+            if phoneCheck:
+                raise ValidationError("phone_number must don't have character")
+        return validated_data
 
 
 class NotificationSerializers(serializers.ModelSerializer):

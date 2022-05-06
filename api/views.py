@@ -183,6 +183,12 @@ class SpamCreateApi(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
         
+
+class ContactApi(generics.CreateAPIView):
+    queryset = contact.objects.all()
+    serializer_class = ContactSerializer
+ 
+        
 class timelineDeleteApi(APIView):
     def delete(self, request, pk):
         timelineInstance=Timeline.objects.get(pk=pk)
