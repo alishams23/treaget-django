@@ -6,7 +6,7 @@ access.log
 .env
 admin/
 
-
+staticApi/
 static/account/
 static/admin/
 static/admin-lte/
