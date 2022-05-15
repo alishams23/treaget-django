@@ -25,13 +25,23 @@ class UserLessInformationSerializers(serializers.ModelSerializer):
         return  counter
     def getFullName(self, obj):
             return f"{obj.first_name + ' ' + obj.last_name}"
+    def is_followed_def (self , obj):
+        try:
+            user = self.context.get("request").user
+            if user in obj.followers.all():
+                return True
+        except:
+            print("error :request forward")
+        
+        return False
+    is_followed = serializers.SerializerMethodField("is_followed_def")
     full_name = serializers.SerializerMethodField("get_author")
     position_user = serializers.SerializerMethodField("position_page")
     get_full_name = serializers.SerializerMethodField("getFullName")
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name","full_name",
-                  "image", "ServiceProvider","position_user","get_full_name")
+                  "image", "ServiceProvider","position_user","get_full_name",'is_followed')
 
 
 class CashSerializers(serializers.ModelSerializer):

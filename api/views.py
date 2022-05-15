@@ -602,6 +602,18 @@ class following(generics.ListAPIView):
     def get_queryset(self):
         return User.objects.filter(followers=self.request.user).order_by("?")[0:15]
 
+class followingList(generics.ListAPIView):
+    serializer_class = UserLessInformationSerializers
+    def get_queryset(self):
+     
+        return User.objects.filter(followers=self.request.user)
+
+class followersList(generics.ListAPIView):
+    serializer_class = UserLessInformationSerializers
+    def get_queryset(self):
+      
+        return User.objects.filter(following=self.request.user)
+
 
 class RulesListApi(generics.ListAPIView):
     serializer_class = RulesSerializer

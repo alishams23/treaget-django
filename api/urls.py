@@ -99,6 +99,8 @@ urlpatterns = [
     path('Code_check/', views.Code_check.as_view(),name="Code_check"),
     path('ProductApi/', views.ProductApi.as_view(),name="ProductApi"),
     path('following/', views.following.as_view(),name="following"),
+    path('followingList/', views.followingList.as_view(),name="followingList"),
+    path('followersList/', views.followersList.as_view(),name="followersList"),
     path('ContactApi/', views.ContactApi.as_view(),name="ContactApi"),
 ]
 
