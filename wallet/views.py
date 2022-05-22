@@ -132,3 +132,8 @@ def verify(request, amount):
             return HttpResponse('Transaction failed.\nStatus: ' + str(result.Status))
     else:
         return HttpResponse('Transaction failed or canceled by user')
+
+
+
+def enamad(request):
+    return render(request, 'main/enamad.html')
