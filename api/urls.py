@@ -78,6 +78,8 @@ urlpatterns = [
     path('DisputeApi/', views.DisputeApi.as_view(), name="DisputeApi"),
     path('DisputeDestroyApi/<int:pk>/',
          views.DisputeDestroyApi.as_view(), name="DisputeDestroyApi"),
+    path('AddDisputeApi/',
+         views.AddDisputeApi.as_view(), name="AddDisputeApi"),
     path('OrderApi/', views.OrderApi.as_view(), name="OrderApi"),
     path('AddOrderApi/<str:username>/', views.AddOrderApi.as_view(), name="AddOrderApi"),
     path('OrderTrueApi/',

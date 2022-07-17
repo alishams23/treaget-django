@@ -30,13 +30,13 @@
 <body>
 
 
-    <div id="wrapper" style="">
+    <div id="wrapper" >
 
-        {% include "include/sidebar.html" %}
+      
 
         <div class="main_content ">
 
-            {% include "include/mainHeader.html" %}
+    
             <div class="fixed-bottom d-flex flex-row rtl  ">
                 {% if SafePayment.sender != request.user %}
                 <form method="post" action="{% url "account:AddProjectManagement" SafePayment.pk %}" class="bg-glass rounded-2xl d-flex p-3 m-3">

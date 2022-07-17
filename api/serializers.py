@@ -337,11 +337,12 @@ class SafePaymentSerializer(serializers.ModelSerializer):
 
 
 class DisputeSerializer(serializers.ModelSerializer):
-    safePayment = SafePaymentSerializer()
-
     class Meta:
         model = Dispute
         fields = "__all__"
+    def to_representation(self, instance):
+        self.fields['safePayment'] =  SafePaymentSerializer(required=False,read_only=True)
+        return super(DisputeSerializer, self).to_representation(instance)
 
 
 class OrderSerializers(serializers.ModelSerializer):

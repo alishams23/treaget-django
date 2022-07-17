@@ -1,5 +1,3 @@
-from ast import Try
-from unicodedata import category
 from main.views import deleteDuplicate
 from django.http import request
 from rest_framework.authtoken.models import Token
@@ -499,6 +497,12 @@ class DisputeApi(generics.ListAPIView):
         return Dispute.objects.filter(Q(safePayment__receiver=self.request.user) | Q(safePayment__sender=self.request.user))
 
 
+class AddDisputeApi(generics.CreateAPIView):
+    queryset= Dispute.objects.all()
+    serializer_class = DisputeSerializer
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
 
 class DisputeDestroyApi(generics.DestroyAPIView):
     serializer_class = DisputeSerializer
@@ -605,14 +609,16 @@ class following(generics.ListAPIView):
 class followingList(generics.ListAPIView):
     serializer_class = UserLessInformationSerializers
     def get_queryset(self):
-     
-        return User.objects.filter(followers=self.request.user)
+        if 'username' in self.request.GET : user = User.objects.get(username=self.request.GET['username'])
+        else : user =self.request.user
+        return User.objects.filter(followers=user)
 
 class followersList(generics.ListAPIView):
     serializer_class = UserLessInformationSerializers
     def get_queryset(self):
-      
-        return User.objects.filter(following=self.request.user)
+        if 'username' in self.request.GET : user = User.objects.get(username=self.request.GET['username'])
+        else : user =self.request.user
+        return User.objects.filter(following=user)
 
 
 class RulesListApi(generics.ListAPIView):
