@@ -1,5 +1,5 @@
 import imp
-from django.urls import path
+from django.urls import include, path
 from . import views
 # from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
@@ -13,6 +13,7 @@ router.register(r'HomeApiView', views.HomeApiView, basename="HomeApiView")
 
 app_name = "api"
 urlpatterns = [
+     path('projectManager/', include('projectManager.urls'), name="projectManager"),
     path('login/', auth_view.LoginView.as_view(), name='login'),
      
     path('token/', obtain_auth_token),
