@@ -9,5 +9,6 @@ urlpatterns = [
     path('verify/<int:amount>/', views.verify, name="verify"),
     path('enamad/', views.enamad, name="verify"),
     path('wWithdrawMoneyApi/', views.wWithdrawMoneyApi.as_view(), name="wWithdrawMoneyApi"),
+    path('listTransaction/', views.listTransaction.as_view(), name="listTransaction"),
     
 ]

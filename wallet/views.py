@@ -99,6 +99,10 @@ class wWithdrawMoneyApi(APIView):
             return Response(status=status.HTTP_200_OK)
 
 
+class listTransaction(generics.ListAPIView):
+    serializer_class = PaymentWalletSerializer
+    def get_queryset(self):
+        return PaymentWalletB.objects.filter(user=self.request.user)
 
 
 @login_required
