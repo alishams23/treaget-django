@@ -33,6 +33,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('api/', include('api.urls')),
     path('api/wallet/', include('wallet.urls'), name="wallet"),
+    path('api/projectManager/', include('projectManager.urls'), name="wallet"),
     
     path('', include('main.urls')),
     path('account/', include('account.urls'), name="account"),

@@ -1,12 +1,22 @@
 from django.urls import path
 from . import views
+from account import views as Function
 
 
 
-app_name = "api"
+
+app_name = "projectManager"
 urlpatterns = [
-    path('projectManagerDelete/<int:pk>/',
-         views.projectManagerDelete.as_view(), name="projectManagerDelete"),
+    path('projectManagement/<int:pk>/',
+         Function.projectManagement, name="projectManagement"),
+    path('DeleteProjectManagement/<int:pk>/',
+         Function.deleteSubsetTrello, name="deleteSubsetTrello"),
+    path('DeleteProjectManagementMain/<int:pk>/',
+         Function.deleteTrello, name="deleteTrello"),
+    path('AddSubsetProjectManagement/<int:pk>/',
+         Function.AddSubsetProjectManagement, name="AddSubsetProjectManagement"),
+    path('AddProjectManagement/<int:pk>/',
+         Function.AddProjectManagement, name="AddProjectManagement"),
 
 ]
 
