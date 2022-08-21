@@ -27,7 +27,7 @@ class User(AbstractUser):
     followers = models.ManyToManyField('User', blank=True, related_name='followers_user', verbose_name="followers")
     following = models.ManyToManyField('User', blank=True, related_name='following_user', verbose_name="following")
     cash = models.BigIntegerField(verbose_name="پول", default=0, blank=True, null=True)
-    verify_phone = models.BooleanField(verbose_name="تایید شماره تلفن", blank=True, null=True)
+    verify_phone = models.BooleanField(verbose_name="تایید شماره تلفن", blank=True, null=True,default=False)
     verify_phone_code = models.BigIntegerField(verbose_name="کد تایید", blank=True, null=True)
     phone_number = models.BigIntegerField(verbose_name="شماره تلفن", blank=True, null=True)
     count_sms=models.IntegerField(verbose_name="تعداد پیامک",default=0)
