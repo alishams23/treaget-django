@@ -92,7 +92,7 @@ class Products(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return f'/studiosaran/{self.slug}/'
+        return f'/studioconfig/{self.slug}/'
 
 
 class Picture(models.Model):
@@ -238,37 +238,6 @@ class Timeline(models.Model):
     def JEpublish(self):
         return jalali_converter(self.end)
 
-
-# class ServiceFacilities (models.Model):
-#     title = models.TextField(verbose_name="متن")
-#     createdadd = models.DateField(auto_now_add=True)
-#     author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
-#                                related_name="ServiceFacilitiesAuthor")
-#     price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
-
-#     class Meta:
-#         verbose_name = "خدمات خدمات دهنده امکانات"
-#         verbose_name_plural = "امکانات خدمات خدمات دهندگان"
-#         ordering = ["-createdadd"]
-
-#     def __str__(self):
-#         return self.title
-
-
-# class ServiceOptions (models.Model):
-#     title = models.TextField(verbose_name="متن")
-#     createdadd = models.DateField(auto_now_add=True)
-#     author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
-#                                related_name="ServiceOptionsAuthor")
-#     price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
-
-#     class Meta:
-#         verbose_name = "خدمات خدمات دهنده امکانات"
-#         verbose_name_plural = "امکانات خدمات خدمات دهندگان"
-#         ordering = ["-createdadd"]
-
-#     def __str__(self):
-#         return self.title
 
 
 class ServiceOptionMain (models.Model):

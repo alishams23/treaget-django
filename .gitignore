@@ -1,7 +1,7 @@
 media/
 db.sqlite3
 .idea/
-saran/settings.py
+config/settings.py
 access.log
 .env
 admin/
