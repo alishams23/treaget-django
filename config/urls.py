@@ -34,6 +34,7 @@ urlpatterns = [
     path('api/', include('api.urls')),
     path('api/wallet/', include('wallet.urls'), name="wallet"),
     path('api/kanban/', include('kanban.urls'), name="kanban"),
+    path('api/chat/', include('chat.urls'), name="chat"),
     
     path('', include('main.urls')),
     path('account/', include('account.urls'), name="account"),

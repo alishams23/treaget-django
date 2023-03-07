@@ -1,9 +1,7 @@
-import imp
-from django.urls import include, path
+
+from django.urls import  path
 from . import views
-# from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework import routers
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.authtoken.views import obtain_auth_token
 from django.contrib.auth import views as auth_view
 

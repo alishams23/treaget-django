@@ -41,7 +41,7 @@ class UserLessInformationSerializers(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "first_name", "last_name","full_name",
-                  "image", "ServiceProvider","position_user","get_full_name",'is_followed')
+                  "image", "ServiceProvider","position_user","get_full_name",'is_followed',"bio")
 
 
 class CashSerializers(serializers.ModelSerializer):
