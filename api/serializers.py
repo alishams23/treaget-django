@@ -31,7 +31,8 @@ class UserLessInformationSerializers(serializers.ModelSerializer):
             if user in obj.followers.all():
                 return True
         except:
-            print("error :request forward")
+            #error :request forward
+            print("")
         
         return False
     is_followed = serializers.SerializerMethodField("is_followed_def")

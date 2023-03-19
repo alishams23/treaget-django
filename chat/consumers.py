@@ -21,16 +21,37 @@ class ChatConsumer(WebsocketConsumer):
         message_model = Message.objects.create(author=author , content=message, related_chat=chat_model)
         result = eval(self.message_serializer(message_model))
         self.send_to_chat_message(result)
-    
-    
-    
+
+
+    def read_message(self, data):
+        message = Message.objects.get(id=data['message']) 
+        if message.read == False and message.author != self.user:
+            message.read = True
+            message.save()
+            async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {'type': 'chat_message',
+                    "id" : message.id,
+                    'command' : "read_message"
+                    }  
+                )
+
+
     def fetch_message(self, data):
         room_name_data = data['room_name']
         qs = Message.last_message(self, room_name_data)
         for item in qs : 
-            if item.author != self.user:
+            if item.author != self.user and item.read == False:
                 item.read = True
                 item.save()
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {'type': 'chat_message',
+                    "id" : item.id,
+                    'command' : "read_message"
+                    }  
+                )
+
                 
 
             
@@ -71,6 +92,7 @@ class ChatConsumer(WebsocketConsumer):
     commands = {
         
         "new_message": new_message,
+        "read_message": new_message,
         "fetch_message": fetch_message,
         'img': image
     
@@ -99,7 +121,8 @@ class ChatConsumer(WebsocketConsumer):
             {
                 'type': 'chat_message',
                 'content': message['content'],
-                'command':(lambda command : "img" if( command == "img") else "new_message")(command),
+                'id':message['id'],
+                'command':(lambda command : "read_message" if( command == "read_message") else "new_message")(command),
                 'username' : message['username']
             }  
         )
