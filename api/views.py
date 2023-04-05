@@ -95,17 +95,17 @@ class HomeApiView(viewsets.ModelViewSet):
         if "user" in self.request.GET:
             firstData = Picture.objects.filter(
                author__username=self.request.GET['user']).order_by("-pk")
+            secondData = Request.objects.filter(author__username=self.request.GET['user']).order_by("-pk")
+            
         else:
             firstData = Picture.objects.filter(
                 Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
-        if "user" in self.request.GET:
-            secondData = Request.objects.filter(author__username=self.request.GET['user']).order_by("-pk")
-        else:
             secondData = Request.objects.filter(Q(author__id__in=request.user.following.all()) | Q(author=request.user)).order_by("-pk")
+            
         result_list = sorted(
             chain(firstData, secondData),
             key=attrgetter('createdAdd'), reverse=True)
-        if len(result_list) == 0 :
+        if len(result_list) == 0 and "user" not in self.request.GET:
             result_list = Picture.objects.all().order_by("-pk")
         results = list()
         results_per_page = 5

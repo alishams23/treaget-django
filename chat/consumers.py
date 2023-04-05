@@ -92,7 +92,7 @@ class ChatConsumer(WebsocketConsumer):
     commands = {
         
         "new_message": new_message,
-        "read_message": new_message,
+        "read_message": read_message,
         "fetch_message": fetch_message,
         'img': image
     
