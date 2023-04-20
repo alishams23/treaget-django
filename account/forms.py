@@ -1,7 +1,7 @@
 from django import forms
-from main.models import Picture, Service, Timeline, SafePayment, Dispute, Request, Accept, Trello, SubsetTrello
+from main.models import Picture, Timeline, SafePayment, Dispute, Request, Accept, Trello, SubsetTrello
 from .models import User
-
+from profile_items.models import Services
 
 class PictureForm(forms.ModelForm):
     class Meta:
@@ -27,10 +27,10 @@ class UserAddForm(forms.ModelForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password', 'category','ServiceProvider',"phone_number")
 
 
-class ServiceForm(forms.ModelForm):
-    class Meta:
-        model = Service
-        fields = '__all__'
+# class ServiceForm(forms.ModelForm):
+#     class Meta:
+#         model = Services
+#         fields = '__all__'
 
 
 class SafePaymentForm(forms.ModelForm):

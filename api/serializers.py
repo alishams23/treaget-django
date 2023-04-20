@@ -9,7 +9,8 @@ from main.models import *
 from rest_framework.validators import UniqueValidator
 from main.views import Contact
 from wallet.models import *
-from rest_framework.fields import CurrentUserDefault
+
+from profile_items.serializers import ServiceFacilitiesSerializers , ServiceSerializers
 
 
 class UserLessInformationSerializers(serializers.ModelSerializer):
@@ -67,7 +68,7 @@ class CategorySerializers(serializers.ModelSerializer):
 
 class ProductsSerializer (serializers.ModelSerializer):
     class Meta:
-        model = Products
+        model = PostTag
         fields = ['pk', "title"]
         
         
@@ -148,38 +149,8 @@ class MessageSerializers(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ServiceSubsetSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = ServiceSubset
-        fields = "__all__"
 
-
-class ServiceFacilitiesSerializers(serializers.ModelSerializer):
-    class Meta:
-        model = ServiceOptionMain
-        fields = "__all__"
-
-
-class ServiceSerializers(serializers.ModelSerializer):
-    author = UserLessInformationSerializers(required=False,read_only=True)
-
-    class Meta:
-        model = Service
-        fields = "__all__"
-
-    def to_representation(self, instance):
-        self.fields['nameProduct'] =  ProductsSerializer(required=False,read_only=True)
-        self.fields['serviceOption'] =  ServiceFacilitiesSerializers(many=True,required=False,read_only=True)
-        return super(ServiceSerializers, self).to_representation(instance)
-
-
-    def validate(self, data):
-        nameProduct = data.get('nameProduct', None)
-        specialName = data.get('specialName', None)
-        if not nameProduct and not specialName:
-            raise serializers.ValidationError("at least one date input required.")
-        return data
-
+  
 
 
 

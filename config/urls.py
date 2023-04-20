@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.sitemaps.views import sitemap
-from main.sitemaps import staticViewSitemap , SnippetSitemap,PrpfileSitemap
+from main.sitemaps import staticViewSitemap 
 # import adminlte3
 from django.contrib.auth import views
 
@@ -35,6 +35,7 @@ urlpatterns = [
     path('api/wallet/', include('wallet.urls'), name="wallet"),
     path('api/kanban/', include('kanban.urls'), name="kanban"),
     path('api/chat/', include('chat.urls'), name="chat"),
+    path('api/profile_items/', include('profile_items.urls'), name="profile_items"),
     
     path('', include('main.urls')),
     path('account/', include('account.urls'), name="account"),

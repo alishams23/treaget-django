@@ -2,7 +2,6 @@ from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-from account.views import User
 from wallet.models import PaymentWalletB
 from zeep import Client
 
@@ -16,7 +15,6 @@ from main.views import deleteDuplicate
 from django.http import request
 from rest_framework.authtoken.models import Token
 from rest_framework.filters import OrderingFilter
-from api import filterset_class
 from api.filterset_class import *
 from extensions.notification import notificationAdd
 from account.models import Message, Notification

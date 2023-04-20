@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.html import format_html
 from account.models import User
 from django.utils import timezone
-from django.core.validators import MaxValueValidator, MinValueValidator
 from extensions.utils import jalali_converter
 from PIL import Image
 
@@ -66,7 +65,7 @@ class Price(models.Model):
         return self.title
 
 
-class Products(models.Model):
+class PostTag(models.Model):
     STATUS_CHOICES = (("p", "منتششر شده"), ("d", "پیشنویس شده"))
     TYPE_CHOICES = (("g", "گرافیک طراحی"), ("f", "فیلم و تیزر تبلیغاتی"), ("p", "عکاسی صنعتی"), ("o", "طراحی آفیس"),
                     ("w", "طراحی سایت"), ("s", "نرم افزار"), ("b", "ربات"), ("n", "شبکه و امنیت"))
@@ -98,7 +97,7 @@ class Products(models.Model):
 class Picture(models.Model):
     STATUS_CHOICES = (("p", "منتششر شده"), ("d", "پیشنویس شده"))
     category = models.ManyToManyField(
-        Products, verbose_name="دسته بندی محصول", blank=True)
+        PostTag, verbose_name="دسته بندی محصول", blank=True)
     like = models.ManyToManyField(
         User, verbose_name="تعداد لایک ها", blank=True, related_name="like_Picture")
     Visitor = models.ManyToManyField(
@@ -139,13 +138,11 @@ class OrderUser(models.Model):
     title = models.CharField(
         max_length=300, verbose_name="محصول درخواستی", blank=True, null=True)
     body = models.TextField(
-        verbose_name="توضیحات محصول", blank=True, null=True)
-    # optionService= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionMainOrder",verbose_name="آپشن ها")
-    
-    optionsServiceMain= models.ManyToManyField("main.ServiceOptionMain",blank=True,related_name="ServiceOptionslastOrder",verbose_name="آپشن ها")
+        verbose_name="توضیحات محصول", blank=True, null=True)   
+    optionsServiceMain= models.ManyToManyField("profile_items.ServiceOptionMain",blank=True,related_name="ServiceOptionslastOrder",verbose_name="آپشن ها")
 
     createdAdd = models.DateField(auto_now_add=True)
-    service = models.ForeignKey("main.Service", verbose_name="نوع خدمات",
+    service = models.ForeignKey("profile_items.Services", verbose_name="نوع خدمات",
                                 on_delete=models.SET_NULL, related_name="serviceOrderUser", null=True)
     designer = models.ForeignKey(User, verbose_name="طراح", on_delete=models.SET_NULL, null=True,
                                  related_name="designerOrderUser")
@@ -238,61 +235,6 @@ class Timeline(models.Model):
     def JEpublish(self):
         return jalali_converter(self.end)
 
-
-
-class ServiceOptionMain (models.Model):
-    title = models.TextField(verbose_name="متن")
-    createdadd = models.DateField(auto_now_add=True)
-    author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
-                               related_name="ServiceOptionMainAuthor")
-    price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
-
-    class Meta:
-        verbose_name = "خدمات خدمات دهنده امکانات"
-        verbose_name_plural = "امکانات خدمات خدمات دهندگان"
-        ordering = ["-createdadd"]
-
-    def __str__(self):
-        return self.title
-
-
-class Service(models.Model):
-    createdadd = models.DateField(auto_now_add=True)
-    author = models.ForeignKey(User, verbose_name="خدمات دهنده", on_delete=models.SET_NULL, null=True,
-                               related_name="ServiceAuthor")
-    nameProduct = models.ForeignKey(Products, verbose_name="نوع خدمات", on_delete=models.SET_NULL, blank=True,
-                                    null=True, related_name="NameProduct")
-    specialName = models.CharField(
-        max_length=400, blank=True, null=True, verbose_name="نام اختصاصی خدمات")
-    hour = models.IntegerField(validators=[MinValueValidator(
-        0)], blank=True, null=True, default="1", verbose_name="ساعت")
-    minute = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(
-        60)], blank=True, default="1", null=True, verbose_name="ساعت")
-    price = models.BigIntegerField(blank=True, null=True, verbose_name="قیمت")
-    priceEnd = models.BigIntegerField(
-        blank=True, null=True, verbose_name="قیمت")
-    subsetService = models.ManyToManyField(
-        "main.ServiceSubset", related_name="subsetServiceRelated", blank=True)
-    # serviceFacilities = models.ManyToManyField(
-    #     ServiceOptionMain, related_name="ServiceOptionMainRelated", blank=True)
-    serviceOption = models.ManyToManyField(
-        ServiceOptionMain, related_name="ServiceOptionlastRelated", blank=True)
-
-    class Meta:
-        verbose_name = "خدمات خدمات دهنده"
-        verbose_name_plural = "خدمات خدمات دهندگان"
-        ordering = ["-createdadd"]
-
-    def __str__(self):
-        return self.author.username
-
-
-class ServiceSubset(models.Model):
-    createdadd = models.DateField(auto_now_add=True)
-    author = models.ForeignKey(User, verbose_name="نویسنده", on_delete=models.SET_NULL, null=True,
-                               related_name="ServiceSubsetAuthor")
-    title = models.TextField(verbose_name="متن")
-    price = models.BigIntegerField(default=0, verbose_name="قیمت")
 
 
 class Blog(models.Model):

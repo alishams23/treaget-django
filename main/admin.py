@@ -41,7 +41,7 @@ class ProductsAdmin(admin.ModelAdmin):
     actions = [make_published, make_define]
 
 
-admin.site.register(Products, ProductsAdmin)
+admin.site.register(PostTag, ProductsAdmin)
 
 
 class PictureAdmin(admin.ModelAdmin):
@@ -114,13 +114,6 @@ class FAQAdmin(admin.ModelAdmin):
 
 admin.site.register(FAQ, FAQAdmin)
 
-
-class ServiceAdmin(admin.ModelAdmin):
-    list_display = ("author", "nameProduct","pk")
-    search_fields = ("-createdadd",)
-
-
-admin.site.register(Service, ServiceAdmin)
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -204,12 +197,6 @@ class DisputeAdmin(admin.ModelAdmin):
 
 admin.site.register(Dispute, DisputeAdmin)
 
-
-class ServiceFacilitiesAdmin(admin.ModelAdmin):
-    list_display = ("title","pk")
-
-
-admin.site.register(ServiceOptionMain, ServiceFacilitiesAdmin)
 
 
 class SpamAdmin(admin.ModelAdmin):

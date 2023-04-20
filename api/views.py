@@ -1,9 +1,6 @@
 from main.views import deleteDuplicate
-from django.http import request
 from rest_framework.authtoken.models import Token
 from wallet.views import wallet
-from rest_framework.filters import OrderingFilter
-from api import filterset_class
 from api.filterset_class import *
 from extensions.notification import notificationAdd
 from account.models import Message, Notification
@@ -28,6 +25,7 @@ from api.pagination import MyPagination
 from wallet.models import *
 import random
 import requests
+from profile_items.models import Services
 # Create your views here.
 
 
@@ -252,29 +250,6 @@ class FollowUnfollowApi(APIView):
             return Response(status=status.HTTP_200_OK)
 
 
-class ServiceListApi(generics.ListAPIView):
-    permission_classes = (AllowAny, )
-    serializer_class= ServiceSerializers
-    def get_queryset(self):
-        return Service.objects.filter(author=User.objects.get(username=self.kwargs.get('username'))).order_by("-pk")
-
-
-
-class ServiceSearchApi(generics.ListAPIView):
-    queryset = Service.objects.all()
-    serializer_class= ServiceSerializers
-    filter_backends = [filters.SearchFilter,filters.OrderingFilter,filterSpecial.DjangoFilterBackend]
-    filterset_class = ServiceFilter
-    ordering_fields  = ['price',"hour"]
-    search_fields = ["specialName","nameProduct__title"]
-    pagination_class= MyPagination
-
-
-class DestroyServiceApi(generics.DestroyAPIView):
-    serializer_class = ServiceSerializers
-    def get_queryset(self):
-        return Service.objects.filter(author=self.request.user,pk=self.kwargs.get('pk'))
-
 
 
 class UserSettingApi(generics.RetrieveUpdateAPIView):
@@ -337,24 +312,12 @@ class AddPostPictureApi(generics.CreateAPIView):
        try:
             if self.request.data["category"]:
                 for item in  self.request.data["category"].split(","):
-                    Picture.objects.get(pk = data.id).category.add(Products.objects.get(pk = item))
+                    Picture.objects.get(pk = data.id).category.add(Services.objects.get(pk = item))
        except:
            print("error")
        
 
 
-class AddOptionService(generics.CreateAPIView):
-    queryset = ServiceOptionMain.objects.all()
-    serializer_class = ServiceFacilitiesSerializers
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
-
-
-class AddService(generics.CreateAPIView):
-    queryset = Service.objects.all()
-    serializer_class = ServiceSerializers
-    def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
 
 
 class AddRequestApi(generics.CreateAPIView):
@@ -627,9 +590,10 @@ class RulesListApi(generics.ListAPIView):
     permission_classes = (AllowAny, )
 
 
-class ProductApi(generics.ListAPIView):
+#TODO: unused api
+class PostTagApi(generics.ListAPIView):
     serializer_class = ProductsSerializer
-    queryset = Products.objects.all()
+    queryset = PostTag.objects.all()
     permission_classes = (AllowAny, )
     
 
@@ -648,7 +612,7 @@ class DeskApi(APIView):
                 "numberDoProject": SafePayment.objects.filter(receiver=request.user, senderBoolean=True
                                                             , paymentBoolean=True).count(),
                 "numberDoingProject": SafePayment.objects.filter(receiver=request.user, paymentBoolean=False).count(),
-                "numberService": Service.objects.filter(author=request.user).count(),
+                "numberService": Services.objects.filter(author=request.user).count(),
                 "cash": request.user.cash,
 
             }
@@ -657,7 +621,7 @@ class DeskApi(APIView):
                 context.update({"pictureCheck": True})
             if len(Timeline.objects.filter(person=request.user)) == 0:
                 context.update({"timelineCheck": True})
-            if len(Service.objects.filter(author=request.user)) == 0:
+            if len(Services.objects.filter(author=request.user)) == 0:
                 context.update({"serviceCheck": True})
         else:
             context = {

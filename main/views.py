@@ -8,8 +8,10 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.shortcuts import loader
 from django.shortcuts import render, get_object_or_404
-from .models import Products, Picture, Price, contact, BuyStudio, OrderUser, FAQ, Service, Blog, Request, Rules, \
+from .models import PostTag, Picture, Price, contact, BuyStudio, OrderUser, FAQ, Blog, Request, Rules, \
     Category
+
+from profile_items.models import Services
 from .forms import PostFormContact, ProductFormContact, OrderUserForm
 from account.models import User
 from django.contrib import messages
@@ -25,7 +27,7 @@ def index(request):
     context = {
 
         "title": "سران بازار",
-        "products": Products.objects.filter(status="p"),
+        "products": PostTag.objects.filter(status="p"),
         'FAQs': FAQ.objects.filter(TypeFAQ='m').order_by('position'),
         'users': User.objects.all().order_by('pk').reverse()[0:6:],
         'Blogs': Blog.objects.all()
@@ -92,7 +94,7 @@ def Contact(request):
         "title": "ارتباط با ما",
         "form": PostFormContact(),
         "sucsess": False,
-        "products": Products.objects.filter(status="p")
+        "products": PostTag.objects.filter(status="p")
 
     }
     return render(request, 'main/contact.html', context)
@@ -102,7 +104,7 @@ def Contact(request):
 
 def BuyStudioR(request, slug, price, mainprice, typee):
     price = price.strip().replace('_', ' ')
-    ProductCategory = Products.objects.get(slug=slug)
+    ProductCategory = PostTag.objects.get(slug=slug)
     Productperices = ProductCategory.category.all()
 
     if request.method == 'POST':
@@ -116,11 +118,11 @@ def BuyStudioR(request, slug, price, mainprice, typee):
             f.save()
 
             contex = {
-                "object": get_object_or_404(Products, slug=slug, status="p"),
+                "object": get_object_or_404(PostTag, slug=slug, status="p"),
                 "allbum": Picture.objects.filter(category=ProductCategory.id),
                 "price": price,
                 "PriceTipe": typee,
-                "products": Products.objects.filter(slug=slug),
+                "products": PostTag.objects.filter(slug=slug),
                 "form": ProductFormContact(),
                 "mainprice": mainprice,
                 "sucsess": True, }
@@ -129,11 +131,11 @@ def BuyStudioR(request, slug, price, mainprice, typee):
     else:
 
         contex = {
-            "object": get_object_or_404(Products, slug=slug, status="p"),
+            "object": get_object_or_404(PostTag, slug=slug, status="p"),
             "allbum": Picture.objects.filter(category=ProductCategory.id),
             "price": price,
             "PriceTipe": typee,
-            "products": Products.objects.filter(status="p"),
+            "products": PostTag.objects.filter(status="p"),
             "form": ProductFormContact(),
             "mainprice": mainprice,
             "sucsess": False,
@@ -168,7 +170,7 @@ def profile(request, slug):
     context = {
         "title": "استودیو سران",
         'user': userResult,
-        'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
+        'Services': Services.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
         'categorySlice': deleteDuplicate(categorySlice)
 
     }

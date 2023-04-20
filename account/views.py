@@ -4,9 +4,9 @@ from itertools import chain
 from operator import attrgetter
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from main.models import Picture, FAQ, OrderUser, Service, Timeline, Products, Category, Request, SafePayment, Dispute, \
+from main.models import Picture, FAQ, OrderUser, Timeline, Category, Request, SafePayment, Dispute, \
     Accept, Trello, SubsetTrello
-from .forms import PictureForm, UserForm, UserAddForm, ServiceForm, TimelineForm, SafePaymentForm, DisputeForm, \
+from .forms import PictureForm, UserForm, UserAddForm, TimelineForm, SafePaymentForm, DisputeForm, \
     RequestForm, AcceptForm, TrelloForm, SubsetTrelloForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -81,7 +81,7 @@ def desk(request):
             "numberDoProject": SafePayment.objects.filter(receiver=request.user, senderBoolean=True
                                                           , paymentBoolean=True).count(),
             "numberDoingProject": SafePayment.objects.filter(receiver=request.user, paymentBoolean=False).count(),
-            "numberService": Service.objects.filter(author=request.user).count(),
+            # "numberService": Services.objects.filter(author=request.user).count(),
 
         }
         print((len(Picture.objects.filter(author=request.user))))
@@ -89,8 +89,8 @@ def desk(request):
             context.update({"pictureCheck": True})
         if len(Timeline.objects.filter(person=request.user)) == 0:
             context.update({"timelineCheck": True})
-        if len(Service.objects.filter(author=request.user)) == 0:
-            context.update({"serviceCheck": True})
+        # if len(Services.objects.filter(author=request.user)) == 0:
+        #     context.update({"serviceCheck": True})
     else:
         context = {
             "pictureCheck": False,
@@ -257,15 +257,16 @@ def addService(request):
         request.POST._mutable = True
         request.POST.update({"author": request.user})
         request.POST._mutable = False
-        f = ServiceForm(request.POST)
+        # f = ServiceForm(request.POST)
+        f = ''
         if f.is_valid():
             f.save()
             context = {
-                "form": ServiceForm(),
+                # "form": ServiceForm(),
             }
             return redirect(f"/p/{request.user.username}/service")
     context = {
-        'form': ServiceForm(),
+        # 'form': ServiceForm(),
     }
     return render(request, "registration/addService.html", context)
 
@@ -549,7 +550,7 @@ def cv(request, slug):
 
         "title": "استودیو سران",
         'user': userResult,
-        'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
+        # 'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
         "cv": Timeline.objects.filter(person=User.objects.get(username=slug)).order_by('createdAdd')[::-1],
         'categorySlice': deleteDuplicate(categorySlice)
 
@@ -576,7 +577,7 @@ def favourites(request, slug):
         return HttpResponseNotFound("404")
     context = {
         'user': userResult,
-        'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
+        # 'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
         'favourites': userResult.like.all().order_by('createdAdd')[0:20:],
         'categorySlice': deleteDuplicate(categorySlice)
     }
@@ -597,7 +598,7 @@ def service(request, slug):
 
         "title": "استودیو سران",
         'user': userResult,
-        'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
+        # 'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
         # "cv": timeline.objects.filter(person=User.objects.get(username=slug)).order_by( 'createdadd')[::-1],
         'categorySlice': deleteDuplicate(categorySlice)
 
@@ -615,7 +616,8 @@ def checkoutUser(request, slug, service=None):
     if request.method == "POST":
         request.POST._mutable = True
         if service:
-            serviceResult = Service.objects.get(pk=service)
+            # serviceResult = Service.objects.get(pk=service)
+            serviceResult = False
             if serviceResult.price:
                 request.POST.update({"designer": User.objects.get(username=slug), "author": request.user,
                                     'service': serviceResult, 'price': serviceResult.price, 'accept': None})
@@ -645,12 +647,12 @@ def checkoutUser(request, slug, service=None):
             return redirect('/account/notification/')
     context = {
         'form': OrderUserForm(),
-        "products": Products.objects.filter(status="p"),
+        # "products": Products.objects.filter(status="p"),
 
     }
     if service:
         context.update({
-            'service': Service.objects.get(pk=service),
+            # 'service': Service.objects.get(pk=service),
         })
     return render(request, 'main/checkoutUser.html', context)
 
@@ -663,7 +665,7 @@ def deleteCv(request, pk):
 
 @login_required()
 def deleteService(request, pk):
-    Service.objects.get(author=request.user, pk=pk).delete()
+    # Service.objects.get(author=request.user, pk=pk).delete()
     return redirect(f"/p/{request.user.username}/service")
 
 

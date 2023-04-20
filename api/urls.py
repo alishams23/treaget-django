@@ -31,17 +31,12 @@ urlpatterns = [
      path('AllMassageApi/', views.AllMassageApi.as_view(), name="AllMassageApi"),
      path('FollowUnfollowApi/<str:username>/',
           views.FollowUnfollowApi.as_view(), name="FollowUnfollowApi"),
-     path('ServiceListApi/<str:username>/',
-          views.ServiceListApi.as_view(), name="ServiceListApi"),
-     path('AddOptionService/',
-          views.AddOptionService.as_view(), name="AddOptionService"),
-     path('AddService/',
-          views.AddService.as_view(), name="AddService"),
+
+
+
      # get data like this ?&min_price=50001&max_price=80000&search=logo&ordering=-price
-     path('ServiceSearchApi/', views.ServiceSearchApi.as_view(),
-          name="ServiceSearchApi"),
-     path('DestroyServiceApi/<int:pk>/',
-          views.DestroyServiceApi.as_view(), name="DestroyServiceApi"),
+
+
      path('PicturePostDestroyRetrive/<int:pk>/',
           views.PicturePostDestroyRetrive.as_view(), name="PicturePostDestroyRetrive"),
      path('RequestPostDestroyRetrive/<int:pk>/',
@@ -97,7 +92,7 @@ urlpatterns = [
      path('UserSuggestion/', views.User_suggestion.as_view(),name="User_suggestion"),
      path('Send_code/', views.Send_code.as_view(),name="Send_code"),
      path('Code_check/', views.Code_check.as_view(),name="Code_check"),
-     path('ProductApi/', views.ProductApi.as_view(),name="ProductApi"),
+     path('PostTagApi/', views.PostTagApi.as_view(),name="PostTagApi"),
      path('following/', views.following.as_view(),name="following"),
      path('followingList/', views.followingList.as_view(),name="followingList"),
      path('followersList/', views.followersList.as_view(),name="followersList"),

@@ -22,7 +22,7 @@ class User(AbstractUser):
     category = models.ManyToManyField("main.Category", verbose_name="عضو کدام دسته بندیست", blank=True,
                                       related_name="CategoryMainRelated")
     numberVisitors = models.ManyToManyField("main.IPAddress", verbose_name="بازدید ها", blank=True, related_name="hits")
-    ability = models.ManyToManyField("main.Products", verbose_name="توانایی ها", blank=True, related_name="abl")
+    # ability = models.ManyToManyField("profile_items.Services", verbose_name="توانایی ها", blank=True, related_name="abl")
     like = models.ManyToManyField("main.Picture", verbose_name="لایک ها", blank=True, related_name="likeRelated")
     followers = models.ManyToManyField('User', blank=True, related_name='followers_user', verbose_name="followers")
     following = models.ManyToManyField('User', blank=True, related_name='following_user', verbose_name="following")
@@ -31,6 +31,7 @@ class User(AbstractUser):
     verify_phone_code = models.BigIntegerField(verbose_name="کد تایید", blank=True, null=True)
     phone_number = models.BigIntegerField(verbose_name="شماره تلفن", blank=True, null=True)
     count_sms=models.IntegerField(verbose_name="تعداد پیامک",default=0)
+    skills = models.ManyToManyField("profile_items.Skills", verbose_name="توانایی ها", blank=True, related_name="skillsUser+")
 
         
     def is_special_user(self):
@@ -105,3 +106,6 @@ class Notification(models.Model):
 
         def __str__(self):
             return self.title
+
+
+
