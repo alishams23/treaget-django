@@ -72,4 +72,18 @@ class ServiceSerializers(serializers.ModelSerializer):
         if not specialName:
             raise serializers.ValidationError("at least one date input required.")
         return data
+    
+
+class TimeLineSerializers(serializers.ModelSerializer):
+    person = UserLessInformationSerializers(required=False,read_only=True)
+    
+    class Meta:
+        model = Timeline
+        fields = "__all__"
+
+    def validate(self, data):
+        body = data.get('body', None)
+        if  not body:
+            raise serializers.ValidationError("body required.")
+        return data
 

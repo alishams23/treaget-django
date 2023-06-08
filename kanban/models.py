@@ -8,13 +8,17 @@ class KanbanListItem(models.Model):
     title = models.TextField(verbose_name="عنوان")
     created_at = models.DateField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    order = models.IntegerField(default=0,verbose_name='ترتیب')
     author = models.ForeignKey(
         User, verbose_name="نویسنده", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         verbose_name = "زیرمجموعه ترلو"
         verbose_name_plural = "زیرمجموعه ترلو ها"
-        ordering = ["-pk"]
+        ordering = ["-order"]
+    
+    def __str__(self):
+        return f"{self.title} -- {self.id}"
 
 
 class KanbanList(models.Model):
@@ -37,3 +41,7 @@ class Kanban(models.Model):
         verbose_name = "ترلو"
         verbose_name_plural = "ترلو ها"
         ordering = ["-pk"]
+    def __str__(self):
+        return f"{self.title} -- {self.id}"
+
+ 

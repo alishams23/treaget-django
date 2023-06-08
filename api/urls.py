@@ -1,5 +1,5 @@
 
-from django.urls import  path
+from django.urls import  include, path,re_path
 from . import views
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
@@ -9,8 +9,12 @@ from django.contrib.auth import views as auth_view
 router = routers.SimpleRouter()
 router.register(r'HomeApiView', views.HomeApiView, basename="HomeApiView")
 
-app_name = "api"
+
 urlpatterns = [
+# urls.py
+
+     path('social/google/', include("social_django.urls", namespace='social')),
+    
      path('login/', auth_view.LoginView.as_view(), name='login'),
 
      path('token/', obtain_auth_token),
@@ -21,12 +25,7 @@ urlpatterns = [
      path('ExploreProjectApiView/', views.ExploreProjectApiView.as_view(),
           name="ExploreProjectApiView"),
      path('AddLikeView/', views.AddLikeView.as_view(), name="AddLikeView"),
-     path('timelineDeleteApi/<int:pk>/',
-          views.timelineDeleteApi.as_view(), name="timelineDeleteApi"),
-     path('timelineRetrieveApiView/', views.timelineRetrieveApiView.as_view(),
-          name="timelineRetrieveApiView"),
-     path('timelineCreateApi/', views.timelineCreateApi.as_view(),
-          name="timelineCreateApi"),
+
      path('MassageApi/', views.MassageApi.as_view(), name="MassageApi"),
      path('AllMassageApi/', views.AllMassageApi.as_view(), name="AllMassageApi"),
      path('FollowUnfollowApi/<str:username>/',

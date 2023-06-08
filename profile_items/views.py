@@ -6,6 +6,12 @@ from .filterset_class import *
 from django_filters import rest_framework as filterSpecial  
 from rest_framework import filters
 from api.pagination import MyPagination
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
+
 
 
 # Create your views here.
@@ -40,7 +46,7 @@ class ServiceSearchApi(generics.ListAPIView):
     search_fields = ["specialName",]
     pagination_class= MyPagination
 
-#TODO: unused api
+
 class DestroyServiceApi(generics.DestroyAPIView):
     serializer_class = ServiceSerializers
     def get_queryset(self):
@@ -54,3 +60,29 @@ class AddService(generics.CreateAPIView):
     serializer_class = ServiceSerializers
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+
+#send data ?username=admin 
+class timelineRetrieveApiView(generics.ListAPIView):
+    permission_classes = (AllowAny, )
+    serializer_class = TimeLineSerializers
+    def get_queryset(self):
+        return Timeline.objects.filter(person__username=self.request.GET['username']).order_by("pk")
+
+
+class timelineCreateApi(generics.CreateAPIView):
+    queryset = Timeline.objects.all()
+    serializer_class = TimeLineSerializers
+    def perform_create(self, serializer):
+        serializer.save(person=self.request.user)
+
+
+        
+class timelineDeleteApi(APIView):
+    def delete(self, request, pk):
+        timelineInstance=Timeline.objects.get(pk=pk)
+        if timelineInstance.person == request.user:
+            timelineInstance.delete()
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)

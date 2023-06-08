@@ -6,6 +6,7 @@ from django.utils.html import format_html
 
 
 
+
 # Create your models here.
 
 
@@ -22,7 +23,7 @@ class User(AbstractUser):
     category = models.ManyToManyField("main.Category", verbose_name="عضو کدام دسته بندیست", blank=True,
                                       related_name="CategoryMainRelated")
     numberVisitors = models.ManyToManyField("main.IPAddress", verbose_name="بازدید ها", blank=True, related_name="hits")
-    # ability = models.ManyToManyField("profile_items.Services", verbose_name="توانایی ها", blank=True, related_name="abl")
+    skills = models.ManyToManyField("profile_items.Skills", verbose_name="توانایی ها", blank=True, related_name="skills+")
     like = models.ManyToManyField("main.Picture", verbose_name="لایک ها", blank=True, related_name="likeRelated")
     followers = models.ManyToManyField('User', blank=True, related_name='followers_user', verbose_name="followers")
     following = models.ManyToManyField('User', blank=True, related_name='following_user', verbose_name="following")

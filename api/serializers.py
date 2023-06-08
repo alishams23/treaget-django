@@ -126,18 +126,7 @@ class RulesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class TimeLineserializers(serializers.ModelSerializer):
-    person = UserLessInformationSerializers(required=False,read_only=True)
-    
-    class Meta:
-        model = Timeline
-        fields = "__all__"
 
-    def validate(self, data):
-        body = data.get('body', None)
-        if  not body:
-            raise serializers.ValidationError("body required.")
-        return data
 
 
 class MessageSerializers(serializers.ModelSerializer):

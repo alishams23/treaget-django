@@ -10,10 +10,11 @@ from .serializers import *
 
 
 # Create your views here.
-class Kanban_api(generics.ListAPIView):
+
+class Kanban_api(generics.RetrieveAPIView):
     serializer_class = KanbanSerializers
     def get_queryset(self):
-        return Kanban.objects.filter(Q(id = self.kwargs["pk"]) & (Q(members=self.request.user) | Q(observer=self.request.user)))
+        return Kanban.objects.filter( (Q(members=self.request.user) | Q(observer=self.request.user)))
 
 
 class KanbanListDestroyApi(generics.DestroyAPIView):
@@ -46,4 +47,18 @@ class KanbanListItemDestroyApi(generics.DestroyAPIView):
         if kanban_object.members.filter(id = self.request.user ).exists()  :
             return KanbanListItem.objects.filter(pk=self.kwargs.get('pk'))
 
+
+class Order_api(APIView):
+
+    def post(self, request):
+        if Kanban.objects.get(lists__id__in = [request.data.finalListId,request.data.firstListId],members__in = request.user).exist():
+            KanbanList.objects.get(id=request.data.finalListId).items.add(request.data.id)
+            KanbanList.objects.get(id=request.data.firstListId).items.remove(request.data.id)
+            for key,value in request.data.finalListOrder.items():
+                InstanceItemKanban = KanbanListItem.objects.get(id=key).order = value
+                InstanceItemKanban.save()
+            return Response(status=status.HTTP_200_OK)
+
+
+            
 

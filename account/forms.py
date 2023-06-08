@@ -1,5 +1,5 @@
 from django import forms
-from main.models import Picture, Timeline, SafePayment, Dispute, Request, Accept, Trello, SubsetTrello
+from main.models import Picture, SafePayment, Dispute, Request, Accept, Trello, SubsetTrello
 from .models import User
 from profile_items.models import Services
 
@@ -9,10 +9,7 @@ class PictureForm(forms.ModelForm):
         fields = '__all__'
 
 
-class TimelineForm(forms.ModelForm):
-    class Meta:
-        model = Timeline
-        fields = '__all__'
+
 
 
 class UserForm(forms.ModelForm):

@@ -149,11 +149,6 @@ class BlogAdmin(admin.ModelAdmin):
 admin.site.register(Blog, BlogAdmin)
 
 
-class TimelineAdmin(admin.ModelAdmin):
-    list_display = ( "pk","body","title","person")
-
-
-admin.site.register(Timeline, TimelineAdmin)
 
 
 class RequestAdmin(admin.ModelAdmin):

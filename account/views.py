@@ -4,9 +4,9 @@ from itertools import chain
 from operator import attrgetter
 from django.http import HttpResponseNotFound, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from main.models import Picture, FAQ, OrderUser, Timeline, Category, Request, SafePayment, Dispute, \
+from main.models import Picture, FAQ, OrderUser, Category, Request, SafePayment, Dispute, \
     Accept, Trello, SubsetTrello
-from .forms import PictureForm, UserForm, UserAddForm, TimelineForm, SafePaymentForm, DisputeForm, \
+from .forms import PictureForm, UserForm, UserAddForm, SafePaymentForm, DisputeForm, \
     RequestForm, AcceptForm, TrelloForm, SubsetTrelloForm
 from django.contrib.auth import logout
 from django.shortcuts import redirect
@@ -87,8 +87,8 @@ def desk(request):
         print((len(Picture.objects.filter(author=request.user))))
         if len(Picture.objects.filter(author=request.user)) == 0:
             context.update({"pictureCheck": True})
-        if len(Timeline.objects.filter(person=request.user)) == 0:
-            context.update({"timelineCheck": True})
+        # if len(Timeline.objects.filter(person=request.user)) == 0:
+        #     context.update({"timelineCheck": True})
         # if len(Services.objects.filter(author=request.user)) == 0:
         #     context.update({"serviceCheck": True})
     else:
@@ -236,15 +236,18 @@ def addCv(request):
             request.POST.update({"person": request.user})
             request.POST._mutable = False
 
-        f = TimelineForm(request.POST)
+        # f = TimelineForm(request.POST)
+        f = False
         if f.is_valid():
             f.save()
             context = {
-                "form": TimelineForm(),
+                # "form": TimelineForm(),
+          
             }
             return redirect(f"/p/{request.user.username}/cv")
     context = {
-        'form': TimelineForm(),
+        # 'form': TimelineForm(),
+
     }
     return render(request, "registration/addCv.html", context)
 
@@ -551,7 +554,7 @@ def cv(request, slug):
         "title": "استودیو سران",
         'user': userResult,
         # 'service': Service.objects.filter(author=User.objects.get(username=slug)).order_by('createdadd'),
-        "cv": Timeline.objects.filter(person=User.objects.get(username=slug)).order_by('createdAdd')[::-1],
+        # "cv": Timeline.objects.filter(person=User.objects.get(username=slug)).order_by('createdAdd')[::-1],
         'categorySlice': deleteDuplicate(categorySlice)
 
     }
@@ -659,7 +662,7 @@ def checkoutUser(request, slug, service=None):
 
 @login_required()
 def deleteCv(request, pk):
-    Timeline.objects.get(person=request.user, pk=pk).delete()
+    # Timeline.objects.get(person=request.user, pk=pk).delete()
     return redirect(f"/p/{request.user.username}/cv")
 
 

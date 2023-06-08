@@ -1,12 +1,23 @@
 from django.db import models
 from account.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
+from extensions.utils import jalali_converter
+
 # Create your models here.
 
 
 class Skills(models.Model):
     title = models.TextField(blank=True,null=True)
+    is_validate = models.BooleanField(default=True,blank=True,null=True)
+    author = models.ForeignKey(User, verbose_name="نویسنده", on_delete=models.SET_NULL, null=True,
+                               related_name="Skills_author+")
+    class Meta:
+        verbose_name = "توانایی"
+        verbose_name_plural = " توانایی ها"
+       
 
+    def __str__(self):
+        return self.title
 
 
 class ServiceSubset(models.Model):
@@ -60,4 +71,29 @@ class Services(models.Model):
 
     def __str__(self):
         return self.author.username
+
+
+class Timeline(models.Model):
+    title = models.CharField(max_length=400, blank=True,
+                             null=True, verbose_name="تیتر")
+    body = models.TextField(verbose_name="متن", blank=True, null=True)
+    person = models.ForeignKey(
+        User, verbose_name="طراح", on_delete=models.SET_NULL, null=True)
+    createdAdd = models.DateField(auto_now_add=True)
+    start = models.DateTimeField(blank=True, null=True, verbose_name="شروع")
+    end = models.DateTimeField(blank=True, null=True, verbose_name="پایان")
+
+    class Meta:
+        verbose_name = " تایم لاین"
+        verbose_name_plural = "تایم لاین ها"
+        ordering = ["-createdAdd"]
+
+    def __str__(self):
+        return self.body
+
+    def JSpublish(self):
+        return jalali_converter(self.start)
+
+    def JEpublish(self):
+        return jalali_converter(self.end)
 

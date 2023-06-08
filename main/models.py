@@ -211,31 +211,6 @@ class FAQ(models.Model):
         return self.title
 
 
-class Timeline(models.Model):
-    title = models.CharField(max_length=400, blank=True,
-                             null=True, verbose_name="تیتر")
-    body = models.TextField(verbose_name="متن", blank=True, null=True)
-    person = models.ForeignKey(
-        User, verbose_name="طراح", on_delete=models.SET_NULL, null=True)
-    createdAdd = models.DateField(auto_now_add=True)
-    start = models.DateTimeField(blank=True, null=True, verbose_name="شروع")
-    end = models.DateTimeField(blank=True, null=True, verbose_name="پایان")
-
-    class Meta:
-        verbose_name = " تایم لاین"
-        verbose_name_plural = "تایم لاین ها"
-        ordering = ["-createdAdd"]
-
-    def __str__(self):
-        return self.body
-
-    def JSpublish(self):
-        return jalali_converter(self.start)
-
-    def JEpublish(self):
-        return jalali_converter(self.end)
-
-
 
 class Blog(models.Model):
     createdadd = models.DateField(auto_now_add=True)

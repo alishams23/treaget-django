@@ -26,10 +26,38 @@ from wallet.models import *
 import random
 import requests
 from profile_items.models import Services
+from profile_items.models import Timeline
 # Create your views here.
 
 
-    
+
+
+from rest_framework.decorators import api_view, permission_classes
+
+
+from social_django.utils import psa
+
+from social_django.utils import load_strategy
+from social_django.views import _do_login
+
+class GoogleSignInAPIView(APIView):
+    def post(self, request):
+        strategy = load_strategy(request)
+        backend = 'google-oauth2'
+
+        # Authenticate the user
+        user = _do_login(request.backend, strategy)
+
+        # Generate the response
+        response_data = {
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'token': 'your-auth-token',
+        }
+
+        return Response(response_data)
+
 class AddLikeView(APIView):
     def get(self, request):
         # get data with ?Picture=pk in url
@@ -159,19 +187,6 @@ class ExploreProjectApiView (generics.ListAPIView):
     pagination_class = MyPagination
     permission_classes = (AllowAny, )
     
-#send data ?username=admin 
-class timelineRetrieveApiView(generics.ListAPIView):
-    permission_classes = (AllowAny, )
-    serializer_class = TimeLineserializers
-    def get_queryset(self):
-        return Timeline.objects.filter(person__username=self.request.GET['username']).order_by("pk")
-
-
-class timelineCreateApi(generics.CreateAPIView):
-    queryset = Timeline.objects.all()
-    serializer_class = TimeLineserializers
-    def perform_create(self, serializer):
-        serializer.save(person=self.request.user)
 
 class SpamCreateApi(generics.CreateAPIView):
     queryset = Spam.objects.all()
@@ -184,14 +199,6 @@ class ContactApi(generics.CreateAPIView):
     queryset = contact.objects.all()
     serializer_class = ContactSerializer
  
-        
-class timelineDeleteApi(APIView):
-    def delete(self, request, pk):
-        timelineInstance=Timeline.objects.get(pk=pk)
-        if timelineInstance.person == request.user:
-            timelineInstance.delete()
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class MassageApi(APIView):

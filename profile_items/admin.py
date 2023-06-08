@@ -29,3 +29,9 @@ admin.site.register(ServiceSubset, ServiceSubsetAdmin)
 
 
 
+class TimelineAdmin(admin.ModelAdmin):
+    list_display = ( "pk","body","title","person")
+
+
+admin.site.register(Timeline, TimelineAdmin)
+
