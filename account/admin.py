@@ -9,7 +9,7 @@ UserAdmin.fieldsets += (
             'special_user',
             'is_designer',
             'image',
-            'ability',
+            # 'ability',
             'numberVisitors',
             'is_programer',
             'is_Colleague',
