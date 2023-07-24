@@ -12,11 +12,9 @@ router.register(r'HomeApiView', views.HomeApiView, basename="HomeApiView")
 
 urlpatterns = [
 # urls.py
-
      path('social/google/', include("social_django.urls", namespace='social')),
-    
+     path('blog/', include('blog.urls')),
      path('login/', auth_view.LoginView.as_view(), name='login'),
-
      path('token/', obtain_auth_token),
      path('CheckToken/', views.CheckToken.as_view(), name="CheckToken"),
      # path('token/', TokenObtainPairView.as_view(),name='token_obtain_pair'),
@@ -25,7 +23,6 @@ urlpatterns = [
      path('ExploreProjectApiView/', views.ExploreProjectApiView.as_view(),
           name="ExploreProjectApiView"),
      path('AddLikeView/', views.AddLikeView.as_view(), name="AddLikeView"),
-
      path('MassageApi/', views.MassageApi.as_view(), name="MassageApi"),
      path('AllMassageApi/', views.AllMassageApi.as_view(), name="AllMassageApi"),
      path('FollowUnfollowApi/<str:username>/',
